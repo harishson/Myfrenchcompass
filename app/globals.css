@@ -1,0 +1,239 @@
+/* =========================================================================
+   French Compass — globals.css  (corrected)
+   Tailwind v4 (@theme). If you are on Tailwind v3, use the tailwind.config.ts
+   block in PATCH-GUIDE.md instead and keep the :root / .on-ink / @layer parts.
+   ========================================================================= */
+@import "tailwindcss";
+
+/* ---- Design tokens → generate utilities (bg-ink, text-foam, text-brass…) ---- */
+@theme {
+  /* surfaces */
+  --color-ink:        #0C1826;   /* midnight navy — primary dark surface   */
+  --color-ink-abyss:  #081019;   /* deeper layer / footer                  */
+  --color-ink-panel:  #132234;   /* raised panel/card ON ink (was missing) */
+  --color-ink-panel2: #18293C;   /* hover panel on ink                     */
+  --color-parchment:  #F3EBDB;   /* warm light surface                     */
+  --color-parchment2: #EAE0CC;   /* parchment shade / dividers             */
+  --color-card:       #FBF8F0;   /* SOLID card on parchment (fixes gray)   */
+
+  /* accents */
+  --color-brass:       #C08A2D;  /* precious accent — instruments/hairlines */
+  --color-brass-soft:  #D8AE63;
+  --color-azimuth:     #2440E8;  /* the single interactive accent           */
+  --color-azimuth-lift:#3E59FF;
+  --color-sea:         #37628F;
+  --color-verdigris:   #3E8F7C;  /* rare success                            */
+
+  /* text */
+  --color-foam:      #EDE6D6;    /* text/UI on dark (never pure #fff)       */
+  --color-foam-dim:  #9CB0C6;    /* secondary text on dark                  */
+  --color-ink-text:  #122130;    /* text on light                          */
+  --color-ink-dim:   #566779;    /* secondary text on light                */
+
+  /* type (attach these vars in layout via next/font — see PATCH-GUIDE) */
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-sans:    var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono:    var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
+
+  /* ---- spacing scale — these BACK the px-gutter / py-section-spacing
+          utilities used across the site. Without them Tailwind emits no
+          rule at all, so containers sit flush to the viewport edge. ---- */
+  --spacing-gutter:          clamp(1.25rem, 0.9rem + 1.6vw, 2.5rem);
+  --spacing-section-spacing: clamp(4rem, 3rem + 5vw, 7.5rem);
+
+  /* ---- motion — one vocabulary of easings, so every surface on the site
+          decelerates the same way. `settle` is the compass-needle curve. ---- */
+  --ease-settle:  cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-reveal:  cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-glide:   cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring:  cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ---- Layout constants + shadcn semantic tokens (parchment = default) ---- */
+:root {
+  --header-h: 4.5rem;                 /* 72px — used for offset + anchors    */
+  --container: 75rem;                 /* 1200px                              */
+  --radius: 0.625rem;
+
+  --shadow-card: 0 1px 2px rgba(12,24,38,.06), 0 10px 30px rgba(12,24,38,.09);
+  --shadow-lift: 0 3px 8px rgba(12,24,38,.10), 0 22px 60px rgba(12,24,38,.18);
+  --glow-azimuth: 0 0 0 1px rgba(36,64,232,.30), 0 10px 34px rgba(36,64,232,.28);
+  --glow-brass:   0 0 0 1px rgba(192,138,45,.35), 0 8px 26px rgba(192,138,45,.20);
+
+  /* Layered elevation ramp — each step adds a tighter contact shadow plus a
+     wider ambient one, which is what separates "premium" from "box-shadow". */
+  --elev-1: 0 1px 1px rgba(12,24,38,.05), 0 2px 6px rgba(12,24,38,.06);
+  --elev-2: 0 1px 2px rgba(12,24,38,.06), 0 6px 16px rgba(12,24,38,.09);
+  --elev-3: 0 2px 4px rgba(12,24,38,.07), 0 14px 34px rgba(12,24,38,.12);
+  --elev-4: 0 4px 8px rgba(12,24,38,.09), 0 28px 64px rgba(12,24,38,.18);
+
+  /* Same ramp for cards sitting ON ink — light bleeds, it doesn't pool. */
+  --elev-ink-2: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.34);
+  --elev-ink-3: 0 2px 6px rgba(0,0,0,.45), 0 18px 48px rgba(0,0,0,.42);
+
+  --background: var(--color-parchment);
+  --foreground: var(--color-ink-text);
+  --card-bg: var(--color-card);
+  --card-fg: var(--color-ink-text);
+  --muted-fg: var(--color-ink-dim);
+  --primary: var(--color-azimuth);
+  --primary-foreground: var(--color-foam);
+  --border: color-mix(in srgb, var(--color-ink-text) 12%, transparent);
+  --ring: var(--color-azimuth);
+}
+
+/* ---- Dark "map at night" surface. Any section/element opts in with .on-ink.
+        This ALSO fixes the invisible-heading bug: on ink, foreground = foam. ---- */
+.on-ink {
+  --background: var(--color-ink);
+  --foreground: var(--color-foam);
+  --card-bg: var(--color-ink-panel);
+  --card-fg: var(--color-foam);
+  --muted-fg: var(--color-foam-dim);
+  --border: color-mix(in srgb, var(--color-foam) 12%, transparent);
+  background-color: var(--color-ink);
+  color: var(--color-foam);
+}
+
+@layer base {
+  * { border-color: var(--border); }
+
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+  body {
+    background: var(--color-parchment);
+    color: var(--color-ink-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 400; letter-spacing: -0.01em; }
+
+  ::selection { background: color-mix(in srgb, var(--color-azimuth) 28%, transparent); }
+
+  /* Consistent, visible keyboard focus everywhere (a11y floor) */
+  :focus-visible {
+    outline: 2px solid var(--color-azimuth);
+    outline-offset: 2px;
+    border-radius: 5px;
+  }
+
+  /* Fixed-header offset so in-page anchors aren't hidden under the navbar */
+  [id] { scroll-margin-top: calc(var(--header-h) + 1rem); }
+
+  /* Overflow guard that does NOT break position:sticky/fixed (clip, not hidden) */
+  .clip-x { overflow-x: clip; }
+}
+
+/* Fluid type scale */
+@layer utilities {
+  .fs--1 { font-size: clamp(0.83rem, 0.80rem + 0.15vw, 0.92rem); }
+  .fs-0  { font-size: clamp(1rem, 0.96rem + 0.2vw, 1.125rem); }
+  .fs-1  { font-size: clamp(1.2rem, 1.1rem + 0.5vw, 1.5rem); }
+  .fs-2  { font-size: clamp(1.5rem, 1.3rem + 1vw, 2.1rem); }
+  .fs-3  { font-size: clamp(2rem, 1.6rem + 2vw, 3.2rem); }
+  .fs-4  { font-size: clamp(2.6rem, 2rem + 3.4vw, 5rem); }
+  .fs-5  { font-size: clamp(3.2rem, 2.2rem + 6vw, 7rem); }
+  .eyebrow {
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: clamp(0.7rem, 0.66rem + 0.15vw, 0.78rem);
+  }
+
+  /* ---- Premium surfaces -------------------------------------------------
+     .glass-ink   — frosted panel for cards on the dark map surface
+     .glass-warm  — the parchment equivalent
+     Both keep a 1px top highlight, which is what sells the "lit from above"
+     read. Blur is capped at 14px: past that mobile GPUs start dropping frames.
+     ---------------------------------------------------------------------- */
+  .glass-ink {
+    background: linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--color-ink-panel) 88%, transparent),
+      color-mix(in srgb, var(--color-ink-abyss) 82%, transparent)
+    );
+    backdrop-filter: blur(14px) saturate(1.2);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    border: 1px solid color-mix(in srgb, var(--color-foam) 10%, transparent);
+    box-shadow: var(--elev-ink-2);
+  }
+  .glass-warm {
+    background: linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--color-card) 92%, transparent),
+      color-mix(in srgb, var(--color-parchment2) 78%, transparent)
+    );
+    backdrop-filter: blur(14px) saturate(1.15);
+    -webkit-backdrop-filter: blur(14px) saturate(1.15);
+    border: 1px solid color-mix(in srgb, var(--color-ink-text) 8%, transparent);
+    box-shadow: var(--elev-2);
+  }
+
+  /* The lit top edge. Pair with a relative, overflow-hidden parent. */
+  .edge-lit::before {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--color-brass-soft) 55%, transparent),
+      transparent
+    );
+    pointer-events: none;
+  }
+
+  /* Brass hairline divider, fading at both ends. */
+  .rule-brass {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--color-brass) 45%, transparent),
+      transparent
+    );
+  }
+
+  /* Cards that rise on hover. Transform + shadow only — never layout props. */
+  .lift {
+    transition:
+      transform 0.42s var(--ease-settle),
+      box-shadow 0.42s var(--ease-settle),
+      border-color 0.42s var(--ease-settle);
+    will-change: transform;
+  }
+  .lift:hover { transform: translateY(-4px); box-shadow: var(--elev-4); }
+  .on-ink .lift:hover { box-shadow: var(--elev-ink-3); }
+
+  /* Gradient text for the one hero word that carries the brand. */
+  .text-brass-gradient {
+    background: linear-gradient(
+      135deg,
+      var(--color-brass-soft) 0%,
+      var(--color-brass) 45%,
+      var(--color-brass-soft) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+/* Anything using .lift or parallax must not jitter for reduced-motion users. */
+@media (prefers-reduced-motion: reduce) {
+  .lift:hover { transform: none; }
+}
+
+/* Respect reduced motion globally */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
