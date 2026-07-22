@@ -15,22 +15,22 @@ export default function AboutPage() {
     <>
       {/* Story Section */}
       <Section variant="parchment" className="pt-20 md:pt-32 pb-12 md:pb-16">
-        <div className="max-w-4xl mx-auto px-4 md:px-6">
+        <div className="mx-auto max-w-4xl">
           <Reveal>
             <div className="inline-flex items-center gap-2 mb-6">
-              <Compass className="w-5 h-5 text-[#C08A2D]" />
-              <span className="font-mono text-xs uppercase tracking-[0.14em] text-[#C08A2D]">
+              <Compass className="w-5 h-5 text-brass" />
+              <span className="font-mono text-xs uppercase tracking-[0.14em] text-brass">
                 Our story
               </span>
             </div>
           </Reveal>
           <Reveal delay={80}>
-            <h1 className="font-display text-3xl md:text-5xl lg:text-6xl font-semibold text-[#0C1826] mb-8">
+            <h1 className="font-display text-3xl md:text-5xl lg:text-6xl font-semibold text-ink-text mb-8">
               Why We Started French Compass
             </h1>
           </Reveal>
           <Reveal delay={160}>
-            <div className="space-y-6 text-lg text-[#546575] leading-relaxed">
+            <div className="space-y-6 text-lg text-ink-dim leading-relaxed">
               <p>
                 French Compass exists because navigating French fluency shouldn&apos;t feel like
                 charting unknown waters. Too many learners get caught in &ldquo;app purgatory&rdquo;
@@ -56,13 +56,13 @@ export default function AboutPage() {
 
       {/* Instructors */}
       <Section variant="ink" className="py-12 md:py-16">
-        <div className="max-w-6xl mx-auto px-4 md:px-6">
+        <div className="mx-auto max-w-6xl">
           <Reveal>
             <div className="text-center mb-12">
-              <span className="font-mono text-xs uppercase tracking-[0.14em] text-[#C08A2D]">
+              <span className="font-mono text-xs uppercase tracking-[0.14em] text-brass">
                 Your navigators
               </span>
-              <h2 className="font-display text-4xl md:text-5xl font-semibold text-[#EDE6D6] mt-3">
+              <h2 className="font-display text-4xl md:text-5xl font-semibold text-foam mt-3">
                 Meet the Crew
               </h2>
             </div>
@@ -107,7 +107,7 @@ export default function AboutPage() {
 
       {/* Trust Stats */}
       <Section variant="parchment" className="py-16">
-        <div className="max-w-6xl mx-auto px-6">
+        <div className="mx-auto max-w-6xl">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
               { v: '500+', l: 'Students taught' },
@@ -119,9 +119,9 @@ export default function AboutPage() {
                 <div className="group rounded-[14px] p-6 transition-colors duration-300 hover:bg-card">
                   <CountUp
                     value={s.v}
-                    className="mb-2 block font-display text-4xl font-bold text-[#2440E8]"
+                    className="mb-2 block font-display text-4xl font-bold tabular-nums text-azimuth"
                   />
-                  <p className="font-mono text-sm uppercase tracking-[0.14em] text-[#546575]">
+                  <p className="font-mono text-sm uppercase tracking-[0.14em] text-ink-dim">
                     {s.l}
                   </p>
                 </div>

@@ -3,8 +3,15 @@ import { contactSchema } from '@/lib/contact-schema'
 
 /**
  * POST /api/contact
- * Receives contact form submission and logs it.
- * In production, integrate with Resend, Google Sheets, or CRM.
+ *
+ * ⚠️ NOT PRODUCTION-COMPLETE: this endpoint validates the submission and
+ * writes it to the server log — nothing more. No email is sent to the team or
+ * the enquirer, so a lead submitted here reaches nobody unless someone is
+ * tailing logs. Wiring up delivery needs an account + API key (see the Resend
+ * sketch below), which is why it's left as a decision rather than a default.
+ *
+ * Until then, the confirmation screen in components/ContactForm.tsx offers a
+ * prefilled WhatsApp / mailto handoff so the enquiry still has a real route in.
  */
 export async function POST(request: NextRequest) {
   try {
@@ -61,7 +68,8 @@ export async function POST(request: NextRequest) {
           {
             success: false,
             message: 'Please check your form and try again.',
-            errors: (error as any).errors,
+            // Zod v4: `.issues`. `.errors` was the v3 name and is undefined here.
+            errors: (error as any).issues,
           },
           { status: 400 }
         )

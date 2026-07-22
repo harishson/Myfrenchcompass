@@ -6,14 +6,33 @@ import { Eyebrow, SectionHeading } from "@/components/ui-primitives";
 
 
 
-function HudChip({ icon: Icon, value, label }: { icon: React.ElementType; value: string | number; label: string }) {
+function HudChip({
+  icon: Icon,
+  value,
+  label,
+  ready,
+}: {
+  icon: React.ElementType;
+  value: string | number;
+  label: string;
+  /** Persisted stats only exist after localStorage is read. */
+  ready: boolean;
+}) {
   return (
     <div className="flex items-center gap-3 rounded-2xl border border-foam/10 bg-ink-panel px-4 py-3">
       <span className="grid h-9 w-9 place-items-center rounded-lg bg-azimuth/15 text-brass-soft">
         <Icon className="h-4 w-4" strokeWidth={2} />
       </span>
       <div>
-        <div className="font-display text-xl leading-none text-foam">{value}</div>
+        {/* Hold the slot until hydrated, otherwise a returning user watches
+            their streak flash 0 → 12 on every page load. */}
+        <div
+          className="font-display text-xl leading-none text-foam transition-opacity duration-300"
+          style={{ opacity: ready ? 1 : 0 }}
+        >
+          {value}
+          <span aria-hidden className="invisible">&nbsp;</span>
+        </div>
         <div className="font-mono text-[10px] uppercase tracking-widest text-foam-dim">{label}</div>
       </div>
     </div>
@@ -21,7 +40,7 @@ function HudChip({ icon: Icon, value, label }: { icon: React.ElementType; value:
 }
 
 export function PlaygroundHero() {
-  const { level, levelTitle, xp, streak } = usePlayground();
+  const { level, levelTitle, xp, streak, hydrated } = usePlayground();
   return (
     <section className="on-ink relative overflow-hidden">
       <div aria-hidden className="pointer-events-none absolute inset-0"
@@ -39,9 +58,9 @@ export function PlaygroundHero() {
 
           {/* live HUD */}
           <div className="mt-8 flex flex-wrap gap-3">
-            <HudChip icon={Trophy} value={`${level} · ${levelTitle}`} label="your rank" />
-            <HudChip icon={Zap} value={`${xp} XP`} label="earned" />
-            <HudChip icon={Flame} value={streak} label="day streak" />
+            <HudChip icon={Trophy} value={`${level} · ${levelTitle}`} label="your rank" ready={hydrated} />
+            <HudChip icon={Zap} value={`${xp} XP`} label="earned" ready={hydrated} />
+            <HudChip icon={Flame} value={streak} label="day streak" ready={hydrated} />
           </div>
 
           <a href="#placement"

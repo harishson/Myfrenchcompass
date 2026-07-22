@@ -1,9 +1,54 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { Flag, Flame, Trophy, Compass, Map, Lock, RotateCcw } from "lucide-react";
 import { usePlayground, type Badge } from "@/lib/playground-store";
 import { cn } from "@/lib/utils";
+
+/**
+ * Reset is destructive and irreversible — it overwrites localStorage, taking
+ * the streak, XP and every badge with it. Make the user say it twice, and
+ * let the armed state lapse so it can't sit primed for a stray click.
+ */
+function ResetButton({ onReset }: { onReset: () => void }) {
+  const [armed, setArmed] = useState(false);
+
+  useEffect(() => {
+    if (!armed) return;
+    const t = setTimeout(() => setArmed(false), 4000);
+    return () => clearTimeout(t);
+  }, [armed]);
+
+  return (
+    <button
+      type="button"
+      onClick={() => {
+        if (armed) {
+          onReset();
+          setArmed(false);
+        } else {
+          setArmed(true);
+        }
+      }}
+      onBlur={() => setArmed(false)}
+      aria-label={
+        armed
+          ? "Confirm reset — this erases all progress"
+          : "Reset all playground progress"
+      }
+      className={cn(
+        "inline-flex min-h-11 items-center gap-1.5 rounded-lg px-3 font-mono text-[11px] uppercase tracking-wide transition-colors",
+        armed
+          ? "bg-red-500/15 text-red-300 hover:bg-red-500/25"
+          : "text-foam-dim hover:text-foam",
+      )}
+    >
+      <RotateCcw className="h-3 w-3" />
+      {armed ? "Tap again to erase" : "Reset"}
+    </button>
+  );
+}
 
 const ICONS = { flag: Flag, flame: Flame, trophy: Trophy, compass: Compass, map: Map };
 
@@ -53,12 +98,19 @@ function BadgeTile({ badge }: { badge: Badge }) {
 }
 
 export function ProgressBadges() {
-  const { xp, level, levelTitle, xpIntoLevel, xpForLevel, streak, badges, reset } = usePlayground();
+  const { xp, level, levelTitle, xpIntoLevel, xpForLevel, streak, badges, reset, hydrated } =
+    usePlayground();
   const pct = (xpIntoLevel / xpForLevel) * 100;
   const earned = badges.filter((b) => b.earned).length;
 
   return (
-    <div className="rounded-3xl border border-foam/10 bg-ink-panel p-8">
+    // Everything in this panel is restored from localStorage. Fade the whole
+    // block in once, rather than letting each badge visibly pop from locked to
+    // earned a frame after mount.
+    <div
+      className="rounded-3xl border border-foam/10 bg-ink-panel p-8 transition-opacity duration-500"
+      style={{ opacity: hydrated ? 1 : 0 }}
+    >
       <div className="flex flex-col gap-8 md:flex-row md:items-center">
         <LevelRing pct={pct} level={level} />
 
@@ -103,10 +155,7 @@ export function ProgressBadges() {
       <div className="mt-8 border-t border-foam/10 pt-6">
         <div className="mb-4 flex items-center justify-between">
           <h3 className="font-display text-xl text-foam">Explorer badges</h3>
-          <button onClick={reset}
-            className="inline-flex items-center gap-1 font-mono text-[11px] uppercase tracking-wide text-foam-dim transition-colors hover:text-foam">
-            <RotateCcw className="h-3 w-3" /> Reset
-          </button>
+          <ResetButton onReset={reset} />
         </div>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
           {badges.map((b) => <BadgeTile key={b.id} badge={b} />)}

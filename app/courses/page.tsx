@@ -12,10 +12,18 @@ import { whatsappLink } from '@/lib/contact'
 import { Compass } from 'lucide-react'
 
 type GoalFilter = 'all' | 'core' | 'certification' | 'conversation'
+type SortKey = 'level' | 'price' | 'title'
+
+const COURSE_FILTERS: { id: GoalFilter; label: string }[] = [
+  { id: 'all', label: 'All' },
+  { id: 'core', label: 'Core Levels' },
+  { id: 'certification', label: 'Exams' },
+  { id: 'conversation', label: 'Resources' },
+]
 
 export default function CoursesPage() {
   const [activeFilter, setActiveFilter] = useState<GoalFilter>('all')
-  const [sortBy, setSortBy] = useState<'level' | 'price' | 'title'>('level')
+  const [sortBy, setSortBy] = useState<SortKey>('level')
   const reduce = useReducedMotion()
 
   const filteredCourses =
@@ -88,66 +96,59 @@ export default function CoursesPage() {
 
       {/* Filters */}
       <Section variant="parchment" className="py-3 md:py-4">
-        <div className="max-w-6xl mx-auto px-4 md:px-6">
-          {/* Goal Filter - Horizontal scroll on mobile, flex on desktop */}
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-0">
-            <div className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
-              <div className="flex gap-2 min-w-min md:flex-wrap md:min-w-fit">
-              <button
-                onClick={() => setActiveFilter('all')}
-                className={`px-3 py-1.5 md:px-4 md:py-2 rounded-lg font-mono text-xs md:text-sm font-semibold transition-colors whitespace-nowrap flex-shrink-0 md:flex-shrink ${
-                  activeFilter === 'all'
-                    ? 'bg-[#2440E8] text-[#EDE6D6]'
-                    : 'bg-[#EAE0CC] text-[#122130] hover:bg-[#D8AE63]'
-                }`}
-              >
-                All
-              </button>
-              <button
-                onClick={() => setActiveFilter('core')}
-                className={`px-3 py-1.5 md:px-4 md:py-2 rounded-lg font-mono text-xs md:text-sm font-semibold transition-colors whitespace-nowrap flex-shrink-0 md:flex-shrink ${
-                  activeFilter === 'core'
-                    ? 'bg-[#2440E8] text-[#EDE6D6]'
-                    : 'bg-[#EAE0CC] text-[#122130] hover:bg-[#D8AE63]'
-                }`}
-              >
-                Core Levels
-              </button>
-              <button
-                onClick={() => setActiveFilter('certification')}
-                className={`px-3 py-1.5 md:px-4 md:py-2 rounded-lg font-mono text-xs md:text-sm font-semibold transition-colors whitespace-nowrap flex-shrink-0 md:flex-shrink ${
-                  activeFilter === 'certification'
-                    ? 'bg-[#2440E8] text-[#EDE6D6]'
-                    : 'bg-[#EAE0CC] text-[#122130] hover:bg-[#D8AE63]'
-                }`}
-              >
-                Exams
-              </button>
-              <button
-                onClick={() => setActiveFilter('conversation')}
-                className={`px-3 py-1.5 md:px-4 md:py-2 rounded-lg font-mono text-xs md:text-sm font-semibold transition-colors whitespace-nowrap flex-shrink-0 md:flex-shrink ${
-                  activeFilter === 'conversation'
-                    ? 'bg-[#2440E8] text-[#EDE6D6]'
-                    : 'bg-[#EAE0CC] text-[#122130] hover:bg-[#D8AE63]'
-                }`}
-              >
-                Resources
-              </button>
-            </div>
+        <div className="mx-auto max-w-6xl">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            {/* Goal filter — horizontal scroll on mobile, wraps on desktop.
+                The negative margin lets the scroll area bleed to the screen
+                edge so chips don't look clipped mid-swipe. */}
+            <div
+              className="-mx-gutter overflow-x-auto px-gutter md:mx-0 md:px-0"
+              role="group"
+              aria-label="Filter courses by goal"
+            >
+              <div className="flex min-w-min gap-2 md:min-w-fit md:flex-wrap">
+                {COURSE_FILTERS.map(({ id, label }) => {
+                  const active = activeFilter === id
+                  return (
+                    <button
+                      key={id}
+                      type="button"
+                      onClick={() => setActiveFilter(id)}
+                      // aria-pressed, not just colour: the active filter has to
+                      // be announced, not only shown.
+                      aria-pressed={active}
+                      className={`flex min-h-11 flex-shrink-0 items-center whitespace-nowrap rounded-lg px-4 font-mono text-xs font-semibold transition-colors md:min-h-0 md:flex-shrink md:py-2 md:text-sm ${
+                        active
+                          ? 'bg-azimuth text-foam'
+                          : 'bg-parchment2 text-ink-text hover:bg-brass-soft'
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  )
+                })}
+              </div>
             </div>
 
-            {/* Sort - Hidden on mobile, visible on desktop */}
-            <div className="hidden md:flex items-center gap-2">
-            <span className="text-xs md:text-sm text-[#546575] flex-shrink-0">Sort by:</span>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as any)}
-              className="px-3 py-2 bg-white border border-[#546575]/20 rounded-lg text-xs md:text-sm text-[#122130] focus:outline-none focus:ring-2 focus:ring-[#2440E8]"
-            >
-              <option value="level">Level</option>
-              <option value="price">Price (low to high)</option>
-              <option value="title">Title (A–Z)</option>
-            </select>
+            {/* Sort — was `hidden md:flex`, which left mobile with no way to
+                sort at all. */}
+            <div className="flex items-center gap-2">
+              <label
+                htmlFor="course-sort"
+                className="flex-shrink-0 text-xs text-ink-dim md:text-sm"
+              >
+                Sort by:
+              </label>
+              <select
+                id="course-sort"
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as SortKey)}
+                className="min-h-11 flex-1 rounded-lg border border-ink-dim/20 bg-card px-3 text-xs text-ink-text focus:outline-none focus:ring-2 focus:ring-azimuth md:min-h-0 md:flex-none md:py-2 md:text-sm"
+              >
+                <option value="level">Level</option>
+                <option value="price">Price (low to high)</option>
+                <option value="title">Title (A–Z)</option>
+              </select>
             </div>
           </div>
         </div>

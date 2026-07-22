@@ -42,6 +42,8 @@ export function ContactForm() {
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  /** What they actually sent, kept for the post-submit handoff links. */
+  const [submittedSnapshot, setSubmittedSnapshot] = useState<typeof formData | null>(null)
   const [apiError, setApiError] = useState('')
 
   const handleChange = (
@@ -94,20 +96,23 @@ export function ContactForm() {
         return
       }
 
+      // Keep a snapshot so the confirmation screen can offer a prefilled
+      // WhatsApp/email handoff (see the note on `submittedSnapshot`).
+      setSubmittedSnapshot(formData)
       setSubmitted(true)
-      setTimeout(() => {
-        setSubmitted(false)
-        setFormData({
-          firstName: '',
-          lastName: '',
-          email: '',
-          phone: '',
-          level: '',
-          timePreference: '',
-          message: '',
-          company: '',
-        })
-      }, 4000)
+      // NOTE: deliberately no auto-reset timer here. The old 4s timeout threw
+      // the user back to an empty form mid-read, losing the confirmation and
+      // the follow-up links with it.
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        level: '',
+        timePreference: '',
+        message: '',
+        company: '',
+      })
     } catch (error) {
       console.error('Form submission error:', error)
       setApiError('Something went wrong. Please try again later.')
@@ -117,18 +122,64 @@ export function ContactForm() {
   }
 
   if (submitted) {
+    const s = submittedSnapshot
+    // The API currently only logs submissions — email delivery is still a TODO
+    // in app/api/contact/route.ts. Until that's wired up, offer a one-tap
+    // handoff prefilled with what they just typed, so the enquiry actually
+    // reaches a human instead of dying in a server log.
+    const summary = s
+      ? [
+          `Name: ${s.firstName}${s.lastName ? ` ${s.lastName}` : ''}`,
+          `Email: ${s.email}`,
+          `Phone: ${s.phone}`,
+          `Course: ${s.level}`,
+          `Preferred time: ${s.timePreference}`,
+          s.message ? `Message: ${s.message}` : '',
+        ]
+          .filter(Boolean)
+          .join('\n')
+      : ''
+
     return (
-      <div className="max-w-2xl mx-auto text-center py-12">
+      <div
+        className="mx-auto max-w-2xl py-12 text-center"
+        role="status"
+        aria-live="polite"
+      >
         <div className="mb-4">
-          <CheckCircle2 className="w-16 h-16 text-[#C08A2D] mx-auto" />
+          <CheckCircle2 className="mx-auto h-16 w-16 text-[#C08A2D]" />
         </div>
-        <h3 className="font-display text-3xl font-semibold text-[#EDE6D6] mb-2">
+        <h3 className="mb-2 font-display text-3xl font-semibold text-[#EDE6D6]">
           Bearing confirmed!
         </h3>
-        <p className="text-[#93A6BC] mb-6">
-          We received your details and will chart the best course for you within 24 hours.
-          Check your email for next steps.
+        <p className="mb-6 text-[#93A6BC]">
+          We&apos;ve got your details and will chart the best course for you within 24 hours.
         </p>
+
+        <div className="mb-6 rounded-xl border border-[#EDE6D6]/10 bg-[#0C1826]/40 p-5 text-left">
+          <p className="mb-3 text-center text-sm text-[#93A6BC]">
+            Want a faster reply? Send it straight through — your details are already filled in.
+          </p>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <a
+              href={whatsappLink(`I just submitted the contact form.\n\n${summary}`)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex min-h-11 items-center justify-center gap-2 rounded-lg border border-[#EDE6D6]/20 px-4 py-3 text-sm font-medium text-[#EDE6D6] transition-all duration-300 hover:-translate-y-0.5 hover:border-brass/60 hover:text-brass-soft"
+            >
+              <MessageCircle className="h-4 w-4" />
+              Send on WhatsApp
+            </a>
+            <a
+              href={emailLink('French classes — enquiry', summary)}
+              className="flex min-h-11 items-center justify-center gap-2 rounded-lg border border-[#EDE6D6]/20 px-4 py-3 text-sm font-medium text-[#EDE6D6] transition-all duration-300 hover:-translate-y-0.5 hover:border-brass/60 hover:text-brass-soft"
+            >
+              <Mail className="h-4 w-4" />
+              Send by email
+            </a>
+          </div>
+        </div>
+
         <p className="text-sm text-[#93A6BC]">
           In the meantime, explore our{' '}
           <Link href="/courses" className="underline hover:text-[#EDE6D6]">

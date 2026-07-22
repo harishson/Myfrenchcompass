@@ -24,9 +24,16 @@ const initial: Persisted = {
 
 const LEVEL_TITLES = ["Explorer", "Navigator", "Voyager", "Pathfinder", "Cartographer", "Captain"];
 
-const todayStr = () => new Date().toISOString().slice(0, 10);
+/* Local-date keys, deliberately NOT toISOString(). toISOString() is UTC, so in
+   IST (UTC+5:30) a session between midnight and 05:30 would be filed under the
+   previous day — the streak would roll over mid-morning and a genuine
+   consecutive day could read as a break. */
+const dateKey = (d: Date) =>
+  `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+
+const todayStr = () => dateKey(new Date());
 const yesterdayStr = () => {
-  const d = new Date(); d.setDate(d.getDate() - 1); return d.toISOString().slice(0, 10);
+  const d = new Date(); d.setDate(d.getDate() - 1); return dateKey(d);
 };
 
 export type Badge = {
