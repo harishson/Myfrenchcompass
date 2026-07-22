@@ -1,30 +1,30 @@
 'use client'
 
 /* =========================================================================
-   FranceCompassHero — the compass reimagined as a living map of France.
+   FranceCompassHero — the compass as the instrument, ringed by a quiet
+   constellation of French motifs.
 
    Layers (back to front), each parallaxing at its own rate so the scene
    reads as depth rather than as a flat illustration that wobbles:
 
-     0. Ambient azimuth glow + atmospheric dust
-     1. A stylised coastline of l'Hexagone + Corsica, with a faint
-        lat/long grid — the compass's map, not just its backdrop.
-     2. A plotted "expedition" route arriving from afar, passing near
-        Lyon and Marseille waypoints, resting at a glowing Paris marker
-        with a minimal line-art Eiffel Tower beside it.
-     3. The compass rose itself: rotating brass instrument rings, an
-        engraved rim inscription, a domed glass specular, and — where true
-        north is traditionally marked on a nautical compass rose — a
-        fleur-de-lis, doing double duty as a French emblem. The needle
-        settles toward Paris on load, then drifts gently with the pointer.
-     4. Drifting French words and accented letters, as if surfacing from
-        the map. Foreground layer, so they move most.
+     0. Ambient azimuth/brass glow + atmospheric dust
+     1. Engraved concentric guide rings and tick marks — the vintage
+        instrument plate the motifs are set into
+     2. A ring of minimalist French line-art (Eiffel Tower, Arc de Triomphe,
+        Notre-Dame, lavender, croissant, baguette, grapes, street lamp,
+        café, balloon), each breathing on its own slow cycle
+     3. The compass rose: rotating brass instrument rings, an engraved rim
+        inscription, a domed glass specular, and a fleur-de-lis at true
+        north doing double duty as a French emblem. The needle settles
+        toward Paris on load, then drifts with the pointer.
+     4. Drifting French words and accented letters in the corners
 
-   Parallax deltas are deliberately small (max ~14px) per the house motion
-   rules; the goal is depth you feel rather than movement you notice.
+   Design constraint: the compass is the focal point. Everything in layer 2
+   sits at 18–42% opacity on a ring well clear of the rose, so it reads as
+   atmosphere at a glance and rewards a second look. Parallax deltas stay
+   under ~14px per the house motion rules.
 
-   Fully static (no rotation / route / needle / drift motion) under
-   prefers-reduced-motion, per the site's global motion policy.
+   Fully static under prefers-reduced-motion.
    ========================================================================= */
 
 import { useEffect, useRef } from 'react'
@@ -37,30 +37,97 @@ import {
   animate,
 } from 'motion/react'
 import { springs } from '@/lib/animations'
+import {
+  EiffelTower,
+  ArcDeTriomphe,
+  NotreDame,
+  HotAirBalloon,
+  LavenderSprig,
+  Croissant,
+  Baguette,
+  WineGrapes,
+  WineGlass,
+  Bicycle,
+  StreetLamp,
+  CafeCup,
+  FleurOutline,
+} from '@/components/hero/FrenchIcons'
 
-const FRANCE_D =
-  'M195,68 C230,66 258,78 268,92 C283,102 288,122 283,142 ' +
-  'C300,158 306,182 296,206 C308,224 300,246 278,258 ' +
-  'C284,272 268,280 250,270 C246,288 226,304 202,310 ' +
-  'C182,315 166,304 176,288 C158,298 138,293 132,273 ' +
-  'C118,265 104,249 100,227 C82,215 66,193 64,169 ' +
-  'C62,147 78,131 96,125 C92,109 104,93 122,87 ' +
-  'C118,73 138,65 158,67 C170,61 184,65 195,68 Z'
+/* --- l'Hexagone ------------------------------------------------------------
+   A large, very faint France sits behind the whole scene as the chart the
+   compass is laid on. Drawn in a 0–100 box and scaled at render.
 
-const ROUTE_D =
-  'M378,392 C330,352 292,306 262,266 C232,228 216,196 205,152 C200,140 198,134 198,130'
+   The previous attempt at this used a loose bézier blob that read as a cloud
+   rather than a country; this traces the actual silhouette — the Brittany
+   peninsula west, the Cotentin nub, the Alpine bulge east, the flat Pyrenean
+   base — because at any opacity a wrong shape still reads as wrong.
+   -------------------------------------------------------------------------- */
+const HEXAGONE_D =
+  'M47,3 C53,4 57,6 61,9 C66,12 71,16 76,20 C79,25 79,31 79,37 ' +
+  'C82,39 85,42 85,46 C84,51 80,54 77,58 C80,62 83,66 83,70 ' +
+  'C78,72 72,73 67,74 C61,76 57,77 54,79 C51,81 49,83 47,85 ' +
+  'C41,85 34,83 27,80 C23,76 21,71 21,66 C17,61 14,56 11,52 ' +
+  'C7,49 3,47 2,45 C5,42 8,41 11,40 C17,36 23,33 27,30 ' +
+  'C25,27 23,24 23,21 C27,20 31,20 34,21 C37,17 40,14 42,11 ' +
+  'C43,8 45,5 47,3 Z'
 
-const CITIES = {
-  paris: { x: 198, y: 130 },
-  lyon: { x: 232, y: 196 },
-  marseille: { x: 258, y: 244 },
+/* --- The constellation -----------------------------------------------------
+   Placed on a ring around the rose (centre 200,200). Radius is varied per
+   motif so the arrangement reads as a hand-drawn constellation rather than a
+   clock face. `scale` compensates for how much visual weight each silhouette
+   carries — the Tower is tall and thin, the balloon is round and heavy.
+   -------------------------------------------------------------------------- */
+type Motif = {
+  key: string
+  Icon: () => React.JSX.Element
+  /** degrees clockwise from top */
+  angle: number
+  radius: number
+  scale: number
+  /** seconds, offsets the breathing cycle */
+  delay: number
+  /** hidden on the smallest screens, where the ring gets tight */
+  dense?: boolean
 }
 
+/* Thirteen motifs at even ~27.7° intervals, so the ring reads as a complete
+   constellation rather than a few survivors clustered on one side. Radius and
+   scale vary per motif: the Tower is the anchor and sits largest at true
+   north, directly above the rose's own fleur-de-lis. At r≈165 the arc between
+   neighbours is ~80px against a ~36px glyph, so nothing can collide. */
+const MOTIFS: Motif[] = [
+  { key: 'eiffel', Icon: EiffelTower, angle: 0, radius: 168, scale: 1.3, delay: 0 },
+  { key: 'balloon', Icon: HotAirBalloon, angle: 28, radius: 177, scale: 0.95, delay: 2.9, dense: true },
+  { key: 'arc', Icon: ArcDeTriomphe, angle: 56, radius: 162, scale: 1.1, delay: 1.4 },
+  { key: 'wineglass', Icon: WineGlass, angle: 84, radius: 174, scale: 0.9, delay: 5.6, dense: true },
+  { key: 'grapes', Icon: WineGrapes, angle: 111, radius: 160, scale: 0.85, delay: 4.1, dense: true },
+  { key: 'cafe', Icon: CafeCup, angle: 139, radius: 172, scale: 0.9, delay: 5.3 },
+  { key: 'croissant', Icon: Croissant, angle: 166, radius: 163, scale: 0.95, delay: 1.9 },
+  { key: 'bicycle', Icon: Bicycle, angle: 194, radius: 173, scale: 1.0, delay: 7.1, dense: true },
+  { key: 'baguette', Icon: Baguette, angle: 222, radius: 164, scale: 0.95, delay: 3.4, dense: true },
+  { key: 'notredame', Icon: NotreDame, angle: 250, radius: 175, scale: 1.15, delay: 0.7 },
+  { key: 'lavender', Icon: LavenderSprig, angle: 277, radius: 161, scale: 0.95, delay: 4.8 },
+  { key: 'lamp', Icon: StreetLamp, angle: 305, radius: 174, scale: 0.9, delay: 6.2, dense: true },
+  { key: 'fleur', Icon: FleurOutline, angle: 333, radius: 163, scale: 0.85, delay: 3.9 },
+]
+
+/** Polar → cartesian, angle measured clockwise from twelve o'clock. */
+function place(angle: number, radius: number) {
+  const rad = ((angle - 90) * Math.PI) / 180
+  return {
+    x: 200 + radius * Math.cos(rad),
+    y: 200 + radius * Math.sin(rad),
+  }
+}
+
+/* Star nodes sit at each motif, and hairlines chain them together — this is
+   what turns a scatter of icons into something that reads as a chart. Chords
+   are drawn between *neighbours only*, so the web never crosses the compass. */
+const NODES = MOTIFS.map((m) => place(m.angle, m.radius))
+
 /* --- Foreground drift ------------------------------------------------------
-   Positions are hand-placed to sit in the negative space around the compass
-   and clear of the Paris/Lyon labels. `sm` items are hidden on narrow screens
-   where the scene is too small to carry them. Values are static (never
-   Math.random) so server and client markup agree.
+   Words live in the corners, which the motif ring leaves empty. Values are
+   static (never Math.random) so server and client markup agree.
    -------------------------------------------------------------------------- */
 const FLOATING_WORDS: {
   text: string
@@ -70,21 +137,22 @@ const FLOATING_WORDS: {
   size: string
   smOnly?: boolean
 }[] = [
-  { text: 'Bonjour', top: '8%', left: '6%', delay: 0, size: 'text-[13px]' },
-  { text: 'Merci', top: '20%', left: '78%', delay: 1.6, size: 'text-[12px]' },
-  { text: 'Salut', top: '68%', left: '4%', delay: 3.1, size: 'text-[12px]' },
-  { text: 'Oui', top: '86%', left: '30%', delay: 2.2, size: 'text-[11px]', smOnly: true },
-  { text: 'Où', top: '40%', left: '90%', delay: 4.4, size: 'text-[11px]', smOnly: true },
-  { text: 'Pourquoi', top: '90%', left: '58%', delay: 5.2, size: 'text-[12px]', smOnly: true },
-  { text: 'Non', top: '54%', left: '86%', delay: 6.1, size: 'text-[11px]', smOnly: true },
-  { text: 'Au revoir', top: '3%', left: '52%', delay: 7.0, size: 'text-[12px]', smOnly: true },
+  // Set on the diagonals, inset from the accented letters that hold the
+  // corners, so the two typographic layers never collide.
+  { text: 'Bonjour', top: '15%', left: '5%', delay: 0, size: 'text-[13px]' },
+  { text: 'Merci', top: '21%', left: '79%', delay: 2.4, size: 'text-[12px]' },
+  { text: 'Salut', top: '78%', left: '4%', delay: 4.6, size: 'text-[12px]' },
+  { text: 'Pourquoi', top: '83%', left: '70%', delay: 6.4, size: 'text-[12px]', smOnly: true },
 ]
 
+/* The four corners the motif ring can never reach — accented letters claim
+   them, so the composition reads square-to-corner instead of a circle adrift
+   in a box. */
 const ACCENT_LETTERS = [
-  { char: 'É', top: '30%', left: '2%', delay: 0.8 },
-  { char: 'Ç', top: '76%', left: '82%', delay: 2.9 },
-  { char: 'Ô', top: '12%', left: '88%', delay: 4.9 },
-  { char: 'Œ', top: '60%', left: '14%', delay: 6.6 },
+  { char: 'É', top: '2%', left: '3%', delay: 1.1 },
+  { char: 'À', top: '4%', left: '91%', delay: 3.6 },
+  { char: 'Ç', top: '87%', left: '92%', delay: 5.9 },
+  { char: 'Ô', top: '88%', left: '3%', delay: 7.7 },
 ]
 
 /** Fixed dust field — deterministic so SSR and hydration match. */
@@ -100,22 +168,6 @@ const PARTICLES = [
   { cx: 204, cy: 22, r: 0.9, dur: 12.5, delay: 5.2 },
   { cx: 84, cy: 160, r: 1.0, dur: 11, delay: 3.7 },
 ]
-
-function EiffelTower({ x, y }: { x: number; y: number }) {
-  return (
-    <g
-      transform={`translate(${x}, ${y})`}
-      stroke="var(--color-brass)"
-      strokeWidth="1.1"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      fill="none"
-      opacity="0.85"
-    >
-      <path d="M0,0 L-6,26 M0,0 L6,26 M-4,17 L4,17 M-2.4,9 L2.4,9 M0,-5 L0,0 M-1,-5 L1,-5" />
-    </g>
-  )
-}
 
 function FleurDeLis() {
   return (
@@ -198,7 +250,6 @@ function CompassRoseCore({ reduce }: { reduce: boolean }) {
         <path id="fch-rim" d="M100,100 m-84,0 a84,84 0 1,1 168,0 a84,84 0 1,1 -168,0" />
       </defs>
 
-      {/* dished plate under everything */}
       <circle cx="100" cy="100" r="92" fill="url(#fch-dish)" />
 
       {/* rotating instrument ring */}
@@ -269,13 +320,7 @@ function CompassRoseCore({ reduce }: { reduce: boolean }) {
       </motion.g>
 
       {/* glass dome — drawn last so it sits over the instrument, never under */}
-      <circle
-        cx="100"
-        cy="100"
-        r="88"
-        fill="url(#fch-glass)"
-        className="pointer-events-none"
-      />
+      <circle cx="100" cy="100" r="88" fill="url(#fch-glass)" className="pointer-events-none" />
     </svg>
   )
 }
@@ -290,12 +335,14 @@ export function FranceCompassHero() {
   const sx = useSpring(px, springs.pointer)
   const sy = useSpring(py, springs.pointer)
 
-  // One transform pair per depth. Background barely moves; foreground moves
-  // most. Declared at the top level so hook order is always stable.
-  const mapX = useTransform(sx, [-0.5, 0.5], [6, -6])
-  const mapY = useTransform(sy, [-0.5, 0.5], [6, -6])
-  const roseX = useTransform(sx, [-0.5, 0.5], [-9, 9])
-  const roseY = useTransform(sy, [-0.5, 0.5], [-9, 9])
+  // One transform pair per depth. Plate barely moves; motifs move more than
+  // the rose so the ring feels nearer the viewer than the instrument.
+  const plateX = useTransform(sx, [-0.5, 0.5], [5, -5])
+  const plateY = useTransform(sy, [-0.5, 0.5], [5, -5])
+  const motifX = useTransform(sx, [-0.5, 0.5], [-12, 12])
+  const motifY = useTransform(sy, [-0.5, 0.5], [-12, 12])
+  const roseX = useTransform(sx, [-0.5, 0.5], [-7, 7])
+  const roseY = useTransform(sy, [-0.5, 0.5], [-7, 7])
   const wordX = useTransform(sx, [-0.5, 0.5], [-14, 14])
   const wordY = useTransform(sy, [-0.5, 0.5], [-14, 14])
 
@@ -329,33 +376,55 @@ export function FranceCompassHero() {
       />
       <div
         aria-hidden
-        className="absolute inset-[18%] rounded-full blur-3xl"
-        style={{ background: 'radial-gradient(circle, rgba(192,138,45,.13), transparent 66%)' }}
+        className="absolute inset-[16%] rounded-full blur-3xl"
+        style={{ background: 'radial-gradient(circle, rgba(192,138,45,.14), transparent 66%)' }}
       />
 
-      {/* ---- 1 + 2. the map, route and waypoints -------------------------- */}
+      {/* ---- 1. engraved instrument plate --------------------------------- */}
       <motion.svg
         viewBox="0 0 400 400"
         className="absolute inset-0 h-full w-full"
-        style={reduce ? undefined : { x: mapX, y: mapY }}
-        role="img"
-        aria-label="An illustrated map of France charting a route to Paris, via Lyon and Marseille"
+        style={reduce ? undefined : { x: plateX, y: plateY }}
+        aria-hidden
       >
-        <defs>
-          <radialGradient id="fch-fill" cx="50%" cy="42%" r="60%">
-            <stop offset="0%" stopColor="var(--color-brass)" stopOpacity="0.10" />
-            <stop offset="100%" stopColor="var(--color-brass)" stopOpacity="0.02" />
-          </radialGradient>
-        </defs>
+        {/* l'Hexagone — the chart the instrument is laid on. Scaled to 296px
+            and centred, so it reaches past the rose and frames it rather than
+            hiding underneath. Kept at 9% so it never competes. */}
+        <g transform="translate(52, 52) scale(2.96)">
+          <path
+            d={HEXAGONE_D}
+            fill="var(--color-brass)"
+            fillOpacity="0.028"
+            stroke="var(--color-brass)"
+            strokeOpacity="0.13"
+            strokeWidth="0.42"
+            strokeLinejoin="round"
+          />
+        </g>
 
-        {/* faint lat/long grid inside the frame */}
-        <g stroke="var(--color-foam)" strokeOpacity="0.05">
-          {[80, 140, 200, 260, 320].map((v) => (
-            <g key={v}>
-              <line x1={v} y1="30" x2={v} y2="370" />
-              <line x1="30" y1={v} x2="370" y2={v} />
-            </g>
-          ))}
+        <g fill="none" stroke="var(--color-brass)">
+          <circle cx="200" cy="200" r="190" strokeOpacity="0.07" />
+          <circle cx="200" cy="200" r="132" strokeOpacity="0.06" strokeDasharray="1 7" />
+        </g>
+
+        {/* graduation ticks on the outer ring — instrument, not decoration */}
+        <g stroke="var(--color-brass)" strokeOpacity="0.16">
+          {Array.from({ length: 60 }).map((_, i) => {
+            const a = (i * 6 * Math.PI) / 180
+            const major = i % 5 === 0
+            const r1 = major ? 179 : 183
+            const round = (n: number) => Math.round(n * 100) / 100
+            return (
+              <line
+                key={i}
+                x1={round(200 + r1 * Math.cos(a))}
+                y1={round(200 + r1 * Math.sin(a))}
+                x2={round(200 + 190 * Math.cos(a))}
+                y2={round(200 + 190 * Math.sin(a))}
+                strokeWidth={major ? 1.2 : 0.5}
+              />
+            )
+          })}
         </g>
 
         {/* atmospheric dust — slow vertical drift, barely there */}
@@ -378,61 +447,82 @@ export function FranceCompassHero() {
             ))}
           </g>
         )}
+      </motion.svg>
 
-        {/* France — l'Hexagone */}
-        <path d={FRANCE_D} fill="url(#fch-fill)" stroke="var(--color-brass)" strokeOpacity="0.45" strokeWidth="1.5" strokeLinejoin="round" />
-        {/* Corsica */}
-        <ellipse cx="320" cy="352" rx="10" ry="16" fill="none" stroke="var(--color-brass)" strokeOpacity="0.4" strokeWidth="1.5" transform="rotate(18 320 352)" />
+      {/* ---- 2. the French constellation ---------------------------------- */}
+      <motion.svg
+        viewBox="0 0 400 400"
+        className="absolute inset-0 h-full w-full"
+        style={reduce ? undefined : { x: motifX, y: motifY }}
+        aria-hidden
+      >
+        {/* constellation web — chords between adjacent nodes */}
+        <g stroke="var(--color-brass)" strokeOpacity="0.13" strokeWidth="0.7">
+          {NODES.map((n, i) => {
+            const next = NODES[(i + 1) % NODES.length]
+            return (
+              <line key={i} x1={n.x.toFixed(2)} y1={n.y.toFixed(2)} x2={next.x.toFixed(2)} y2={next.y.toFixed(2)} />
+            )
+          })}
+        </g>
 
-        {/* the plotted route (brass dashed, gently flowing) */}
-        <path d={ROUTE_D} fill="none" stroke="var(--color-brass)" strokeOpacity="0.20" strokeWidth="2" />
-        <motion.path
-          d={ROUTE_D}
+        {/* star nodes */}
+        <g fill="var(--color-brass-soft)">
+          {NODES.map((n, i) => (
+            <motion.circle
+              key={i}
+              cx={n.x.toFixed(2)}
+              cy={n.y.toFixed(2)}
+              r="1.5"
+              initial={reduce ? { opacity: 0.4 } : { opacity: 0.2 }}
+              animate={reduce ? { opacity: 0.4 } : { opacity: [0.2, 0.65, 0.2] }}
+              transition={
+                reduce
+                  ? undefined
+                  : { duration: 6, delay: i * 0.4, repeat: Infinity, ease: 'easeInOut' }
+              }
+            />
+          ))}
+        </g>
+
+        <g
           fill="none"
           stroke="var(--color-brass-soft)"
-          strokeWidth="2"
+          strokeWidth="1.3"
           strokeLinecap="round"
-          strokeDasharray="3 8"
-          animate={reduce ? {} : { strokeDashoffset: [0, -22] }}
-          transition={{ duration: 1.6, ease: 'linear', repeat: Infinity }}
-        />
-        {!reduce && (
-          <circle r="3.5" fill="var(--color-azimuth)">
-            <animateMotion dur="5.5s" repeatCount="indefinite" path={ROUTE_D} />
-          </circle>
-        )}
-
-        {/* secondary waypoints — Lyon, Marseille */}
-        <line x1={CITIES.lyon.x} y1={CITIES.lyon.y} x2={CITIES.paris.x} y2={CITIES.paris.y} stroke="var(--color-brass)" strokeOpacity="0.15" strokeWidth="1" strokeDasharray="1 4" />
-        <line x1={CITIES.marseille.x} y1={CITIES.marseille.y} x2={CITIES.lyon.x} y2={CITIES.lyon.y} stroke="var(--color-brass)" strokeOpacity="0.15" strokeWidth="1" strokeDasharray="1 4" />
-        <circle cx={CITIES.lyon.x} cy={CITIES.lyon.y} r="3" fill="var(--color-brass)" fillOpacity="0.8" />
-        <circle cx={CITIES.lyon.x} cy={CITIES.lyon.y} r="6" fill="none" stroke="var(--color-brass)" strokeOpacity="0.3" strokeWidth="1" />
-        <text x={CITIES.lyon.x + 8} y={CITIES.lyon.y + 3} fontFamily="var(--font-mono)" fontSize="7" letterSpacing="1.5" fill="var(--color-foam-dim)" opacity="0.7">LYON</text>
-        <circle cx={CITIES.marseille.x} cy={CITIES.marseille.y} r="3" fill="var(--color-brass)" fillOpacity="0.8" />
-        <circle cx={CITIES.marseille.x} cy={CITIES.marseille.y} r="6" fill="none" stroke="var(--color-brass)" strokeOpacity="0.3" strokeWidth="1" />
-        <text x={CITIES.marseille.x + 8} y={CITIES.marseille.y + 3} fontFamily="var(--font-mono)" fontSize="7" letterSpacing="1.5" fill="var(--color-foam-dim)" opacity="0.7">MARSEILLE</text>
-
-        <EiffelTower x={CITIES.paris.x + 30} y={CITIES.paris.y + 6} />
-
-        {/* Paris waypoint (destination = azimuth accent) */}
-        <g>
-          {!reduce && (
-            <motion.circle
-              cx={CITIES.paris.x}
-              cy={CITIES.paris.y}
-              r="8"
-              fill="none"
-              stroke="var(--color-azimuth)"
-              strokeWidth="2"
-              animate={{ r: [8, 18], opacity: [0.7, 0] }}
-              transition={{ duration: 2.2, ease: 'easeOut', repeat: Infinity }}
-            />
-          )}
-          <circle cx={CITIES.paris.x} cy={CITIES.paris.y} r="5.5" fill="var(--color-azimuth)" />
-          <circle cx={CITIES.paris.x} cy={CITIES.paris.y} r="9" fill="none" stroke="var(--color-foam)" strokeOpacity="0.35" strokeWidth="1" />
-          <text x={CITIES.paris.x - 14} y={CITIES.paris.y - 12} fontFamily="var(--font-mono)" fontSize="10" letterSpacing="2" fill="var(--color-foam)" opacity="0.9" textAnchor="end">
-            PARIS
-          </text>
+          strokeLinejoin="round"
+        >
+          {MOTIFS.map(({ key, Icon, angle, radius, scale, delay, dense }) => {
+            const { x, y } = place(angle, radius)
+            return (
+              // IMPORTANT: placement lives on this static <g>, and the animated
+              // <motion.g> is nested *inside* it. Motion writes a CSS transform,
+              // which wholly overrides an SVG `transform` attribute on the same
+              // element — putting both on one node silently collapsed every
+              // motif onto the local origin and stacked them in a corner.
+              <g
+                key={key}
+                className={dense ? 'hidden sm:block' : undefined}
+                transform={`translate(${x.toFixed(2)}, ${y.toFixed(2)}) scale(${scale}) translate(-20, -20)`}
+              >
+                <motion.g
+                  initial={reduce ? { opacity: 0.42 } : { opacity: 0 }}
+                  animate={
+                    reduce
+                      ? { opacity: 0.42 }
+                      : { opacity: [0.26, 0.58, 0.26], y: [0, -3, 0] }
+                  }
+                  transition={
+                    reduce
+                      ? undefined
+                      : { duration: 9, delay, repeat: Infinity, ease: 'easeInOut' }
+                  }
+                >
+                  <Icon />
+                </motion.g>
+              </g>
+            )
+          })}
         </g>
       </motion.svg>
 
@@ -445,9 +535,8 @@ export function FranceCompassHero() {
       </motion.div>
 
       {/* ---- 4. drifting French ------------------------------------------
-          Decorative only: the scene already has an accessible label on the
-          map SVG, so this whole layer is hidden from assistive tech rather
-          than read out as loose words.
+          Decorative only: the compass carries the accessible label, so this
+          layer is hidden rather than read out as loose words.
           ------------------------------------------------------------------ */}
       {!reduce && (
         <motion.div
@@ -459,14 +548,14 @@ export function FranceCompassHero() {
             <motion.span
               key={w.text}
               className={[
-                'absolute font-display italic tracking-wide text-brass-soft/45',
+                'absolute font-display italic tracking-wide text-brass-soft/40',
                 w.size,
                 w.smOnly ? 'hidden sm:block' : '',
               ].join(' ')}
               style={{ top: w.top, left: w.left }}
-              animate={{ opacity: [0, 0.85, 0.85, 0], y: [8, -6, -10, -20] }}
+              animate={{ opacity: [0, 0.8, 0.8, 0], y: [8, -6, -10, -20] }}
               transition={{
-                duration: 11,
+                duration: 12,
                 delay: w.delay,
                 repeat: Infinity,
                 ease: 'easeInOut',
@@ -480,11 +569,11 @@ export function FranceCompassHero() {
           {ACCENT_LETTERS.map((l) => (
             <motion.span
               key={l.char}
-              className="absolute hidden font-display text-[22px] text-brass/25 sm:block"
+              className="absolute font-display text-[26px] text-brass/30 sm:text-[32px]"
               style={{ top: l.top, left: l.left }}
-              animate={{ opacity: [0, 0.7, 0], y: [6, -10, -18], rotate: [-4, 3, -2] }}
+              animate={{ opacity: [0, 0.75, 0], y: [6, -10, -18], rotate: [-4, 3, -2] }}
               transition={{
-                duration: 13,
+                duration: 14,
                 delay: l.delay,
                 repeat: Infinity,
                 ease: 'easeInOut',

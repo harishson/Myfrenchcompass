@@ -2,9 +2,9 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { motion } from 'motion/react'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
+import { AlphabetShowcase } from '@/components/learn/AlphabetShowcase'
 import {
   ChapterNav,
   ChapterHeading,
@@ -83,20 +83,16 @@ export function AlphabetExperience() {
             </a>
           </div>
 
+          {/* Was a static french-alphabet-chart.png. Replaced with live type so
+              the letters are selectable, legible at any size, and rendered in
+              the site's own palette instead of a foreign screenshot. */}
           <motion.div
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6 }}
-            className="relative mx-auto w-full max-w-sm overflow-hidden rounded-2xl border border-foam/10 shadow-2xl"
+            className="relative mx-auto w-full max-w-md"
           >
-            <Image
-              src="/french-alphabet-chart.png"
-              alt="French alphabet chart showing each letter with its phonetic pronunciation and name"
-              width={1000}
-              height={1400}
-              className="h-auto w-full"
-              priority
-            />
+            <AlphabetShowcase />
           </motion.div>
         </div>
       </section>

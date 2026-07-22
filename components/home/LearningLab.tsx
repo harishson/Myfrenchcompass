@@ -1,17 +1,22 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import { ArrowRight, Sparkles } from 'lucide-react'
 import { Reveal } from '@/components/Reveal'
+import { AlphabetMosaic } from '@/components/learn/AlphabetShowcase'
+import { TenseDial } from '@/components/learn/TenseDial'
 
+/**
+ * Both banners are live components rather than raster art. The alphabet card
+ * used to ship a screenshot of a chart (foreign palette, unreadable at card
+ * size); the verbs card a flag badge. Rendering them means one visual system,
+ * no image payload, and type that stays crisp at any density.
+ */
 const CARDS = [
   {
     href: '/learn/alphabet',
     kicker: 'Interactive · 26 letters',
     title: 'Master the French Alphabet',
     desc: "Sounds, names, accents and the trickiest letters — with flashcards, quizzes and pronunciation tips that make l'alphabet stick.",
-    image: '/french-alphabet-chart.png',
-    imageAlt: 'The French alphabet chart with phonetic pronunciations for each letter',
-    tone: 'sea' as const,
+    Banner: AlphabetMosaic,
     stats: ['6 vowels', '20 consonants', '7 tricky letters'],
   },
   {
@@ -19,9 +24,7 @@ const CARDS = [
     kicker: 'Interactive · Every tense',
     title: 'Master the French Verb Tenses',
     desc: 'Indicative, subjunctive, conditional, imperative and impersonal — organized into clear chapters with timelines, tables and knowledge checks.',
-    image: '/french-verbs-badge.png',
-    imageAlt: 'French Verbs badge with two crossed French flags',
-    tone: 'verdigris' as const,
+    Banner: TenseDial,
     stats: ['5 moods', '20+ tenses', 'Conjugation drills'],
   },
 ]
@@ -52,26 +55,9 @@ export function LearningLab() {
                 href={card.href}
                 className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-ink-text/10 bg-card shadow-[var(--shadow-card)] transition-all duration-300 hover:-translate-y-1 hover:border-brass/40 hover:shadow-[var(--shadow-lift)] focus-visible:-translate-y-1"
               >
-                {/* Image banner */}
-                <div
-                  className={
-                    'relative flex h-56 items-center justify-center overflow-hidden sm:h-64 ' +
-                    (card.tone === 'sea'
-                      ? 'bg-gradient-to-br from-[#1b2f5e] to-[#3a1f4f]'
-                      : 'bg-[#0f7a63]')
-                  }
-                >
-                  <Image
-                    src={card.image || '/placeholder.svg'}
-                    alt={card.imageAlt}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className={
-                      'transition-transform duration-500 group-hover:scale-105 ' +
-                      (card.tone === 'sea' ? 'object-cover' : 'object-contain p-6')
-                    }
-                    priority={i === 0}
-                  />
+                {/* Live banner */}
+                <div className="relative h-56 overflow-hidden border-b border-foam/10 sm:h-64">
+                  <card.Banner />
                 </div>
 
                 {/* Body */}
