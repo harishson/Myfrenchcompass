@@ -6,7 +6,7 @@ import { organizationSchema } from '@/lib/seo'
 import './globals.css'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://updated-french-compass.vercel.app'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://frenchcompass.com'),
   title: 'French Compass — Fluent French, Clear Path',
   description: 'Live 90-minute French classes (A1–C2) with C1-certified instructors. TEF/TCF Canada exam prep, DALF masterclasses, and interactive lessons. Plot your course to fluency.',
   generator: 'v0.app',

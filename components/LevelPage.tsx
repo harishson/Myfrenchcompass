@@ -28,7 +28,7 @@ export function LevelPage({ level }: { level: LevelData }) {
     '@type': 'Course',
     name: `${level.code} — ${level.name}`,
     description: level.promise,
-    provider: { '@type': 'Organization', name: 'French Compass', sameAs: 'https://updated-french-compass.vercel.app' },
+    provider: { '@type': 'Organization', name: 'French Compass', sameAs: process.env.NEXT_PUBLIC_SITE_URL || 'https://frenchcompass.com' },
     educationalLevel: level.cefr,
     offers: { '@type': 'Offer', price: level.priceINR, priceCurrency: 'INR', category: 'Paid' },
   }

@@ -133,7 +133,7 @@ export default async function UpcomingBatchesPage({
     '@context': 'https://schema.org',
     '@type': 'Course',
     name: b.courseName,
-    provider: { '@type': 'Organization', name: 'French Compass', sameAs: 'https://updated-french-compass.vercel.app' },
+    provider: { '@type': 'Organization', name: 'French Compass', sameAs: process.env.NEXT_PUBLIC_SITE_URL || 'https://frenchcompass.com' },
     hasCourseInstance: {
       '@type': 'CourseInstance',
       courseMode: 'online',
