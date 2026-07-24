@@ -27,6 +27,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# ui-ux-pro-max skill install (~2.8MB of vendored data).
-# Regenerate with: npm i -g ui-ux-pro-max-cli && uipro init --ai claude
-/.claude/skills/
+# Local tooling & working notes (not part of the application)
+/.claude/
+/CLAUDE.md
