@@ -81,24 +81,48 @@ export function ContactForm() {
         return
       }
 
-      // Submit to API
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(validation.data),
-      })
-
-      const result = await response.json()
-
-      if (!response.ok) {
-        setApiError(result.message || 'Failed to submit form. Please try again.')
+      // Honeypot — silently accept (and don't send) obvious bot submissions.
+      if (formData.company) {
+        setSubmittedSnapshot(formData)
+        setSubmitted(true)
         setIsSubmitting(false)
         return
       }
 
       // Keep a snapshot so the confirmation screen can offer a prefilled
-      // WhatsApp/email handoff (see the note on `submittedSnapshot`).
+      // WhatsApp/email handoff.
       setSubmittedSnapshot(formData)
+
+      // Deliver the enquiry by email via Web3Forms (free, no backend). The
+      // access key is a PUBLIC key (safe to expose) set in the env var below;
+      // Web3Forms mails every submission to the address that owns the key
+      // (myfrenchcompass@gmail.com). If the key isn't set yet, we still show the
+      // confirmation screen with its one-tap WhatsApp / email handoff, so an
+      // enquiry always has a real route in.
+      const WEB3FORMS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY
+      if (WEB3FORMS_KEY) {
+        try {
+          await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({
+              access_key: WEB3FORMS_KEY,
+              subject: `New enquiry — ${formData.firstName || 'Website'}${formData.level ? ` (${formData.level})` : ''}`,
+              from_name: 'French Compass website',
+              name: `${formData.firstName} ${formData.lastName}`.trim(),
+              email: formData.email,
+              phone: formData.phone,
+              interested_course: formData.level,
+              preferred_time: formData.timePreference,
+              message: formData.message || '(no message)',
+            }),
+          })
+        } catch (err) {
+          console.error('Web3Forms delivery error:', err)
+          // non-fatal — the confirmation handoff links still work
+        }
+      }
+
       setSubmitted(true)
       // NOTE: deliberately no auto-reset timer here. The old 4s timeout threw
       // the user back to an empty form mid-read, losing the confirmation and

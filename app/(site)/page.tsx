@@ -48,8 +48,10 @@ const OUTCOMES = [
   { fig: '4–6', label: 'students per live class' },
 ]
 
-const INSTRUCTORS = [
-  { name: 'Harish Santhanam', role: 'Founder · Expedition Lead', icon: <MaleTutorIcon />, bio: '8+ years of French immersion across France, Luxembourg and Switzerland. Turns grammar anxiety into genuine confidence.', focus: ['Conversation', 'Foundations'] },
+const INSTRUCTORS: {
+  name: string; role: string; icon: React.ReactNode; bio: string; focus: string[]; image?: string
+}[] = [
+  { name: 'Harish Santhanam', role: 'Founder · Expedition Lead', icon: <MaleTutorIcon />, image: '/instructors/harish.jpg', bio: '8+ years of French immersion across France, Luxembourg and Switzerland. Turns grammar anxiety into genuine confidence.', focus: ['Conversation', 'Foundations'] },
   { name: 'Samyukta', role: 'TEF / TCF Specialist', icon: <FemaleTutorIcon />, bio: '10 years teaching with an 88% pass rate. Her students consistently hit CLB 7+ on the first attempt.', focus: ['Immigration prep', 'Strategy'] },
   { name: 'Balaji Sankar', role: 'Cultural Immersion Guide', icon: <MaleTutorIcon />, bio: 'Based in France. Brings daily French, cultural nuance and real-world context to every lesson.', focus: ['Daily French', 'Culture'] },
 ]
@@ -273,8 +275,18 @@ export default function Home() {
             {INSTRUCTORS.map((p) => (
               <StaggerItem key={p.name}>
                 <article className="card-warm lift h-full overflow-hidden">
-                  <div className="relative flex h-40 items-center justify-center bg-gradient-to-br from-blue/[0.08] to-red/[0.06]">
-                    <div className="h-24 w-24 [&_svg]:h-full [&_svg]:w-full">{p.icon}</div>
+                  <div className="relative flex h-52 items-center justify-center overflow-hidden bg-gradient-to-br from-blue/[0.08] to-red/[0.06]">
+                    {p.image ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={p.image}
+                        alt={`${p.name}, ${p.role}`}
+                        loading="lazy"
+                        className="absolute inset-0 h-full w-full object-cover object-top"
+                      />
+                    ) : (
+                      <div className="h-24 w-24 [&_svg]:h-full [&_svg]:w-full">{p.icon}</div>
+                    )}
                   </div>
                   <div className="p-7">
                     <h3 className="font-display text-lg font-semibold text-ink-text">{p.name}</h3>
