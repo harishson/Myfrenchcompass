@@ -26,9 +26,10 @@ export function CountUp({ value, className, durationMs = 1400 }: CountUpProps) {
   const reduce = useReducedMotion()
   const ref = useRef<HTMLSpanElement>(null)
   const countable = COUNTABLE.test(value)
-  const [display, setDisplay] = useState(
-    reduce || !countable ? value : startValue(value),
-  )
+  // The REAL final value is the server-rendered default, so crawlers and the
+  // first paint never see "0+" (brief §4). The count-up animation, when it runs,
+  // starts from zero only once the element scrolls into view on the client.
+  const [display, setDisplay] = useState(value)
   const started = useRef(false)
 
   useEffect(() => {

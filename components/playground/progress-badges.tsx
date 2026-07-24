@@ -35,7 +35,7 @@ function ResetButton({ onReset }: { onReset: () => void }) {
       aria-label={
         armed
           ? "Confirm reset — this erases all progress"
-          : "Reset all playground progress"
+          : "Reset all learning progress"
       }
       className={cn(
         "inline-flex min-h-11 items-center gap-1.5 rounded-lg px-3 font-mono text-[11px] uppercase tracking-wide transition-colors",

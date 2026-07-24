@@ -62,7 +62,7 @@ export function VocabularyTrail() {
           transition={reduce ? { duration: 0 } : { duration: 0.5, ease: "easeInOut" }}
           aria-label="Flip card">
           {/* front (FR) */}
-          <span className="absolute inset-0 grid place-items-center rounded-2xl border border-brass/30 bg-[radial-gradient(circle_at_50%_30%,#182a3e,#0e1a29)] [backface-visibility:hidden]">
+          <span className="absolute inset-0 grid place-items-center rounded-2xl border border-brass/30 bg-[radial-gradient(circle_at_50%_30%,#0055A4,#003A72)] [backface-visibility:hidden]">
             <span className="text-center">
               <span className="block font-display text-4xl text-foam" lang="fr">{card.fr}</span>
               <span className="mt-2 block font-mono text-sm text-foam-dim">/{card.ipa}/</span>
@@ -72,7 +72,7 @@ export function VocabularyTrail() {
             </span>
           </span>
           {/* back (EN) */}
-          <span className="absolute inset-0 grid place-items-center rounded-2xl border border-azimuth/40 bg-[radial-gradient(circle_at_50%_30%,#16213a,#0e1626)] [backface-visibility:hidden] [transform:rotateY(180deg)]">
+          <span className="absolute inset-0 grid place-items-center rounded-2xl border border-azimuth/40 bg-[radial-gradient(circle_at_50%_30%,#003A72,#002E5C)] [backface-visibility:hidden] [transform:rotateY(180deg)]">
             <span className="text-center">
               <span className="block font-display text-4xl text-foam">{card.en}</span>
               <span className="mt-2 block text-sm text-foam-dim" lang="fr">{card.fr}</span>

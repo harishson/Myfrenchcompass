@@ -227,17 +227,17 @@ function CompassRoseCore({ reduce }: { reduce: boolean }) {
 
         {/* Bezelled brass rim: light catches the upper-left, falls off lower-right. */}
         <linearGradient id="fch-bezel" x1="0.15" y1="0" x2="0.85" y2="1">
-          <stop offset="0%" stopColor="#E8C68A" />
+          <stop offset="0%" stopColor="#FF7A70" />
           <stop offset="38%" stopColor="var(--color-brass)" />
-          <stop offset="62%" stopColor="#8A611C" />
+          <stop offset="62%" stopColor="#B71C10" />
           <stop offset="100%" stopColor="var(--color-brass-soft)" />
         </linearGradient>
 
         {/* Dished face — darker at the rim, so the plate reads as concave. */}
         <radialGradient id="fch-dish" cx="42%" cy="34%" r="72%">
-          <stop offset="0%" stopColor="#16283C" />
+          <stop offset="0%" stopColor="#0055A4" />
           <stop offset="70%" stopColor="var(--color-ink)" />
-          <stop offset="100%" stopColor="#050B12" />
+          <stop offset="100%" stopColor="#002E5C" />
         </radialGradient>
 
         {/* The glass dome's specular sweep. */}

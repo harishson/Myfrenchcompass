@@ -1,14 +1,12 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import Script from 'next/script'
-import { fraunces, GeistSans, GeistMono } from './fonts'
-import { SiteHeader } from '@/components/site-header'
-import { ContactDock } from '@/components/ContactDock'
-import { ScrollProgress } from '@/components/motion/ScrollProgress'
+import { displayFont, serifFont, bodyFont, monoFont } from './fonts'
 import { organizationSchema } from '@/lib/seo'
 import './globals.css'
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://updated-french-compass.vercel.app'),
   title: 'French Compass — Fluent French, Clear Path',
   description: 'Live 90-minute French classes (A1–C2) with C1-certified instructors. TEF/TCF Canada exam prep, DALF masterclasses, and interactive lessons. Plot your course to fluency.',
   generator: 'v0.app',
@@ -33,11 +31,15 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   colorScheme: 'light',
-  themeColor: '#0C1826',
+  themeColor: '#FFFFFF',
   width: 'device-width',
   initialScale: 1,
 }
 
+/* Root layout is intentionally minimal — just <html>/<body>, fonts and global
+   styles. The site chrome (header, footer dock, scroll progress) lives in
+   app/(site)/layout.tsx so the embedded Sanity Studio at /studio renders
+   WITHOUT the marketing header and footer. */
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -46,7 +48,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`bg-parchment ${fraunces.variable} ${GeistSans.variable} ${GeistMono.variable}`}
+      className={`bg-parchment ${displayFont.variable} ${serifFont.variable} ${bodyFont.variable} ${monoFont.variable}`}
       suppressHydrationWarning
     >
       <head>
@@ -57,18 +59,7 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased clip-x">
-        <a
-          href="#main"
-          className="sr-only rounded-lg bg-azimuth px-4 py-2 text-sm font-medium text-foam focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60]"
-        >
-          Skip to content
-        </a>
-        {/* Header and dock are DIRECT children of body — never inside a
-            transformed wrapper, which would break their fixed positioning. */}
-        <SiteHeader />
-        <ScrollProgress />
-        <main id="main">{children}</main>
-        <ContactDock />
+        {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

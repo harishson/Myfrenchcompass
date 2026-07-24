@@ -22,6 +22,7 @@ export const organizationSchema = {
   contactPoint: {
     '@type': 'ContactPoint',
     contactType: 'Customer Support',
+    email: 'myfrenchcompass@gmail.com',
     url: `${siteConfig.url}/contact`,
   },
   sameAs: [

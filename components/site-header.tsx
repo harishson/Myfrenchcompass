@@ -1,127 +1,129 @@
 "use client";
 
 /* =========================================================================
-   SiteHeader — the navbar fix.
+   SiteHeader — warm "Maison" redesign.
 
-   ROOT CAUSES this solves:
-   1. Transparent bar + light text over a LIGHT page section (Courses, top of
-      Playground) = invisible nav. FIX: the bar is only transparent when it is
-      knowingly over a dark hero (overHero) AND at the top; otherwise it shows a
-      solid, blurred ink background so the foam text is always readable.
-   2. backdrop-blur / fixed positioning silently breaking. FIX + REQUIREMENT:
-      render <SiteHeader/> as a DIRECT child of the root layout (app/layout.tsx),
-      NEVER inside a wrapper that has `transform`, `filter`, `perspective`,
-      `will-change`, or `contain` (a Framer-Motion page wrapper counts). A
-      transformed ancestor turns position:fixed into "fixed to that ancestor"
-      and clips the blur. If you must animate page transitions, wrap the PAGE
-      content, not the header.
+   - Transparent over the cream page at the top; frosts to cream + hairline +
+     soft shadow once scrolled. Espresso text reads on cream throughout, so the
+     bar never goes invisible.
+   - Courses opens a four-column mega-menu (Core Levels · Combination Tracks ·
+     Exam Preparation · Resources); accordion on mobile.
+   - Brand mark is a custom typographic seal — no compass graphic.
 
-   USAGE:
-     app/layout.tsx      → <SiteHeader overHero={false} />  (default, solid)
-     app/page.tsx (home) → render <SiteHeader overHero /> from the home tree,
-                            OR set a prop/flag; the home hero is dark & full-bleed.
+   Must stay a DIRECT child of the layout (never inside a transformed wrapper)
+   so position:fixed / backdrop-blur keep working.
    ========================================================================= */
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Compass, MessageCircle, ChevronDown, Menu, X, Mail } from "lucide-react";
+import { MessageCircle, ChevronDown, Menu, X, Mail, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { whatsappLink, emailLink, EMAIL, WHATSAPP_DISPLAY } from "@/lib/contact";
-
-const NAV = [
-  { label: "Home", href: "/" },
-  { label: "Courses", href: "/courses", children: [
-      { label: "A1 / A2 — Core levels", href: "/courses#core" },
-      { label: "B1 / B2 — Core levels", href: "/courses#core" },
-      { label: "TEF / TCF — Exam prep", href: "/courses#exam" },
-      { label: "DALF C1 / C2 — Masterclasses", href: "/courses#masterclass" },
-      { label: "Workshops & Conversation", href: "/courses#workshop" },
-    ] },
-  { label: "Playground", href: "/playground" },
-  { label: "About", href: "/about" },
-  { label: "Testimonials", href: "/testimonials" },
-  { label: "Contact", href: "/contact" },
-];
+import { PRIMARY_NAV, COURSES_MEGA } from "@/lib/nav";
 
 const WA = whatsappLink();
-const MAIL = emailLink('French classes — enquiry');
+const MAIL = emailLink("French classes — enquiry");
 
-export function SiteHeader({ overHero }: { overHero?: boolean } = {}) {
+function BrandMark() {
+  return (
+    <Link href="/" className="group flex items-center gap-2.5" aria-label="French Compass — home">
+      <span className="relative grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-blue to-blue-deep font-serif-italic text-lg text-white shadow-[var(--shadow-blue)] transition-transform duration-300 group-hover:-rotate-6">
+        F
+        <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full border-2 border-cream bg-red" />
+      </span>
+      <span className="font-display text-lg font-bold tracking-tight text-ink-text">French Compass</span>
+    </Link>
+  );
+}
+
+export function SiteHeader() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [coursesOpen, setCoursesOpen] = useState(false);
-
-  // The home route is the only one that opens on a full-bleed dark hero, so it
-  // is the only one where a transparent bar stays readable. Derived here so the
-  // header can keep living as a single direct child of the root layout.
-  const isOverHero = overHero ?? pathname === "/";
+  const [mobileCoursesOpen, setMobileCoursesOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const onScroll = () => setScrolled(window.scrollY > 16);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Lock body scroll when the mobile drawer is open
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [open]);
 
-  const solid = scrolled || !isOverHero;
+  useEffect(() => { setOpen(false); setCoursesOpen(false); setMobileCoursesOpen(false); }, [pathname]);
+
+  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
 
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 h-[var(--header-h)] transition-[background-color,border-color,backdrop-filter] duration-300",
-        solid
-          ? "border-b border-foam/10 bg-ink/85 backdrop-blur-md supports-[backdrop-filter]:bg-ink/70"
-          : "border-b border-transparent bg-transparent",
+        // Always solid white + blur so the bar is readable over ANY section
+        // (incl. dark hero pages like the placement quiz). Shadow deepens on scroll.
+        "fixed inset-x-0 top-0 z-50 h-[var(--header-h)] border-b border-[var(--line)] bg-white/90 backdrop-blur-md transition-shadow duration-300",
+        scrolled ? "shadow-[var(--shadow-soft)]" : "shadow-none",
       )}
     >
-      <div className="mx-auto flex h-full max-w-[var(--container)] items-center justify-between px-5 sm:px-6 lg:px-10">
-        {/* Brand */}
-        <Link href="/" className="group flex items-center gap-2.5" aria-label="French Compass — home">
-          <span className="grid h-9 w-9 place-items-center rounded-full border border-brass/60 text-brass transition-transform duration-500 group-hover:rotate-45">
-            <Compass className="h-5 w-5" strokeWidth={1.5} />
-          </span>
-          <span className="font-display text-xl text-foam">French Compass</span>
-        </Link>
+      <div className="mx-auto flex h-full max-w-[var(--container)] items-center justify-between px-gutter">
+        <BrandMark />
 
         {/* Desktop nav */}
-        <nav className="hidden items-center gap-1 lg:flex" aria-label="Primary">
-          {NAV.map((item) =>
-            item.children ? (
+        <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Primary">
+          {PRIMARY_NAV.map((item) =>
+            item.label === "Courses" ? (
               <div
                 key={item.label}
                 className="relative"
                 onMouseEnter={() => setCoursesOpen(true)}
                 onMouseLeave={() => setCoursesOpen(false)}
               >
-                <button
-                  className="flex items-center gap-1 rounded-md px-3 py-2 text-sm text-foam/85 transition-colors hover:text-foam"
+                <Link
+                  href="/courses"
+                  className={cn(
+                    "flex items-center gap-1 rounded-full px-3.5 py-2 text-sm font-medium transition-colors",
+                    isActive("/courses") ? "text-blue" : "text-ink-dim hover:text-ink-text",
+                  )}
                   aria-expanded={coursesOpen}
                   aria-haspopup="true"
-                  onClick={() => setCoursesOpen((v) => !v)}
+                  onClick={() => setCoursesOpen(false)}
                 >
                   {item.label}
                   <ChevronDown className={cn("h-4 w-4 transition-transform", coursesOpen && "rotate-180")} />
-                </button>
+                </Link>
+
                 {coursesOpen && (
-                  <div className="absolute left-0 top-full w-72 pt-2">
-                    <div className="overflow-hidden rounded-xl border border-foam/10 bg-ink-panel p-1.5 shadow-2xl">
-                      {item.children.map((c) => (
-                        <Link
-                          key={c.label}
-                          href={c.href}
-                          className="block rounded-lg px-3 py-2.5 text-sm text-foam/80 transition-colors hover:bg-ink-panel2 hover:text-foam"
-                        >
-                          {c.label}
-                        </Link>
-                      ))}
+                  <div className="absolute left-1/2 top-full w-[58rem] max-w-[92vw] -translate-x-1/2 pt-3">
+                    <div className="grain overflow-hidden rounded-[var(--radius-lg)] border border-[var(--line)] bg-ivory shadow-[var(--shadow-lift)]">
+                      <div className="relative z-10 grid grid-cols-4 gap-2 p-5">
+                        {COURSES_MEGA.map((col) => (
+                          <div key={col.title} className="min-w-0">
+                            <p className="mb-1 px-3 font-mono text-[0.68rem] font-semibold uppercase tracking-wider text-red-accent">{col.title}</p>
+                            <ul>
+                              {col.links.map((l) => (
+                                <li key={l.href}>
+                                  <Link
+                                    href={l.href}
+                                    className="block truncate rounded-lg px-3 py-2 text-sm text-ink-dim transition-colors hover:bg-cream hover:text-blue"
+                                  >
+                                    {l.label}
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+                      <Link
+                        href="/courses"
+                        className="flex items-center justify-center gap-2 border-t border-[var(--line)] bg-cream/60 py-3 text-sm font-semibold text-blue transition-colors hover:text-blue-deep"
+                      >
+                        View all courses <ArrowRight className="h-4 w-4" />
+                      </Link>
                     </div>
                   </div>
                 )}
@@ -130,7 +132,10 @@ export function SiteHeader({ overHero }: { overHero?: boolean } = {}) {
               <Link
                 key={item.label}
                 href={item.href}
-                className="rounded-md px-3 py-2 text-sm text-foam/85 transition-colors hover:text-foam"
+                className={cn(
+                  "rounded-full px-3.5 py-2 text-sm font-medium transition-colors",
+                  isActive(item.href) ? "text-blue" : "text-ink-dim hover:text-ink-text",
+                )}
               >
                 {item.label}
               </Link>
@@ -138,15 +143,15 @@ export function SiteHeader({ overHero }: { overHero?: boolean } = {}) {
           )}
         </nav>
 
-        {/* CTAs (high contrast) */}
+        {/* CTAs */}
         <div className="hidden items-center gap-2 lg:flex">
           <a
             href={MAIL}
             aria-label={`Email us at ${EMAIL}`}
             title={EMAIL}
-            className="grid h-10 w-10 place-items-center rounded-lg border border-foam/20 text-foam transition-all duration-300 hover:-translate-y-0.5 hover:border-brass/60 hover:text-brass-soft"
+            className="grid h-10 w-10 place-items-center rounded-full border border-[var(--line-strong)] text-ink-dim transition-all duration-300 hover:-translate-y-0.5 hover:border-blue hover:text-blue"
           >
-            <Mail className="h-5 w-5" strokeWidth={1.75} />
+            <Mail className="h-[1.15rem] w-[1.15rem]" strokeWidth={1.75} />
           </a>
           <a
             href={WA}
@@ -154,21 +159,18 @@ export function SiteHeader({ overHero }: { overHero?: boolean } = {}) {
             rel="noopener noreferrer"
             aria-label={`Message us on WhatsApp at ${WHATSAPP_DISPLAY}`}
             title={WHATSAPP_DISPLAY}
-            className="grid h-10 w-10 place-items-center rounded-lg border border-foam/20 text-foam transition-all duration-300 hover:-translate-y-0.5 hover:border-brass/60 hover:text-brass-soft"
+            className="grid h-10 w-10 place-items-center rounded-full border border-[var(--line-strong)] text-ink-dim transition-all duration-300 hover:-translate-y-0.5 hover:border-blue hover:text-blue"
           >
-            <MessageCircle className="h-5 w-5" strokeWidth={1.75} />
+            <MessageCircle className="h-[1.15rem] w-[1.15rem]" strokeWidth={1.75} />
           </a>
-          <Link
-            href="/contact"
-            className="rounded-lg bg-azimuth px-4 py-2.5 text-sm font-medium text-foam shadow-[var(--glow-azimuth)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-azimuth-lift"
-          >
-            Book a class
+          <Link href="/upcoming-batches" className="btn btn-primary h-10 px-5 text-sm">
+            Reserve your seat
           </Link>
         </div>
 
         {/* Mobile toggle */}
         <button
-          className="grid h-10 w-10 place-items-center rounded-lg text-foam lg:hidden"
+          className="grid h-10 w-10 place-items-center rounded-lg text-ink-text lg:hidden"
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
           aria-controls="mobile-menu"
@@ -178,37 +180,30 @@ export function SiteHeader({ overHero }: { overHero?: boolean } = {}) {
         </button>
       </div>
 
-      {/* Mobile drawer backdrop + menu */}
-      {/* Backdrop */}
+      {/* Mobile drawer backdrop */}
       <div
         className={cn(
-          "fixed inset-0 z-40 bg-ink/70 backdrop-blur-sm transition-opacity duration-300 lg:hidden",
+          "fixed inset-0 z-40 bg-espresso/40 backdrop-blur-sm transition-opacity duration-300 lg:hidden",
           open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
         )}
         onClick={() => setOpen(false)}
         aria-hidden="true"
       />
-      {/* Slide-in drawer panel */}
+      {/* Slide-in drawer */}
       <div
         id="mobile-menu"
         className={cn(
-          "fixed right-0 top-0 z-50 flex h-[100dvh] w-[86%] max-w-sm flex-col border-l border-foam/10 bg-ink shadow-2xl transition-transform duration-300 ease-out lg:hidden",
+          "fixed right-0 top-0 z-50 flex h-[100dvh] w-[88%] max-w-sm flex-col border-l border-[var(--line)] bg-cream shadow-2xl transition-transform duration-300 ease-out lg:hidden",
           open ? "translate-x-0" : "translate-x-full",
         )}
         role="dialog"
         aria-modal="true"
         aria-label="Menu"
       >
-        {/* Drawer header */}
-        <div className="flex h-[var(--header-h)] shrink-0 items-center justify-between border-b border-foam/10 px-5">
-          <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-2.5" aria-label="French Compass — home">
-            <span className="grid h-9 w-9 place-items-center rounded-full border border-brass/60 text-brass">
-              <Compass className="h-5 w-5" strokeWidth={1.5} />
-            </span>
-            <span className="font-display text-lg text-foam">French Compass</span>
-          </Link>
+        <div className="flex h-[var(--header-h)] shrink-0 items-center justify-between border-b border-[var(--line)] px-gutter">
+          <BrandMark />
           <button
-            className="grid h-10 w-10 place-items-center rounded-lg text-foam"
+            className="grid h-10 w-10 place-items-center rounded-lg text-ink-text"
             aria-label="Close menu"
             onClick={() => setOpen(false)}
           >
@@ -216,61 +211,80 @@ export function SiteHeader({ overHero }: { overHero?: boolean } = {}) {
           </button>
         </div>
 
-        {/* Scrollable nav */}
-        <nav className="flex-1 overflow-y-auto overscroll-contain px-5 py-4" aria-label="Mobile">
-          {NAV.map((item) => (
-            <div key={item.label} className="border-b border-foam/10">
-              <Link
-                href={item.href}
-                onClick={() => setOpen(false)}
-                className="block py-3.5 font-display text-xl text-foam transition-colors hover:text-brass-soft"
-              >
-                {item.label}
-              </Link>
-              {item.children && (
-                <div className="pb-3 pl-1">
-                  {item.children.map((c) => (
+        <nav className="flex-1 overflow-y-auto overscroll-contain px-gutter py-4" aria-label="Mobile">
+          {PRIMARY_NAV.map((item) =>
+            item.label === "Courses" ? (
+              <div key={item.label} className="border-b border-[var(--line)]">
+                <button
+                  className="flex w-full items-center justify-between py-3.5 font-display text-xl font-semibold text-ink-text"
+                  aria-expanded={mobileCoursesOpen}
+                  onClick={() => setMobileCoursesOpen((v) => !v)}
+                >
+                  Courses
+                  <ChevronDown className={cn("h-5 w-5 transition-transform", mobileCoursesOpen && "rotate-180")} />
+                </button>
+                {mobileCoursesOpen && (
+                  <div className="pb-3">
+                    {COURSES_MEGA.map((col) => (
+                      <div key={col.title} className="mb-2">
+                        <p className="px-1 pb-1 pt-2 font-mono text-[0.68rem] font-semibold uppercase tracking-wider text-red-accent">{col.title}</p>
+                        {col.links.map((l) => (
+                          <Link
+                            key={l.href}
+                            href={l.href}
+                            onClick={() => setOpen(false)}
+                            className="block rounded-md px-1 py-2 text-sm text-ink-dim transition-colors hover:text-blue"
+                          >
+                            {l.label}
+                          </Link>
+                        ))}
+                      </div>
+                    ))}
                     <Link
-                      key={c.label}
-                      href={c.href}
+                      href="/courses"
                       onClick={() => setOpen(false)}
-                      className="block py-1.5 text-sm text-foam-dim transition-colors hover:text-foam"
+                      className="mt-1 flex items-center gap-2 px-1 py-2 text-sm font-semibold text-blue"
                     >
-                      {c.label}
+                      View all courses <ArrowRight className="h-4 w-4" />
                     </Link>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div key={item.label} className="border-b border-[var(--line)]">
+                <Link
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  className="block py-3.5 font-display text-xl font-semibold text-ink-text transition-colors hover:text-blue"
+                >
+                  {item.label}
+                </Link>
+              </div>
+            ),
+          )}
         </nav>
 
-        {/* Sticky CTAs — every target is at least 44px tall for touch. */}
-        <div className="shrink-0 space-y-3 border-t border-foam/10 p-5">
+        <div className="shrink-0 space-y-3 border-t border-[var(--line)] p-gutter">
           <div className="grid grid-cols-2 gap-3">
             <a
               href={WA}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`Message us on WhatsApp at ${WHATSAPP_DISPLAY}`}
-              className="flex min-h-11 items-center justify-center gap-2 rounded-lg border border-foam/20 py-3 text-sm font-medium text-foam transition-colors hover:border-brass/60 hover:text-brass-soft"
+              className="flex min-h-11 items-center justify-center gap-2 rounded-full border border-[var(--line-strong)] py-3 text-sm font-medium text-ink-text transition-colors hover:border-blue hover:text-blue"
             >
               <MessageCircle className="h-4 w-4" /> WhatsApp
             </a>
             <a
               href={MAIL}
               aria-label={`Email us at ${EMAIL}`}
-              className="flex min-h-11 items-center justify-center gap-2 rounded-lg border border-foam/20 py-3 text-sm font-medium text-foam transition-colors hover:border-brass/60 hover:text-brass-soft"
+              className="flex min-h-11 items-center justify-center gap-2 rounded-full border border-[var(--line-strong)] py-3 text-sm font-medium text-ink-text transition-colors hover:border-blue hover:text-blue"
             >
               <Mail className="h-4 w-4" /> Email
             </a>
           </div>
-          <Link
-            href="/contact"
-            onClick={() => setOpen(false)}
-            className="flex min-h-11 items-center justify-center rounded-lg bg-azimuth py-3 text-center text-sm font-medium text-foam transition-colors hover:bg-azimuth-lift"
-          >
-            Book a class
+          <Link href="/upcoming-batches" onClick={() => setOpen(false)} className="btn btn-primary w-full">
+            Reserve your seat
           </Link>
         </div>
       </div>

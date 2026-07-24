@@ -12,7 +12,7 @@ export const WHATSAPP_NUMBER = '916369864411'
 /** Human-readable, for display in the UI. */
 export const WHATSAPP_DISPLAY = '+91 63698 64411'
 
-export const EMAIL = 'yuvakeshan16@gmail.com'
+export const EMAIL = 'myfrenchcompass@gmail.com'
 
 /** `tel:` needs the +, unlike wa.me. */
 export const TEL_HREF = `tel:+${WHATSAPP_NUMBER}`

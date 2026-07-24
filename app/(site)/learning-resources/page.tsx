@@ -10,7 +10,7 @@ import { ProgressBadges } from "@/components/playground/progress-badges";
 import { Footer } from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Playground — French Compass",
+  title: "Learning Resources — French Compass",
   description: "Find your French level, build a daily streak, and learn vocabulary — free, no signup.",
 };
 
@@ -20,7 +20,7 @@ const SOON = [
   { icon: Headphones, title: "Dictée & Listening", body: "Hear French, type what you understand. Level-graded practice for exam prep." },
 ];
 
-export default function PlaygroundPage() {
+export default function LearningResourcesPage() {
   return (
     <PlaygroundProvider>
       <PlaygroundHero />
@@ -80,8 +80,8 @@ export default function PlaygroundPage() {
         </div>
       </Section>
 
-      {/* Every other route ends on the footer — Playground was the one page
-          that dead-ended with no navigation or contact details. */}
+      {/* Every other route ends on the footer — Learning Resources was the one
+          page that dead-ended with no navigation or contact details. */}
       <Footer />
     </PlaygroundProvider>
   );

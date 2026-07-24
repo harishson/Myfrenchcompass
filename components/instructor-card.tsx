@@ -70,7 +70,7 @@ function Medallion({ person }: { person: Instructor }) {
       </motion.svg>
 
       {/* portrait / monogram */}
-      <div className="absolute inset-[14px] overflow-hidden rounded-full border border-brass/50 bg-[radial-gradient(circle_at_50%_35%,#1b2c40,#0d1826)]">
+      <div className="absolute inset-[14px] overflow-hidden rounded-full border border-brass/50 bg-[radial-gradient(circle_at_50%_35%,#0055A4,#003A72)]">
         {person.photo ? (
           <Image src={person.photo} alt={person.name} fill sizes="128px" className="object-cover" />
         ) : (

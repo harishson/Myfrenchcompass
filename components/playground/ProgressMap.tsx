@@ -20,28 +20,28 @@ const availableBadges: Badge[] = [
     name: 'First Step',
     description: 'Complete your first Daily Bearing',
     icon: Star,
-    color: '#C08A2D',
+    color: '#EF4135',
   },
   {
     id: 'week-warrior',
     name: 'Week Warrior',
     description: 'Maintain a 7-day streak',
     icon: Flame,
-    color: '#E63946',
+    color: '#EF4135',
   },
   {
     id: 'month-master',
     name: 'Month Master',
     description: 'Maintain a 30-day streak',
     icon: Trophy,
-    color: '#FFB703',
+    color: '#FF7A70',
   },
   {
     id: 'quiz-taker',
     name: 'Quiz Taker',
     description: 'Complete the placement quiz',
     icon: Zap,
-    color: '#2440E8',
+    color: '#0055A4',
   },
 ]
 
@@ -82,40 +82,40 @@ export function ProgressMap() {
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      className="rounded-lg border border-[#C08A2D]/20 bg-[#0C1826]/50 p-8"
+      className="rounded-lg border border-[#EF4135]/20 bg-[#003A72]/50 p-8"
     >
-      <h3 className="font-display text-2xl font-semibold text-[#EDE6D6] mb-8">Your Progress</h3>
+      <h3 className="font-display text-2xl font-semibold text-[#FFFFFF] mb-8">Your Progress</h3>
 
       {/* XP and Level */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         {/* Level */}
-        <div className="rounded-lg bg-gradient-to-br from-[#2440E8]/20 to-[#C08A2D]/20 border border-[#C08A2D]/20 p-6 text-center">
-          <p className="text-sm text-[#93A6BC] mb-2">Current Level</p>
-          <div className="font-display text-4xl font-bold text-[#2440E8] mb-2">{level}</div>
-          <p className="text-xs text-[#C08A2D]">Explorer</p>
+        <div className="rounded-lg bg-gradient-to-br from-[#0055A4]/20 to-[#EF4135]/20 border border-[#EF4135]/20 p-6 text-center">
+          <p className="text-sm text-[#C6DAF0] mb-2">Current Level</p>
+          <div className="font-display text-4xl font-bold text-[#0055A4] mb-2">{level}</div>
+          <p className="text-xs text-[#EF4135]">Explorer</p>
         </div>
 
         {/* XP Progress */}
-        <div className="rounded-lg bg-gradient-to-br from-[#C08A2D]/20 to-[#2440E8]/20 border border-[#C08A2D]/20 p-6">
-          <p className="text-sm text-[#93A6BC] mb-2">Experience Points</p>
-          <div className="font-mono text-2xl font-bold text-[#EDE6D6] mb-3">
+        <div className="rounded-lg bg-gradient-to-br from-[#EF4135]/20 to-[#0055A4]/20 border border-[#EF4135]/20 p-6">
+          <p className="text-sm text-[#C6DAF0] mb-2">Experience Points</p>
+          <div className="font-mono text-2xl font-bold text-[#FFFFFF] mb-3">
             {xp} / {nextLevelXP}
           </div>
-          <div className="h-2 rounded-full bg-[#0C1826] border border-[#C08A2D]/20 overflow-hidden">
+          <div className="h-2 rounded-full bg-[#003A72] border border-[#EF4135]/20 overflow-hidden">
             <motion.div
-              className="h-full bg-gradient-to-r from-[#2440E8] to-[#C08A2D]"
+              className="h-full bg-gradient-to-r from-[#0055A4] to-[#EF4135]"
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
               transition={{ duration: 0.5 }}
             />
           </div>
-          <p className="text-xs text-[#93A6BC] mt-2">{Math.round(progress)}% to next level</p>
+          <p className="text-xs text-[#C6DAF0] mt-2">{Math.round(progress)}% to next level</p>
         </div>
       </div>
 
       {/* Badges */}
       <div>
-        <h4 className="font-display text-lg font-semibold text-[#EDE6D6] mb-4">Achievements</h4>
+        <h4 className="font-display text-lg font-semibold text-[#FFFFFF] mb-4">Achievements</h4>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {availableBadges.map((badge) => {
             const unlocked = unlockedBadges.includes(badge.id)
@@ -130,7 +130,7 @@ export function ProgressMap() {
                 className={`relative rounded-lg border-2 p-4 text-center transition-all ${
                   unlocked
                     ? `border-[${badge.color}] bg-[${badge.color}]/10`
-                    : 'border-[#C08A2D]/20 bg-[#0C1826]/30 opacity-50'
+                    : 'border-[#EF4135]/20 bg-[#003A72]/30 opacity-50'
                 }`}
               >
                 <div
@@ -141,19 +141,19 @@ export function ProgressMap() {
                 >
                   <Icon
                     className="w-6 h-6"
-                    style={{ color: unlocked ? badge.color : '#93A6BC' }}
+                    style={{ color: unlocked ? badge.color : '#C6DAF0' }}
                   />
                 </div>
-                <p className="text-xs font-semibold text-[#EDE6D6]">{badge.name}</p>
-                <p className="text-xs text-[#93A6BC] mt-1">{badge.description}</p>
+                <p className="text-xs font-semibold text-[#FFFFFF]">{badge.name}</p>
+                <p className="text-xs text-[#C6DAF0] mt-1">{badge.description}</p>
 
                 {unlocked && (
                   <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-[#3E8F7C] flex items-center justify-center"
+                    className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-[#0055A4] flex items-center justify-center"
                   >
-                    <span className="text-xs text-[#EDE6D6]">✓</span>
+                    <span className="text-xs text-[#FFFFFF]">✓</span>
                   </motion.div>
                 )}
               </motion.div>

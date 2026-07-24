@@ -222,22 +222,22 @@ export function PlacementQuiz({ onComplete }: PlacementQuizProps) {
     return (
       <div className="max-w-2xl mx-auto px-6 py-12 text-center">
         <div className="mb-6">
-          <Compass className="w-12 h-12 text-[#C08A2D] mx-auto mb-4" />
-          <h2 className="font-display text-4xl font-semibold text-[#0C1826] mb-2">
+          <Compass className="w-12 h-12 text-[#EF4135] mx-auto mb-4" />
+          <h2 className="font-display text-4xl font-semibold text-[#003A72] mb-2">
             Find Your Bearing
           </h2>
-          <p className="text-[#546575] text-lg">
+          <p className="text-[#5C6B82] text-lg">
             2 minutes, 10 questions. No login needed.
           </p>
         </div>
 
-        <div className="bg-[#EAE0CC] rounded-lg p-6 mb-8 text-left">
-          <p className="text-[#122130] mb-3">
+        <div className="bg-[#F1F5FB] rounded-lg p-6 mb-8 text-left">
+          <p className="text-[#16233B] mb-3">
             We&apos;ll ask a mix of <strong>grammar</strong>, <strong>vocab</strong>,
             and <strong>comfort-level</strong> questions to pinpoint your exact CEFR level.
             No penalty for guessing — just be honest about how you feel.
           </p>
-          <p className="text-[#546575] text-sm">
+          <p className="text-[#5C6B82] text-sm">
             Your result shows you a recommended course + a WhatsApp shortcut to book.
           </p>
         </div>
@@ -245,7 +245,7 @@ export function PlacementQuiz({ onComplete }: PlacementQuizProps) {
         <Button
           onClick={handleStart}
           size="lg"
-          className="bg-[#2440E8] text-[#EDE6D6] hover:bg-[#3E59FF]"
+          className="bg-[#0055A4] text-[#FFFFFF] hover:bg-[#1466BE]"
         >
           Start Quiz →
         </Button>
@@ -262,21 +262,21 @@ export function PlacementQuiz({ onComplete }: PlacementQuizProps) {
         {/* Progress */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-mono uppercase tracking-[0.14em] text-[#546575]">
+            <span className="text-xs font-mono uppercase tracking-[0.14em] text-[#5C6B82]">
               Question {currentQuestion + 1} of {quizQuestions.length}
             </span>
-            <span className="text-xs font-mono text-[#C08A2D]">{Math.round(progress)}%</span>
+            <span className="text-xs font-mono text-[#EF4135]">{Math.round(progress)}%</span>
           </div>
-          <div className="h-1 bg-[#EAE0CC] rounded-full overflow-hidden">
+          <div className="h-1 bg-[#F1F5FB] rounded-full overflow-hidden">
             <div
-              className="h-full bg-[#2440E8] transition-all duration-300"
+              className="h-full bg-[#0055A4] transition-all duration-300"
               style={{ width: `${progress}%` }}
             />
           </div>
         </div>
 
         {/* Question */}
-        <h3 className="font-display text-2xl font-semibold text-[#0C1826] mb-6">
+        <h3 className="font-display text-2xl font-semibold text-[#003A72] mb-6">
           {question.question}
         </h3>
 
@@ -286,7 +286,7 @@ export function PlacementQuiz({ onComplete }: PlacementQuizProps) {
             <button
               key={index}
               onClick={() => handleAnswer(index)}
-              className="w-full text-left p-4 rounded-lg border-2 border-[#EAE0CC] bg-white hover:border-[#2440E8] hover:bg-[#EDE6D6] transition-all text-[#122130]"
+              className="w-full text-left p-4 rounded-lg border-2 border-[#F1F5FB] bg-white hover:border-[#0055A4] hover:bg-[#FFFFFF] transition-all text-[#16233B]"
             >
               {option}
             </button>
@@ -294,7 +294,7 @@ export function PlacementQuiz({ onComplete }: PlacementQuizProps) {
         </div>
 
         {/* Hint */}
-        <p className="text-xs text-[#546575] text-center">
+        <p className="text-xs text-[#5C6B82] text-center">
           {question.type === 'self-assess'
             ? 'No wrong answers here — just be honest.'
             : 'Choose the best answer.'}
@@ -309,20 +309,20 @@ export function PlacementQuiz({ onComplete }: PlacementQuizProps) {
         {/* Result Badge */}
         <div className="mb-8">
           <div className="text-5xl mb-4">{result.emoji}</div>
-          <h2 className="font-display text-5xl font-semibold text-[#0C1826] mb-2">
-            Your Level: <span className="text-[#2440E8]">{result.level}</span>
+          <h2 className="font-display text-5xl font-semibold text-[#003A72] mb-2">
+            Your Level: <span className="text-[#0055A4]">{result.level}</span>
           </h2>
-          <p className="text-lg text-[#C08A2D] font-mono font-semibold">
+          <p className="text-lg text-[#EF4135] font-mono font-semibold">
             {result.journey}
           </p>
         </div>
 
         {/* Message */}
-        <div className="bg-[#F3EBDB] rounded-lg p-6 mb-8 text-left border-2 border-[#C08A2D]">
-          <p className="text-[#122130] font-display text-lg mb-3">
+        <div className="bg-[#FFFFFF] rounded-lg p-6 mb-8 text-left border-2 border-[#EF4135]">
+          <p className="text-[#16233B] font-display text-lg mb-3">
             {result.recommendation}
           </p>
-          <p className="text-[#546575]">
+          <p className="text-[#5C6B82]">
             <strong>Recommended next step:</strong> {result.recommendedCourse}
           </p>
         </div>
@@ -332,7 +332,7 @@ export function PlacementQuiz({ onComplete }: PlacementQuizProps) {
           <Button
             asChild
             size="lg"
-            className="w-full bg-[#2440E8] text-[#EDE6D6] hover:bg-[#3E59FF]"
+            className="w-full bg-[#0055A4] text-[#FFFFFF] hover:bg-[#1466BE]"
           >
             <Link href={`/courses?level=${result.level.toLowerCase()}`}>
               <BookOpen className="w-4 h-4 mr-2" />
@@ -343,7 +343,7 @@ export function PlacementQuiz({ onComplete }: PlacementQuizProps) {
             asChild
             size="lg"
             variant="outline"
-            className="w-full border-[#122130]/20 text-[#122130] hover:bg-[#EAE0CC]"
+            className="w-full border-[#16233B]/20 text-[#16233B] hover:bg-[#F1F5FB]"
           >
             <a
               href={whatsappLink(`I just took the placement quiz and got ${result.level} - ${result.journey} level. I'd like to know more about the ${result.recommendedCourse} course.`)}
@@ -356,9 +356,9 @@ export function PlacementQuiz({ onComplete }: PlacementQuizProps) {
           <Button
             variant="outline"
             size="lg"
-            className="w-full border-[#122130]/20 text-[#122130] hover:bg-[#EAE0CC]"
+            className="w-full border-[#16233B]/20 text-[#16233B] hover:bg-[#F1F5FB]"
             onClick={() => {
-              const text = `I just scored ${result.level} on the French Compass placement quiz: "${result.journey}". Find your level at frenchcompass.in/playground/placement 🧭`
+              const text = `I just scored ${result.level} on the French Compass placement quiz: "${result.journey}". Find your level at frenchcompass.in/learning-resources/placement 🧭`
               if (navigator.share) {
                 navigator.share({
                   title: 'My French Compass Level',
@@ -375,7 +375,7 @@ export function PlacementQuiz({ onComplete }: PlacementQuizProps) {
         {/* Retake */}
         <button
           onClick={handleReset}
-          className="text-sm text-[#546575] hover:text-[#122130] underline"
+          className="text-sm text-[#5C6B82] hover:text-[#16233B] underline"
         >
           Retake Quiz
         </button>

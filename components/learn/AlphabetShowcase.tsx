@@ -219,7 +219,7 @@ export function AlphabetMosaic() {
       aria-hidden
       className="pointer-events-none relative flex h-full w-full items-center justify-center overflow-hidden"
       style={{
-        background: 'linear-gradient(150deg, #14243a 0%, #0b1420 55%, #101d2e 100%)',
+        background: 'linear-gradient(150deg, #0055A4 0%, #002E5C 55%, #003A72 100%)',
       }}
     >
       <span

@@ -122,7 +122,7 @@ export default function TestimonialsPage() {
               and threw away the client-side navigation. */}
           <div className="flex flex-col justify-center gap-4 sm:flex-row">
             <Link
-              href="/playground/placement"
+              href="/learning-resources/placement"
               className="group inline-flex min-h-12 items-center justify-center rounded-lg bg-azimuth px-8 py-3 font-semibold text-foam shadow-[var(--glow-azimuth)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-azimuth-lift"
             >
               Find Your Level{' '}

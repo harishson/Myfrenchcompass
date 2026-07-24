@@ -7,22 +7,35 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages = [
     '',
     '/courses',
-    '/playground/placement',
+    '/upcoming-batches',
+    '/learning-resources',
+    '/learning-resources/placement',
     '/about',
     '/testimonials',
     '/contact',
-    '/ebooks',
-    '/legal/terms',
-    '/legal/privacy',
-    '/legal/refund',
+    // Six canonical level pages
+    '/courses/a1',
+    '/courses/a2',
+    '/courses/b1',
+    '/courses/b2',
+    '/courses/c1',
+    '/courses/c2',
   ]
 
-  const coursePages = courses.map((course) => ({
-    url: `${baseUrl}/courses/${course.slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
-    priority: 0.7,
-  }))
+  // Non-level catalogue items (combo tracks, exam prep, workshop, e-books).
+  // Level courses use the short canonical slugs above, so skip their long slugs.
+  const LEVEL_SLUGS = new Set([
+    'a1-absolute-beginner', 'a2-elementary', 'b1-intermediate',
+    'b2-upper-intermediate', 'dalf-c1-masterclass', 'dalf-c2-masterclass',
+  ])
+  const coursePages = courses
+    .filter((course) => !LEVEL_SLUGS.has(course.slug))
+    .map((course) => ({
+      url: `${baseUrl}/courses/${course.slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    }))
 
   const staticSitemap = staticPages.map((route) => ({
     url: `${baseUrl}${route}`,

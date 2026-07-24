@@ -147,17 +147,17 @@ export function ContactForm() {
         aria-live="polite"
       >
         <div className="mb-4">
-          <CheckCircle2 className="mx-auto h-16 w-16 text-[#C08A2D]" />
+          <CheckCircle2 className="mx-auto h-16 w-16 text-[#EF4135]" />
         </div>
-        <h3 className="mb-2 font-display text-3xl font-semibold text-[#EDE6D6]">
+        <h3 className="mb-2 font-display text-3xl font-semibold text-[#FFFFFF]">
           Bearing confirmed!
         </h3>
-        <p className="mb-6 text-[#93A6BC]">
+        <p className="mb-6 text-[#C6DAF0]">
           We&apos;ve got your details and will chart the best course for you within 24 hours.
         </p>
 
-        <div className="mb-6 rounded-xl border border-[#EDE6D6]/10 bg-[#0C1826]/40 p-5 text-left">
-          <p className="mb-3 text-center text-sm text-[#93A6BC]">
+        <div className="mb-6 rounded-xl border border-[#FFFFFF]/10 bg-[#003A72]/40 p-5 text-left">
+          <p className="mb-3 text-center text-sm text-[#C6DAF0]">
             Want a faster reply? Send it straight through — your details are already filled in.
           </p>
           <div className="grid gap-3 sm:grid-cols-2">
@@ -165,14 +165,14 @@ export function ContactForm() {
               href={whatsappLink(`I just submitted the contact form.\n\n${summary}`)}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex min-h-11 items-center justify-center gap-2 rounded-lg border border-[#EDE6D6]/20 px-4 py-3 text-sm font-medium text-[#EDE6D6] transition-all duration-300 hover:-translate-y-0.5 hover:border-brass/60 hover:text-brass-soft"
+              className="flex min-h-11 items-center justify-center gap-2 rounded-lg border border-[#FFFFFF]/20 px-4 py-3 text-sm font-medium text-[#FFFFFF] transition-all duration-300 hover:-translate-y-0.5 hover:border-brass/60 hover:text-brass-soft"
             >
               <MessageCircle className="h-4 w-4" />
               Send on WhatsApp
             </a>
             <a
               href={emailLink('French classes — enquiry', summary)}
-              className="flex min-h-11 items-center justify-center gap-2 rounded-lg border border-[#EDE6D6]/20 px-4 py-3 text-sm font-medium text-[#EDE6D6] transition-all duration-300 hover:-translate-y-0.5 hover:border-brass/60 hover:text-brass-soft"
+              className="flex min-h-11 items-center justify-center gap-2 rounded-lg border border-[#FFFFFF]/20 px-4 py-3 text-sm font-medium text-[#FFFFFF] transition-all duration-300 hover:-translate-y-0.5 hover:border-brass/60 hover:text-brass-soft"
             >
               <Mail className="h-4 w-4" />
               Send by email
@@ -180,13 +180,13 @@ export function ContactForm() {
           </div>
         </div>
 
-        <p className="text-sm text-[#93A6BC]">
+        <p className="text-sm text-[#C6DAF0]">
           In the meantime, explore our{' '}
-          <Link href="/courses" className="underline hover:text-[#EDE6D6]">
+          <Link href="/courses" className="underline hover:text-[#FFFFFF]">
             course catalogue
           </Link>{' '}
           or take our{' '}
-          <Link href="/playground/placement" className="underline hover:text-[#EDE6D6]">
+          <Link href="/learning-resources/placement" className="underline hover:text-[#FFFFFF]">
             placement quiz
           </Link>
           .
@@ -207,7 +207,7 @@ export function ContactForm() {
           onClick={() => {
             setApiError('')
           }}
-          className="text-[#2440E8] underline hover:text-[#3E59FF]"
+          className="text-[#0055A4] underline hover:text-[#1466BE]"
         >
           Try again
         </button>
@@ -220,7 +220,7 @@ export function ContactForm() {
       {/* Name Row */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="firstName" className="block text-sm font-semibold text-[#EDE6D6] mb-2">
+          <label htmlFor="firstName" className="block text-sm font-semibold text-[#FFFFFF] mb-2">
             First Name {errors.firstName && <span className="text-red-400">*</span>}
           </label>
           <input
@@ -229,17 +229,17 @@ export function ContactForm() {
             id="firstName"
             value={formData.firstName}
             onChange={handleChange}
-            className={`w-full px-4 py-3 rounded-lg bg-[#0C1826]/50 border text-[#EDE6D6] placeholder-[#93A6BC] focus:outline-none focus:ring-2 focus:border-transparent ${
+            className={`w-full px-4 py-3 rounded-lg bg-[#003A72]/50 border text-[#FFFFFF] placeholder-[#C6DAF0] focus:outline-none focus:ring-2 focus:border-transparent ${
               errors.firstName
                 ? 'border-red-500/50 focus:ring-red-500'
-                : 'border-[#EDE6D6]/20 focus:ring-[#2440E8]'
+                : 'border-[#FFFFFF]/20 focus:ring-[#0055A4]'
             }`}
             placeholder="Jean"
           />
           {errors.firstName && <p className="text-red-400 text-xs mt-1">{errors.firstName}</p>}
         </div>
         <div>
-          <label htmlFor="lastName" className="block text-sm font-semibold text-[#EDE6D6] mb-2">
+          <label htmlFor="lastName" className="block text-sm font-semibold text-[#FFFFFF] mb-2">
             Last Name
           </label>
           <input
@@ -248,7 +248,7 @@ export function ContactForm() {
             id="lastName"
             value={formData.lastName}
             onChange={handleChange}
-            className="w-full px-4 py-3 rounded-lg bg-[#0C1826]/50 border border-[#EDE6D6]/20 text-[#EDE6D6] placeholder-[#93A6BC] focus:outline-none focus:ring-2 focus:ring-[#2440E8] focus:border-transparent"
+            className="w-full px-4 py-3 rounded-lg bg-[#003A72]/50 border border-[#FFFFFF]/20 text-[#FFFFFF] placeholder-[#C6DAF0] focus:outline-none focus:ring-2 focus:ring-[#0055A4] focus:border-transparent"
             placeholder="Dupont"
           />
         </div>
@@ -257,7 +257,7 @@ export function ContactForm() {
       {/* Email & Phone Row */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="email" className="block text-sm font-semibold text-[#EDE6D6] mb-2">
+          <label htmlFor="email" className="block text-sm font-semibold text-[#FFFFFF] mb-2">
             Email {errors.email && <span className="text-red-400">*</span>}
           </label>
           <input
@@ -266,17 +266,17 @@ export function ContactForm() {
             id="email"
             value={formData.email}
             onChange={handleChange}
-            className={`w-full px-4 py-3 rounded-lg bg-[#0C1826]/50 border text-[#EDE6D6] placeholder-[#93A6BC] focus:outline-none focus:ring-2 focus:border-transparent ${
+            className={`w-full px-4 py-3 rounded-lg bg-[#003A72]/50 border text-[#FFFFFF] placeholder-[#C6DAF0] focus:outline-none focus:ring-2 focus:border-transparent ${
               errors.email
                 ? 'border-red-500/50 focus:ring-red-500'
-                : 'border-[#EDE6D6]/20 focus:ring-[#2440E8]'
+                : 'border-[#FFFFFF]/20 focus:ring-[#0055A4]'
             }`}
             placeholder="jean@example.com"
           />
           {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email}</p>}
         </div>
         <div>
-          <label htmlFor="phone" className="block text-sm font-semibold text-[#EDE6D6] mb-2">
+          <label htmlFor="phone" className="block text-sm font-semibold text-[#FFFFFF] mb-2">
             Phone {errors.phone && <span className="text-red-400">*</span>}
           </label>
           <input
@@ -285,10 +285,10 @@ export function ContactForm() {
             id="phone"
             value={formData.phone}
             onChange={handleChange}
-            className={`w-full px-4 py-3 rounded-lg bg-[#0C1826]/50 border text-[#EDE6D6] placeholder-[#93A6BC] focus:outline-none focus:ring-2 focus:border-transparent ${
+            className={`w-full px-4 py-3 rounded-lg bg-[#003A72]/50 border text-[#FFFFFF] placeholder-[#C6DAF0] focus:outline-none focus:ring-2 focus:border-transparent ${
               errors.phone
                 ? 'border-red-500/50 focus:ring-red-500'
-                : 'border-[#EDE6D6]/20 focus:ring-[#2440E8]'
+                : 'border-[#FFFFFF]/20 focus:ring-[#0055A4]'
             }`}
             placeholder="+91 98765 43210"
           />
@@ -307,7 +307,7 @@ export function ContactForm() {
       {/* Course & Time Row */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="level" className="block text-sm font-semibold text-[#EDE6D6] mb-2">
+          <label htmlFor="level" className="block text-sm font-semibold text-[#FFFFFF] mb-2">
             Interested Course {errors.level && <span className="text-red-400">*</span>}
           </label>
           <select
@@ -315,10 +315,10 @@ export function ContactForm() {
             id="level"
             value={formData.level}
             onChange={handleChange}
-            className={`w-full px-4 py-3 rounded-lg bg-[#0C1826]/50 border text-[#EDE6D6] focus:outline-none focus:ring-2 focus:border-transparent ${
+            className={`w-full px-4 py-3 rounded-lg bg-[#003A72]/50 border text-[#FFFFFF] focus:outline-none focus:ring-2 focus:border-transparent ${
               errors.level
                 ? 'border-red-500/50 focus:ring-red-500'
-                : 'border-[#EDE6D6]/20 focus:ring-[#2440E8]'
+                : 'border-[#FFFFFF]/20 focus:ring-[#0055A4]'
             }`}
           >
             <option value="">Select a course...</option>
@@ -337,7 +337,7 @@ export function ContactForm() {
           {errors.level && <p className="text-red-400 text-xs mt-1">{errors.level}</p>}
         </div>
         <div>
-          <label htmlFor="timePreference" className="block text-sm font-semibold text-[#EDE6D6] mb-2">
+          <label htmlFor="timePreference" className="block text-sm font-semibold text-[#FFFFFF] mb-2">
             Preferred Time {errors.timePreference && <span className="text-red-400">*</span>}
           </label>
           <select
@@ -345,10 +345,10 @@ export function ContactForm() {
             id="timePreference"
             value={formData.timePreference}
             onChange={handleChange}
-            className={`w-full px-4 py-3 rounded-lg bg-[#0C1826]/50 border text-[#EDE6D6] focus:outline-none focus:ring-2 focus:border-transparent ${
+            className={`w-full px-4 py-3 rounded-lg bg-[#003A72]/50 border text-[#FFFFFF] focus:outline-none focus:ring-2 focus:border-transparent ${
               errors.timePreference
                 ? 'border-red-500/50 focus:ring-red-500'
-                : 'border-[#EDE6D6]/20 focus:ring-[#2440E8]'
+                : 'border-[#FFFFFF]/20 focus:ring-[#0055A4]'
             }`}
           >
             <option value="">Select a time...</option>
@@ -363,7 +363,7 @@ export function ContactForm() {
 
       {/* Message */}
       <div>
-        <label htmlFor="message" className="block text-sm font-semibold text-[#EDE6D6] mb-2">
+        <label htmlFor="message" className="block text-sm font-semibold text-[#FFFFFF] mb-2">
           Message
         </label>
         <textarea
@@ -372,20 +372,20 @@ export function ContactForm() {
           value={formData.message}
           onChange={handleChange}
           rows={4}
-          className="w-full px-4 py-3 rounded-lg bg-[#0C1826]/50 border border-[#EDE6D6]/20 text-[#EDE6D6] placeholder-[#93A6BC] focus:outline-none focus:ring-2 focus:ring-[#2440E8] focus:border-transparent resize-none"
+          className="w-full px-4 py-3 rounded-lg bg-[#003A72]/50 border border-[#FFFFFF]/20 text-[#FFFFFF] placeholder-[#C6DAF0] focus:outline-none focus:ring-2 focus:ring-[#0055A4] focus:border-transparent resize-none"
           placeholder="Tell us a bit about your French journey and what you're hoping to achieve..."
         />
       </div>
 
       {/* Trust Chips */}
       <div className="flex flex-wrap gap-3 justify-center py-4">
-        <div className="text-xs text-[#93A6BC] flex items-center gap-1">
+        <div className="text-xs text-[#C6DAF0] flex items-center gap-1">
           🔒 Secure
         </div>
-        <div className="text-xs text-[#93A6BC] flex items-center gap-1">
+        <div className="text-xs text-[#C6DAF0] flex items-center gap-1">
           🤐 Confidential
         </div>
-        <div className="text-xs text-[#93A6BC] flex items-center gap-1">
+        <div className="text-xs text-[#C6DAF0] flex items-center gap-1">
           ⚡ Quick response
         </div>
       </div>
@@ -394,33 +394,33 @@ export function ContactForm() {
       <Button
         type="submit"
         disabled={isSubmitting}
-        className="w-full bg-[#2440E8] text-[#EDE6D6] hover:bg-[#3E59FF] disabled:opacity-50"
+        className="w-full bg-[#0055A4] text-[#FFFFFF] hover:bg-[#1466BE] disabled:opacity-50"
       >
         {isSubmitting ? 'Sending details...' : 'Send Details'}
       </Button>
 
       {/* Alt CTAs */}
-      <div className="border-t border-[#EDE6D6]/10 pt-6 space-y-3">
-        <p className="text-center text-sm text-[#93A6BC]">Or reach out directly:</p>
+      <div className="border-t border-[#FFFFFF]/10 pt-6 space-y-3">
+        <p className="text-center text-sm text-[#C6DAF0]">Or reach out directly:</p>
         <div className="grid gap-3 sm:grid-cols-2">
           <a
             href={whatsappLink("I'd like to know more about your courses.")}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex min-h-11 items-center justify-center gap-2 rounded-lg border border-[#EDE6D6]/20 px-4 py-3 text-sm font-medium text-[#EDE6D6] transition-all duration-300 hover:-translate-y-0.5 hover:border-brass/60 hover:bg-[#EDE6D6]/5 hover:text-brass-soft"
+            className="flex min-h-11 items-center justify-center gap-2 rounded-lg border border-[#FFFFFF]/20 px-4 py-3 text-sm font-medium text-[#FFFFFF] transition-all duration-300 hover:-translate-y-0.5 hover:border-brass/60 hover:bg-[#FFFFFF]/5 hover:text-brass-soft"
           >
             <MessageCircle className="h-4 w-4" />
             WhatsApp
           </a>
           <a
             href={emailLink('French classes — enquiry')}
-            className="flex min-h-11 items-center justify-center gap-2 rounded-lg border border-[#EDE6D6]/20 px-4 py-3 text-sm font-medium text-[#EDE6D6] transition-all duration-300 hover:-translate-y-0.5 hover:border-brass/60 hover:bg-[#EDE6D6]/5 hover:text-brass-soft"
+            className="flex min-h-11 items-center justify-center gap-2 rounded-lg border border-[#FFFFFF]/20 px-4 py-3 text-sm font-medium text-[#FFFFFF] transition-all duration-300 hover:-translate-y-0.5 hover:border-brass/60 hover:bg-[#FFFFFF]/5 hover:text-brass-soft"
           >
             <Mail className="h-4 w-4" />
             Email
           </a>
         </div>
-        <p className="text-center font-mono text-xs text-[#93A6BC]">
+        <p className="text-center font-mono text-xs text-[#C6DAF0]">
           {WHATSAPP_DISPLAY} · {EMAIL}
         </p>
       </div>

@@ -53,7 +53,7 @@ export function InstructorCard({
         <span
           aria-hidden
           className="absolute inset-[-6px] rounded-full opacity-0 blur-lg transition-opacity duration-500 group-hover:opacity-100"
-          style={{ background: 'conic-gradient(from 180deg, #C08A2D, #2440E8, #3E8F7C, #C08A2D)' }}
+          style={{ background: 'conic-gradient(from 180deg, #EF4135, #0055A4, #0055A4, #EF4135)' }}
         />
         <div className="relative flex h-full w-full items-center justify-center rounded-full border-4 border-brass bg-gradient-to-br from-azimuth to-verdigris transition-transform duration-500 group-hover:rotate-[6deg]">
           <span className="font-display text-3xl font-bold text-foam">{monogram}</span>

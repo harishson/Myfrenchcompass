@@ -134,7 +134,7 @@ export function AlphabetExperience() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.25 }}
-            className="h-fit rounded-2xl border border-brass/20 bg-gradient-to-br from-[#132234] to-[#0C1826] p-6 lg:sticky lg:top-36"
+            className="h-fit rounded-2xl border border-brass/20 bg-gradient-to-br from-[#0055A4] to-[#003A72] p-6 lg:sticky lg:top-36"
           >
             <div className="flex items-center justify-between">
               <span className="font-display text-6xl text-brass">{selected.letter}</span>

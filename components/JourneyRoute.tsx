@@ -35,7 +35,7 @@ export function JourneyRoute() {
         <path
           d={PATH}
           fill="none"
-          stroke="#C08A2D"
+          stroke="#EF4135"
           strokeOpacity="0.18"
           strokeWidth="2"
           strokeDasharray="2 8"
@@ -45,7 +45,7 @@ export function JourneyRoute() {
         <motion.path
           d={PATH}
           fill="none"
-          stroke="#C08A2D"
+          stroke="#EF4135"
           strokeWidth="2.5"
           strokeLinecap="round"
           style={reduce ? { pathLength: 1 } : { pathLength: draw }}
@@ -64,12 +64,12 @@ export function JourneyRoute() {
                 cx={w.x}
                 cy={w.y}
                 r="9"
-                fill="#0C1826"
-                stroke="#C08A2D"
+                fill="#003A72"
+                stroke="#EF4135"
                 strokeWidth="2.5"
               />
               {/* Inner dot */}
-              <circle cx={w.x} cy={w.y} r="3.5" fill="#2440E8" />
+              <circle cx={w.x} cy={w.y} r="3.5" fill="#0055A4" />
               {/* Level label */}
               <text
                 x={w.x}
@@ -77,7 +77,7 @@ export function JourneyRoute() {
                 textAnchor="middle"
                 fontFamily="var(--font-display)"
                 fontSize="20"
-                fill="#EDE6D6"
+                fill="#FFFFFF"
                 fontWeight="600"
               >
                 {w.code}
@@ -90,7 +90,7 @@ export function JourneyRoute() {
                 fontFamily="var(--font-mono)"
                 fontSize="9"
                 letterSpacing="1.5"
-                fill="#93A6BC"
+                fill="#C6DAF0"
               >
                 {w.label.toUpperCase()}
               </text>

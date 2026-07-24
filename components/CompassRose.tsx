@@ -49,7 +49,7 @@ export function CompassRose({ size = 340 }: { size?: number }) {
       style={{ filter: 'drop-shadow(0 8px 30px rgba(36, 64, 232, 0.15))' }}
     >
       {/* Faint lat/long ticks */}
-      <g stroke="#C08A2D" strokeOpacity="0.35">
+      <g stroke="#EF4135" strokeOpacity="0.35">
         {Array.from({ length: 72 }).map((_, i) => {
           const a = (i * 5 * Math.PI) / 180
           const long = i % 6 === 0
@@ -74,12 +74,12 @@ export function CompassRose({ size = 340 }: { size?: number }) {
         animate={reduce ? {} : { rotate: 360 }}
         transition={{ duration: 120, ease: 'linear', repeat: Infinity }}
       >
-        <circle cx="100" cy="100" r="90" fill="none" stroke="#C08A2D" strokeWidth="1.5" />
-        <circle cx="100" cy="100" r="70" fill="none" stroke="#C08A2D" strokeOpacity="0.5" strokeWidth="1" />
+        <circle cx="100" cy="100" r="90" fill="none" stroke="#EF4135" strokeWidth="1.5" />
+        <circle cx="100" cy="100" r="70" fill="none" stroke="#EF4135" strokeOpacity="0.5" strokeWidth="1" />
       </motion.g>
 
       {/* 8-point rose star */}
-      <g fill="#C08A2D" fillOpacity="0.9">
+      <g fill="#EF4135" fillOpacity="0.9">
         <polygon points="100,18 108,100 100,120 92,100" />
         <polygon points="100,182 108,100 100,80 92,100" fillOpacity="0.5" />
         <polygon points="18,100 100,92 120,100 100,108" fillOpacity="0.5" />
@@ -93,7 +93,7 @@ export function CompassRose({ size = 340 }: { size?: number }) {
       </g>
 
       {/* Cardinal letters */}
-      <g fill="#EDE6D6" fontFamily="var(--font-display)" fontSize="11" textAnchor="middle">
+      <g fill="#FFFFFF" fontFamily="var(--font-display)" fontSize="11" textAnchor="middle">
         <text x="100" y="14">
           N
         </text>
@@ -110,9 +110,9 @@ export function CompassRose({ size = 340 }: { size?: number }) {
 
       {/* Needle (cobalt N / foam S) */}
       <motion.g style={{ rotate: needle, transformOrigin: '100px 100px' }}>
-        <polygon points="100,26 106,100 100,110 94,100" fill="#2440E8" />
-        <polygon points="100,174 106,100 100,90 94,100" fill="#EDE6D6" fillOpacity="0.8" />
-        <circle cx="100" cy="100" r="5" fill="#0C1826" stroke="#C08A2D" strokeWidth="1.5" />
+        <polygon points="100,26 106,100 100,110 94,100" fill="#0055A4" />
+        <polygon points="100,174 106,100 100,90 94,100" fill="#FFFFFF" fillOpacity="0.8" />
+        <circle cx="100" cy="100" r="5" fill="#003A72" stroke="#EF4135" strokeWidth="1.5" />
       </motion.g>
     </svg>
   )

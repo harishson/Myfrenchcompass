@@ -226,7 +226,7 @@ export function Hero({ logoSrc }: { logoSrc?: string }) {
                   className="rounded-xl bg-azimuth px-6 py-3.5 text-sm font-semibold text-foam shadow-[var(--glow-azimuth)] transition-colors hover:bg-azimuth-lift">
               Book a class
             </Link>
-            <Link href="/playground/placement"
+            <Link href="/learning-resources/placement"
                   className="rounded-xl border border-brass/60 px-6 py-3.5 text-sm font-semibold text-foam transition-colors hover:border-brass hover:bg-brass/10">
               Take the 2-min placement quiz
             </Link>

@@ -47,7 +47,7 @@ export function PlaygroundHero() {
         style={{ background: "radial-gradient(900px 500px at 82% 20%, rgba(36,64,232,.16), transparent 60%)" }} />
       <div className="mx-auto max-w-[var(--container)] items-center px-5 pb-16 pt-[calc(var(--header-h)+3.5rem)] sm:px-6 lg:px-10 lg:pb-24">
         <div>
-          <Eyebrow>Le Parcours — Playground</Eyebrow>
+          <Eyebrow>Le Parcours — Learning Resources</Eyebrow>
           <SectionHeading as="h1" gradient className="mt-4 fs-4">
             Practice French,<br />the fun way.
           </SectionHeading>

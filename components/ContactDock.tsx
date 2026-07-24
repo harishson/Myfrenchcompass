@@ -102,7 +102,7 @@ export function ContactDock() {
                   </span>
                   <span
                     className="grid h-9 w-9 shrink-0 place-items-center rounded-full transition-transform duration-300 group-hover/dock:scale-110"
-                    style={{ backgroundColor: tint, color: '#08111A' }}
+                    style={{ backgroundColor: tint, color: '#002E5C' }}
                   >
                     <Icon className="h-[18px] w-[18px]" strokeWidth={2} />
                   </span>

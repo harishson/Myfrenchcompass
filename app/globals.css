@@ -1,97 +1,128 @@
 /* =========================================================================
-   French Compass — globals.css  (corrected)
-   Tailwind v4 (@theme). If you are on Tailwind v3, use the tailwind.config.ts
-   block in PATCH-GUIDE.md instead and keep the :root / .on-ink / @layer parts.
+   Maison French Compass — globals.css  (complete redesign)
+   Warm editorial French atelier. Tailwind v4 (@theme).
+
+   Palette philosophy (from lingorelic / lesfritesfolles references):
+   warm cream base · espresso ink · French Blue primary · warm French Red +
+   ochre accents. Human, premium, NOT corporate-cold, NOT navy/compass.
+
+   Token NAMES are inherited from the previous system so pages not yet
+   redesigned keep rendering in the new warm palette; new work uses the
+   semantic aliases (--cream, --espresso, --blue, --red, --ochre …).
    ========================================================================= */
 @import "tailwindcss";
 
-/* ---- Design tokens → generate utilities (bg-ink, text-foam, text-brass…) ---- */
 @theme {
-  /* surfaces */
-  --color-ink:        #0C1826;   /* midnight navy — primary dark surface   */
-  --color-ink-abyss:  #081019;   /* deeper layer / footer                  */
-  --color-ink-panel:  #132234;   /* raised panel/card ON ink (was missing) */
-  --color-ink-panel2: #18293C;   /* hover panel on ink                     */
-  --color-parchment:  #F3EBDB;   /* warm light surface                     */
-  --color-parchment2: #EAE0CC;   /* parchment shade / dividers             */
-  --color-card:       #FBF8F0;   /* SOLID card on parchment (fixes gray)   */
+  /* ---- STRICT TRICOLOUR: only French Blue #0055A4, White #FFFFFF, Red #EF4135
+          (+ derived shades of those for depth, and neutral ink for text). No
+          cream / espresso / ochre / coral anywhere. ---- */
+  --color-blue:        #0055A4;  /* French Blue — primary                   */
+  --color-blue-deep:   #003A72;  /* deeper blue — headings / dark bands      */
+  --color-blue-lift:   #1466BE;  /* hover blue                              */
+  --color-red:         #EF4135;  /* French Red — fills / accents            */
+  --color-red-text:    #CE1B12;  /* darker red for small text (contrast)     */
+  --color-white:       #FFFFFF;
 
-  /* accents */
-  --color-brass:       #C08A2D;  /* precious accent — instruments/hairlines */
-  --color-brass-soft:  #D8AE63;
-  --color-azimuth:     #2440E8;  /* the single interactive accent           */
-  --color-azimuth-lift:#3E59FF;
-  --color-sea:         #37628F;
-  --color-verdigris:   #3E8F7C;  /* rare success                            */
+  /* surfaces */
+  --color-cream:       #FFFFFF;  /* page base — pure white                  */
+  --color-cream-deep:  #F1F5FB;  /* faint blue-white alternating band        */
+  --color-ivory:       #FFFFFF;  /* cards                                    */
+  --color-espresso:    #0055A4;  /* "dark" bands / footer → French Blue      */
+  --color-espresso-2:  #00468A;  /* deeper blue layer                       */
+
+  /* accent aliases kept so existing classes stay valid, repointed to red    */
+  --color-coral:       #EF4135;
+  --color-ochre:       #EF4135;
+  --color-ochre-soft:  #FFFFFF;  /* used on blue bands → reads white         */
+
+  /* ---- Legacy token names → remapped to the tricolour ---- */
+  --color-ink:        var(--color-espresso);
+  --color-ink-abyss:  var(--color-espresso-2);
+  --color-ink-panel:  #0A5FB0;   /* raised card on a blue band               */
+  --color-ink-panel2: #1A6BB8;
+  --color-parchment:  var(--color-cream);
+  --color-parchment2: var(--color-cream-deep);
+  --color-card:       var(--color-ivory);
+  --color-brass:      var(--color-red);      /* old gold accents → red       */
+  --color-brass-soft: #FF7A70;
+  --color-azimuth:    var(--color-blue);
+  --color-azimuth-lift:var(--color-blue-lift);
+  --color-sea:        #1466BE;
+  --color-verdigris:  #0055A4;   /* "success" → blue (green not in palette)  */
+  --color-flag-red:     var(--color-red);
+  --color-flag-red-text:var(--color-red-text);
 
   /* text */
-  --color-foam:      #EDE6D6;    /* text/UI on dark (never pure #fff)       */
-  --color-foam-dim:  #9CB0C6;    /* secondary text on dark                  */
-  --color-ink-text:  #122130;    /* text on light                          */
-  --color-ink-dim:   #566779;    /* secondary text on light                */
+  --color-foam:      #FFFFFF;    /* text on blue bands                       */
+  --color-foam-dim:  #C6DAF0;    /* secondary text on blue                   */
+  --color-ink-text:  #16233B;    /* cool near-black body text                */
+  --color-ink-dim:   #5C6B82;    /* muted body text                          */
 
-  /* type (attach these vars in layout via next/font — see PATCH-GUIDE) */
-  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
-  --font-sans:    var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono:    var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
+  /* ---- Type ---- */
+  --font-display: var(--font-display), "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --font-serif:   var(--font-serif), "Instrument Serif", ui-serif, Georgia, serif;
+  --font-sans:    var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-mono:    var(--font-mono-jb), ui-monospace, "SFMono-Regular", monospace;
 
-  /* ---- spacing scale — these BACK the px-gutter / py-section-spacing
-          utilities used across the site. Without them Tailwind emits no
-          rule at all, so containers sit flush to the viewport edge. ---- */
-  --spacing-gutter:          clamp(1.25rem, 0.9rem + 1.6vw, 2.5rem);
-  --spacing-section-spacing: clamp(4rem, 3rem + 5vw, 7.5rem);
+  /* ---- Spacing rhythm — generous (references use 48px+ section gaps) ---- */
+  --spacing-gutter:          clamp(1.25rem, 0.9rem + 1.6vw, 2.75rem);
+  --spacing-section-spacing: clamp(4.5rem, 3rem + 6vw, 9rem);
 
-  /* ---- motion — one vocabulary of easings, so every surface on the site
-          decelerates the same way. `settle` is the compass-needle curve. ---- */
+  /* ---- Motion vocabulary ---- */
   --ease-settle:  cubic-bezier(0.16, 1, 0.3, 1);
   --ease-reveal:  cubic-bezier(0.22, 1, 0.36, 1);
   --ease-glide:   cubic-bezier(0.4, 0, 0.2, 1);
   --ease-spring:  cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* ---- Layout constants + shadcn semantic tokens (parchment = default) ---- */
 :root {
-  --header-h: 4.5rem;                 /* 72px — used for offset + anchors    */
-  --container: 75rem;                 /* 1200px                              */
-  --radius: 0.625rem;
+  --header-h: 4.75rem;
+  --container: 78rem;                 /* 1248px */
+  --radius: 1rem;                     /* one soft, friendly radius everywhere */
+  --radius-lg: 1.75rem;
 
-  --shadow-card: 0 1px 2px rgba(12,24,38,.06), 0 10px 30px rgba(12,24,38,.09);
-  --shadow-lift: 0 3px 8px rgba(12,24,38,.10), 0 22px 60px rgba(12,24,38,.18);
-  --glow-azimuth: 0 0 0 1px rgba(36,64,232,.30), 0 10px 34px rgba(36,64,232,.28);
-  --glow-brass:   0 0 0 1px rgba(192,138,45,.35), 0 8px 26px rgba(192,138,45,.20);
+  /* Warm, soft shadows — light and diffuse, never hard/grey */
+  --shadow-soft: 0 1px 2px rgba(22,35,59,.04), 0 8px 24px rgba(22,35,59,.06);
+  --shadow-card: 0 2px 4px rgba(22,35,59,.05), 0 16px 40px rgba(22,35,59,.09);
+  --shadow-lift: 0 6px 12px rgba(22,35,59,.08), 0 30px 70px rgba(22,35,59,.16);
+  --shadow-blue: 0 10px 30px rgba(0,85,164,.28);
+  --shadow-red:  0 10px 30px rgba(239,65,53,.26);
 
-  /* Layered elevation ramp — each step adds a tighter contact shadow plus a
-     wider ambient one, which is what separates "premium" from "box-shadow". */
-  --elev-1: 0 1px 1px rgba(12,24,38,.05), 0 2px 6px rgba(12,24,38,.06);
-  --elev-2: 0 1px 2px rgba(12,24,38,.06), 0 6px 16px rgba(12,24,38,.09);
-  --elev-3: 0 2px 4px rgba(12,24,38,.07), 0 14px 34px rgba(12,24,38,.12);
-  --elev-4: 0 4px 8px rgba(12,24,38,.09), 0 28px 64px rgba(12,24,38,.18);
+  --elev-1: var(--shadow-soft);
+  --elev-2: var(--shadow-card);
+  --elev-3: var(--shadow-card);
+  --elev-4: var(--shadow-lift);
+  --elev-ink-2: 0 2px 8px rgba(0,0,0,.4), 0 20px 50px rgba(0,0,0,.4);
+  --elev-ink-3: 0 4px 12px rgba(0,0,0,.45), 0 30px 70px rgba(0,0,0,.5);
+  --glow-azimuth: var(--shadow-blue);
+  --glow-brass:   0 10px 30px rgba(227,162,74,.3);
 
-  /* Same ramp for cards sitting ON ink — light bleeds, it doesn't pool. */
-  --elev-ink-2: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.34);
-  --elev-ink-3: 0 2px 6px rgba(0,0,0,.45), 0 18px 48px rgba(0,0,0,.42);
+  --line: rgba(22, 35, 59, 0.10);     /* warm hairline on light            */
+  --line-strong: rgba(22, 35, 59, 0.16);
+  --hairline: var(--line);
 
-  --background: var(--color-parchment);
+  --background: var(--color-cream);
   --foreground: var(--color-ink-text);
-  --card-bg: var(--color-card);
+  --card-bg: var(--color-ivory);
   --card-fg: var(--color-ink-text);
   --muted-fg: var(--color-ink-dim);
-  --primary: var(--color-azimuth);
+  --primary: var(--color-blue);
   --primary-foreground: var(--color-foam);
-  --border: color-mix(in srgb, var(--color-ink-text) 12%, transparent);
-  --ring: var(--color-azimuth);
+  --border: var(--line);
+  --ring: var(--color-blue);
+  --heading: var(--color-blue-deep);
 }
 
-/* ---- Dark "map at night" surface. Any section/element opts in with .on-ink.
-        This ALSO fixes the invisible-heading bug: on ink, foreground = foam. ---- */
+/* Dark "atelier at dusk" surface for footer & anchor bands. */
 .on-ink {
-  --background: var(--color-ink);
+  --background: var(--color-espresso);
   --foreground: var(--color-foam);
   --card-bg: var(--color-ink-panel);
   --card-fg: var(--color-foam);
   --muted-fg: var(--color-foam-dim);
   --border: color-mix(in srgb, var(--color-foam) 12%, transparent);
-  background-color: var(--color-ink);
+  --heading: var(--color-foam);
+  background-color: var(--color-espresso);
   color: var(--color-foam);
 }
 
@@ -101,135 +132,182 @@
   html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
   body {
-    background: var(--color-parchment);
+    background: var(--color-cream);
     color: var(--color-ink-text);
     font-family: var(--font-sans);
+    font-feature-settings: "cv02", "cv03", "cv04", "ss01";
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
 
-  h1, h2, h3 { font-family: var(--font-display); font-weight: 400; letter-spacing: -0.01em; }
-
-  ::selection { background: color-mix(in srgb, var(--color-azimuth) 28%, transparent); }
-
-  /* Consistent, visible keyboard focus everywhere (a11y floor) */
-  :focus-visible {
-    outline: 2px solid var(--color-azimuth);
-    outline-offset: 2px;
-    border-radius: 5px;
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--heading);
+    text-wrap: balance;
   }
 
-  /* Fixed-header offset so in-page anchors aren't hidden under the navbar */
-  [id] { scroll-margin-top: calc(var(--header-h) + 1rem); }
+  ::selection { background: color-mix(in srgb, var(--color-blue) 22%, transparent); }
 
-  /* Overflow guard that does NOT break position:sticky/fixed (clip, not hidden) */
+  :focus-visible {
+    outline: 2px solid var(--color-blue);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  [id] { scroll-margin-top: calc(var(--header-h) + 1.25rem); }
   .clip-x { overflow-x: clip; }
 }
 
-/* Fluid type scale */
+/* ---- Fluid type scale (larger, more editorial) ---- */
 @layer utilities {
-  .fs--1 { font-size: clamp(0.83rem, 0.80rem + 0.15vw, 0.92rem); }
-  .fs-0  { font-size: clamp(1rem, 0.96rem + 0.2vw, 1.125rem); }
-  .fs-1  { font-size: clamp(1.2rem, 1.1rem + 0.5vw, 1.5rem); }
-  .fs-2  { font-size: clamp(1.5rem, 1.3rem + 1vw, 2.1rem); }
-  .fs-3  { font-size: clamp(2rem, 1.6rem + 2vw, 3.2rem); }
-  .fs-4  { font-size: clamp(2.6rem, 2rem + 3.4vw, 5rem); }
-  .fs-5  { font-size: clamp(3.2rem, 2.2rem + 6vw, 7rem); }
+  .fs--1 { font-size: clamp(0.82rem, 0.79rem + 0.15vw, 0.9rem); }
+  .fs-0  { font-size: clamp(1rem, 0.96rem + 0.2vw, 1.1rem); line-height: 1.65; }
+  .fs-1  { font-size: clamp(1.2rem, 1.08rem + 0.55vw, 1.6rem); }
+  .fs-2  { font-size: clamp(1.7rem, 1.4rem + 1.3vw, 2.6rem); }
+  .fs-3  { font-size: clamp(2.2rem, 1.7rem + 2.4vw, 3.9rem); }
+  .fs-4  { font-size: clamp(2.9rem, 2rem + 4.2vw, 6rem); }
+  .fs-5  { font-size: clamp(3.4rem, 2rem + 7vw, 8.5rem); }
+
+  .font-serif-italic { font-family: var(--font-serif); font-style: italic; font-weight: 400; }
+
+  /* Eyebrow — small mono label with a short rule */
   .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
     font-family: var(--font-mono);
     text-transform: uppercase;
-    letter-spacing: 0.16em;
-    font-size: clamp(0.7rem, 0.66rem + 0.15vw, 0.78rem);
+    letter-spacing: 0.18em;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--color-blue);
   }
-
-  /* ---- Premium surfaces -------------------------------------------------
-     .glass-ink   — frosted panel for cards on the dark map surface
-     .glass-warm  — the parchment equivalent
-     Both keep a 1px top highlight, which is what sells the "lit from above"
-     read. Blur is capped at 14px: past that mobile GPUs start dropping frames.
-     ---------------------------------------------------------------------- */
-  .glass-ink {
-    background: linear-gradient(
-      160deg,
-      color-mix(in srgb, var(--color-ink-panel) 88%, transparent),
-      color-mix(in srgb, var(--color-ink-abyss) 82%, transparent)
-    );
-    backdrop-filter: blur(14px) saturate(1.2);
-    -webkit-backdrop-filter: blur(14px) saturate(1.2);
-    border: 1px solid color-mix(in srgb, var(--color-foam) 10%, transparent);
-    box-shadow: var(--elev-ink-2);
-  }
-  .glass-warm {
-    background: linear-gradient(
-      160deg,
-      color-mix(in srgb, var(--color-card) 92%, transparent),
-      color-mix(in srgb, var(--color-parchment2) 78%, transparent)
-    );
-    backdrop-filter: blur(14px) saturate(1.15);
-    -webkit-backdrop-filter: blur(14px) saturate(1.15);
-    border: 1px solid color-mix(in srgb, var(--color-ink-text) 8%, transparent);
-    box-shadow: var(--elev-2);
-  }
-
-  /* The lit top edge. Pair with a relative, overflow-hidden parent. */
-  .edge-lit::before {
+  .eyebrow::before {
     content: '';
-    position: absolute;
-    inset-inline: 0;
-    top: 0;
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      color-mix(in srgb, var(--color-brass-soft) 55%, transparent),
-      transparent
-    );
-    pointer-events: none;
+    width: 1.6rem;
+    height: 2px;
+    border-radius: 999px;
+    background: var(--color-red);
+  }
+  .eyebrow-center { justify-content: center; }
+
+  /* ---- Buttons ----
+     Every variant is self-sufficient (works standalone OR combined with .btn),
+     so both new pages (`btn btn-primary`) and earlier pages (`btn-cta`) work. */
+  .btn, .btn-primary, .btn-red, .btn-ghost, .btn-cream, .btn-cta {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.55rem;
+    min-height: 3rem; padding: 0 1.6rem; border-radius: 999px;
+    font-weight: 600; font-size: 0.98rem; line-height: 1; cursor: pointer;
+    transition: transform .28s var(--ease-settle), background-color .28s var(--ease-glide),
+                box-shadow .28s var(--ease-settle), border-color .28s var(--ease-glide), color .2s;
+  }
+  .btn-primary, .btn-cta { background: var(--color-blue); color: #fff; box-shadow: var(--shadow-blue); }
+  .btn-primary:hover { background: var(--color-blue-deep); transform: translateY(-2px); box-shadow: var(--shadow-lift); }
+  .btn-cta:hover { background: var(--color-red); transform: translateY(-2px); box-shadow: var(--shadow-red); }
+  .btn-red { background: var(--color-red); color: #fff; box-shadow: var(--shadow-red); }
+  .btn-red:hover { background: var(--color-coral); transform: translateY(-2px); }
+  .btn-ghost { background: transparent; color: var(--color-ink-text); border: 1.5px solid var(--line-strong); }
+  .btn-ghost:hover { border-color: var(--color-blue); color: var(--color-blue); transform: translateY(-2px); }
+  .btn-cream { background: var(--color-cream); color: var(--color-ink-text); box-shadow: var(--shadow-soft); }
+  .btn-cream:hover { transform: translateY(-2px); box-shadow: var(--shadow-card); }
+  .on-ink .btn-ghost { color: var(--color-foam); border-color: color-mix(in srgb, var(--color-foam) 30%, transparent); }
+  .on-ink .btn-ghost:hover { border-color: var(--color-ochre); color: var(--color-ochre-soft); }
+
+  /* ---- Chips / tags ---- */
+  .chip {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.4rem 0.85rem; border-radius: 999px;
+    font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500;
+    letter-spacing: 0.02em; border: 1px solid var(--line);
+    background: var(--color-ivory); color: var(--color-ink-dim);
+  }
+  .chip-blue { color: var(--color-blue); background: color-mix(in srgb, var(--color-blue) 8%, transparent); border-color: color-mix(in srgb, var(--color-blue) 22%, transparent); }
+  .chip-red  { color: var(--color-red-text); background: color-mix(in srgb, var(--color-red) 10%, transparent); border-color: color-mix(in srgb, var(--color-red) 24%, transparent); }
+  .chip-ochre{ color: #9A6A15; background: color-mix(in srgb, var(--color-ochre) 16%, transparent); border-color: color-mix(in srgb, var(--color-ochre) 34%, transparent); }
+
+  /* ---- Status pills (Upcoming Batches) ---- */
+  .pill { display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.3rem 0.75rem; border-radius: 999px;
+          font-family: var(--font-mono); font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+  .pill::before { content: ''; width: 0.45rem; height: 0.45rem; border-radius: 999px; background: currentColor; }
+  .pill-open    { color: var(--color-blue);     background: color-mix(in srgb, var(--color-blue) 12%, transparent); }
+  .pill-filling { color: var(--color-red-text);  background: color-mix(in srgb, var(--color-red) 14%, transparent); }
+  .pill-full    { color: var(--color-ink-dim);   background: color-mix(in srgb, var(--color-ink-dim) 14%, transparent); }
+
+  /* Level badge */
+  .level-badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 2.7rem; padding: 0.25rem 0.6rem; border-radius: 0.6rem;
+    border: 1px solid color-mix(in srgb, var(--color-blue) 26%, transparent);
+    background: color-mix(in srgb, var(--color-blue) 8%, transparent);
+    color: var(--color-blue); font-family: var(--font-mono); font-size: 0.8rem; font-weight: 600;
   }
 
-  /* Brass hairline divider, fading at both ends. */
-  .rule-brass {
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      color-mix(in srgb, var(--color-brass) 45%, transparent),
-      transparent
-    );
+  .text-flag-red { color: var(--color-red-text); }
+  .text-red-accent { color: var(--color-red-text); }
+
+  /* ---- Cards ---- */
+  .card-warm {
+    background: var(--color-ivory);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
   }
 
-  /* Cards that rise on hover. Transform + shadow only — never layout props. */
-  .lift {
-    transition:
-      transform 0.42s var(--ease-settle),
-      box-shadow 0.42s var(--ease-settle),
-      border-color 0.42s var(--ease-settle);
-    will-change: transform;
-  }
-  .lift:hover { transform: translateY(-4px); box-shadow: var(--elev-4); }
-  .on-ink .lift:hover { box-shadow: var(--elev-ink-3); }
+  /* Hover-rise */
+  .lift { transition: transform .4s var(--ease-settle), box-shadow .4s var(--ease-settle), border-color .4s var(--ease-settle); will-change: transform; }
+  .lift:hover { transform: translateY(-6px); box-shadow: var(--shadow-lift); }
 
-  /* Gradient text for the one hero word that carries the brand. */
-  .text-brass-gradient {
-    background: linear-gradient(
-      135deg,
-      var(--color-brass-soft) 0%,
-      var(--color-brass) 45%,
-      var(--color-brass-soft) 100%
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+  /* ---- Rules / dividers ---- */
+  .rule-red  { height: 3px; width: 3rem; border-radius: 999px; background: var(--color-red); }
+  .rule-blue { height: 3px; width: 3rem; border-radius: 999px; background: var(--color-blue); }
+
+  /* ---- Gradient text (blue→red French sweep) for one hero accent word ---- */
+  .text-french-sweep {
+    background: linear-gradient(100deg, var(--color-blue) 0%, var(--color-blue) 35%, var(--color-red) 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
   }
+  .text-blue { color: var(--color-blue); }
+  .text-ochre-ink { color: #9A6A15; }
+
+  /* ---- Animated underline for inline links ---- */
+  .link-underline { position: relative; }
+  .link-underline::after {
+    content: ''; position: absolute; left: 0; bottom: -2px; height: 2px; width: 100%;
+    background: currentColor; transform: scaleX(0); transform-origin: left;
+    transition: transform .35s var(--ease-reveal);
+  }
+  .link-underline:hover::after { transform: scaleX(1); }
+
+  /* ---- Paper grain overlay (premium texture) ---- */
+  .grain::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+    opacity: 0.5; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  }
+
+  /* ---- Infinite marquee ---- */
+  .marquee { display: flex; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+  .marquee__track { display: flex; flex-shrink: 0; gap: 3.5rem; align-items: center; padding-right: 3.5rem; animation: marquee 34s linear infinite; }
+  @keyframes marquee { to { transform: translateX(-100%); } }
+  .marquee:hover .marquee__track { animation-play-state: paused; }
+
+  /* Soft radial spotlight helper */
+  .spotlight-blue { background: radial-gradient(60% 60% at 50% 0%, color-mix(in srgb, var(--color-blue) 12%, transparent), transparent 70%); }
+  .spotlight-warm { background: radial-gradient(50% 60% at 80% 20%, color-mix(in srgb, var(--color-ochre) 20%, transparent), transparent 70%); }
 }
 
-/* Anything using .lift or parallax must not jitter for reduced-motion users. */
+/* Scroll-reveal primitive (used by Reveal / Stagger components too) */
+@layer utilities {
+  .reveal-init { opacity: 0; transform: translateY(18px); }
+  .reveal-in { opacity: 1; transform: none; transition: opacity .7s var(--ease-reveal), transform .7s var(--ease-reveal); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .lift:hover { transform: none; }
-}
-
-/* Respect reduced motion globally */
-@media (prefers-reduced-motion: reduce) {
+  .marquee__track { animation: none; }
+  .reveal-init { opacity: 1; transform: none; }
   *, *::before, *::after {
     animation-duration: .001ms !important;
     animation-iteration-count: 1 !important;

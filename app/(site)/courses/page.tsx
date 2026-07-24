@@ -51,22 +51,22 @@ export default function CoursesPage() {
       <Section variant="ink" className="pt-16 md:pt-20 pb-4 md:pb-5">
         <div className="max-w-4xl mx-auto px-4 md:px-6 text-center">
           <div className="inline-block mb-2">
-            <span className="font-mono text-xs uppercase tracking-[0.14em] text-[#C08A2D]">
+            <span className="font-mono text-xs uppercase tracking-[0.14em] text-[#EF4135]">
               All Courses
             </span>
           </div>
-          <h1 className="font-display text-3xl md:text-5xl lg:text-6xl font-semibold text-[#EDE6D6] mb-2 md:mb-3">
+          <h1 className="font-display text-3xl md:text-5xl lg:text-6xl font-semibold text-[#FFFFFF] mb-2 md:mb-3">
             Choose Your Route
           </h1>
-          <p className="text-base md:text-lg text-[#93A6BC] mb-3 md:mb-4">
+          <p className="text-base md:text-lg text-[#C6DAF0] mb-3 md:mb-4">
             From your first <em>bonjour</em> to fluent French. 15 pathways to match
             your goal.
           </p>
           {/* <Button
             asChild
-            className="bg-[#C08A2D] text-[#0C1826] hover:bg-[#D8AE63]"
+            className="bg-[#EF4135] text-[#003A72] hover:bg-[#FF7A70]"
           >
-            <Link href="/playground/placement">Find Your Level →</Link>
+            <Link href="/learning-resources/placement">Find Your Level →</Link>
           </Button> */}
         </div>
       </Section>
@@ -74,21 +74,21 @@ export default function CoursesPage() {
       {/* Choose Your Route Section */}
       <Section variant="parchment" className="py-6 md:py-7">
         <div className="max-w-4xl mx-auto px-4 md:px-6">
-          {/* <h2 className="font-display text-xl md:text-2xl font-semibold text-[#0C1826] mb-3 text-center">
+          {/* <h2 className="font-display text-xl md:text-2xl font-semibold text-[#003A72] mb-3 text-center">
             Choose Your Route
           </h2> */}
-          <p className="text-base md:text-lg text-[#546575] mb-3 text-center leading-relaxed">
+          <p className="text-base md:text-lg text-[#5C6B82] mb-3 text-center leading-relaxed">
             Whether you&apos;re chasing a CLB 7 for Express Entry, preparing for DELF, or simply want to hold a real conversation in Paris — every route starts with the right level. French Compass offers 15 structured pathways, each taught live by C1-certified instructors who&apos;ve lived the language, not just studied it.
           </p>
-          <p className="text-sm md:text-base text-[#546575] italic text-center mb-4">
+          <p className="text-sm md:text-base text-[#5C6B82] italic text-center mb-4">
             Not sure where you stand? The placement quiz takes 2 minutes and tells you exactly where to begin.
           </p>
           <div className="flex justify-center">
             <Button
               asChild
-              className="bg-[#C08A2D] text-[#0C1826] hover:bg-[#D8AE63]"
+              className="bg-[#EF4135] text-[#003A72] hover:bg-[#FF7A70]"
             >
-              <Link href="/playground/placement">Find Your Level →</Link>
+              <Link href="/learning-resources/placement">Find Your Level →</Link>
             </Button>
           </div>
         </div>
@@ -159,7 +159,7 @@ export default function CoursesPage() {
         <div className="max-w-6xl mx-auto px-4 md:px-6">
           {sortedCourses.length === 0 ? (
             <div className="text-center py-8">
-              <p className="text-[#546575]">No courses found for this filter.</p>
+              <p className="text-[#5C6B82]">No courses found for this filter.</p>
             </div>
           ) : (
             <div
@@ -189,29 +189,29 @@ export default function CoursesPage() {
       <Section variant="ink" className="py-6 md:py-8">
         <div className="max-w-4xl mx-auto px-4 md:px-6 text-center">
           <div className="inline-flex items-center gap-2 mb-4 md:mb-6">
-            <Compass className="w-4 md:w-5 h-4 md:h-5 text-[#C08A2D]" />
-            <span className="font-mono text-xs uppercase tracking-[0.14em] text-[#C08A2D]">
+            <Compass className="w-4 md:w-5 h-4 md:h-5 text-[#EF4135]" />
+            <span className="font-mono text-xs uppercase tracking-[0.14em] text-[#EF4135]">
               Still navigating?
             </span>
           </div>
-          <h2 className="font-display text-2xl md:text-4xl font-semibold text-[#EDE6D6] mb-3 md:mb-4">
+          <h2 className="font-display text-2xl md:text-4xl font-semibold text-[#FFFFFF] mb-3 md:mb-4">
             Not sure which course is right for you?
           </h2>
-          <p className="text-sm md:text-base text-[#93A6BC] mb-6 md:mb-8 max-w-2xl mx-auto">
+          <p className="text-sm md:text-base text-[#C6DAF0] mb-6 md:mb-8 max-w-2xl mx-auto">
             Take our placement quiz to find your level in 2 minutes, or message us
             directly. We&apos;ll help you chart the best course.
           </p>
           <div className="flex flex-col gap-3 md:gap-4 justify-center">
             <Button
               asChild
-              className="bg-[#2440E8] text-[#EDE6D6] hover:bg-[#3E59FF] w-full md:w-auto md:inline-block"
+              className="bg-[#0055A4] text-[#FFFFFF] hover:bg-[#1466BE] w-full md:w-auto md:inline-block"
             >
-              <Link href="/playground/placement">Find Your Level</Link>
+              <Link href="/learning-resources/placement">Find Your Level</Link>
             </Button>
             <Button
               asChild
               variant="outline"
-              className="border-[#EDE6D6]/20 text-[#EDE6D6] hover:bg-[#EDE6D6]/10 w-full md:w-auto md:inline-block"
+              className="border-[#FFFFFF]/20 text-[#FFFFFF] hover:bg-[#FFFFFF]/10 w-full md:w-auto md:inline-block"
             >
               <a
                 href={whatsappLink("I'd like help choosing a course.")}

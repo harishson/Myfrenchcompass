@@ -218,13 +218,13 @@ export function Flashcards({ cards }: { cards: Flashcard[] }) {
           transition={{ duration: reduce ? 0 : 0.5 }}
         >
           {/* front */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl border border-brass/30 bg-gradient-to-br from-[#132234] to-[#0C1826] text-foam [backface-visibility:hidden]">
+          <div className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl border border-brass/30 bg-gradient-to-br from-[#0055A4] to-[#003A72] text-foam [backface-visibility:hidden]">
             <span className="font-display text-6xl text-brass">{card.front}</span>
             {card.sub && <span className="mt-2 text-sm text-foam-dim">{card.sub}</span>}
             <span className="mt-4 text-xs text-foam-dim/60">Tap to reveal</span>
           </div>
           {/* back */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl border border-verdigris/40 bg-gradient-to-br from-[#0f7a63] to-[#0b5a49] px-4 text-center text-foam [transform:rotateY(180deg)] [backface-visibility:hidden]">
+          <div className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl border border-verdigris/40 bg-gradient-to-br from-[#003A72] to-[#002E5C] px-4 text-center text-foam [transform:rotateY(180deg)] [backface-visibility:hidden]">
             <span className="font-display text-3xl">{card.back}</span>
             {card.backSub && <span className="mt-2 text-sm text-foam/80">{card.backSub}</span>}
           </div>

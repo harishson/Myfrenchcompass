@@ -16,20 +16,15 @@ export const metadata: Metadata = {
 export default function PlacementPage() {
   return (
     <>
-      <Section className="pt-20 md:pt-32 pb-12 md:pb-20" dark>
-        <div className="mb-12 px-4 md:px-0 text-center">
-          <span className="inline-block rounded-full bg-[#2440E8]/10 px-4 py-2 mb-4">
-            <span className="font-mono text-xs uppercase tracking-wider text-[#2440E8]">Quest #1</span>
-          </span>
-          <h1 className="font-display text-2xl md:text-4xl font-semibold text-[#EDE6D6] mb-3">
-            Find Your Bearing
-          </h1>
-          <p className="text-lg text-[#93A6BC] max-w-2xl mx-auto">
-            Discover your current French level in just 2 minutes. No signup required — instant results and personalized course recommendations.
+      <Section className="pt-28 md:pt-36 pb-16 md:pb-24">
+        <div className="mb-10 px-4 text-center md:px-0">
+          <p className="eyebrow eyebrow-center">Free placement quiz</p>
+          <p className="mx-auto mt-5 max-w-xl fs-1 text-ink-dim">
+            Two minutes, no signup — find your exact CEFR level and the class that fits.
           </p>
         </div>
 
-        <div className="max-w-2xl mx-auto">
+        <div className="mx-auto max-w-2xl">
           <QuizEngine />
         </div>
       </Section>

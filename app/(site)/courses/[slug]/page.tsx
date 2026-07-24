@@ -67,11 +67,11 @@ export default async function CourseDetailPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       {/* Back Button - Visible on all devices */}
-      <div className="bg-[#0C1826] border-b border-[#EDE6D6]/10 sticky top-16 md:top-24 z-30">
+      <div className="bg-[#003A72] border-b border-[#FFFFFF]/10 sticky top-16 md:top-24 z-30">
         <div className="max-w-6xl mx-auto px-4 md:px-6 py-2 md:py-3">
           <Link
             href="/courses"
-            className="inline-flex items-center gap-2 text-xs md:text-sm font-medium text-[#C08A2D] hover:text-[#D8AE63] transition-colors"
+            className="inline-flex items-center gap-2 text-xs md:text-sm font-medium text-[#EF4135] hover:text-[#FF7A70] transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             <span className="hidden sm:inline">Back to Courses</span>
@@ -85,25 +85,25 @@ export default async function CourseDetailPage({ params }: PageProps) {
         <div className="max-w-4xl mx-auto px-4 md:px-6">
           <Reveal>
             <div className="inline-block mb-3">
-              <span className="font-mono text-xs uppercase tracking-[0.14em] text-[#C08A2D]">
+              <span className="font-mono text-xs uppercase tracking-[0.14em] text-[#EF4135]">
                 {course.category}
               </span>
             </div>
           </Reveal>
           <Reveal delay={100}>
-            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold text-[#EDE6D6] mb-4">
+            <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold text-[#FFFFFF] mb-4">
               {course.title}
             </h1>
           </Reveal>
           <Reveal delay={200}>
-            <p className="text-xl text-[#93A6BC] mb-8 max-w-3xl leading-relaxed">
+            <p className="text-xl text-[#C6DAF0] mb-8 max-w-3xl leading-relaxed">
               {course.subtitle}
             </p>
           </Reveal>
           <Reveal delay={300} className="flex flex-col sm:flex-row gap-4">
             <Button 
               asChild
-              className="bg-[#2440E8] text-[#EDE6D6] hover:bg-[#3E59FF]"
+              className="bg-[#0055A4] text-[#FFFFFF] hover:bg-[#1466BE]"
             >
               <Link href={`/contact?course=${encodeURIComponent(course.title)}&slug=${course.slug}`}>
                 Reserve a seat
@@ -112,7 +112,7 @@ export default async function CourseDetailPage({ params }: PageProps) {
             <Button
               asChild
               variant="outline"
-              className="border-[#EDE6D6]/20 text-[#EDE6D6] hover:bg-[#EDE6D6]/10"
+              className="border-[#FFFFFF]/20 text-[#FFFFFF] hover:bg-[#FFFFFF]/10"
             >
               <Link href="/contact">Ask a question</Link>
             </Button>
@@ -126,7 +126,7 @@ export default async function CourseDetailPage({ params }: PageProps) {
           <div className="max-w-4xl mx-auto px-4 md:px-6">
             <Reveal>
               <div className="inline-block mb-3">
-                <span className="font-mono text-xs uppercase tracking-[0.14em] text-[#C08A2D]">
+                <span className="font-mono text-xs uppercase tracking-[0.14em] text-[#EF4135]">
                   {course.abilities.eyebrow}
                 </span>
               </div>
@@ -134,8 +134,8 @@ export default async function CourseDetailPage({ params }: PageProps) {
             <div className="space-y-3">
               {course.abilities.items.map((item, i) => (
                 <Reveal key={i} delay={i * 50} className="flex gap-3">
-                  <div className="w-1 h-1 bg-[#C08A2D] rounded-full flex-shrink-0 mt-2" />
-                  <p className="text-base md:text-lg text-[#93A6BC] leading-relaxed">
+                  <div className="w-1 h-1 bg-[#EF4135] rounded-full flex-shrink-0 mt-2" />
+                  <p className="text-base md:text-lg text-[#C6DAF0] leading-relaxed">
                     {item}
                   </p>
                 </Reveal>
@@ -151,40 +151,40 @@ export default async function CourseDetailPage({ params }: PageProps) {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             <Reveal>
               <div className="text-center">
-                <div className="font-display text-3xl font-bold text-[#2440E8] mb-2">
+                <div className="font-display text-3xl font-bold text-[#0055A4] mb-2">
                   {course.duration}
                 </div>
-                <p className="text-sm text-[#546575] font-mono uppercase tracking-widest">
+                <p className="text-sm text-[#5C6B82] font-mono uppercase tracking-widest">
                   Duration
                 </p>
               </div>
             </Reveal>
             <Reveal delay={50}>
               <div className="text-center">
-                <div className="font-display text-3xl font-bold text-[#2440E8] mb-2">
+                <div className="font-display text-3xl font-bold text-[#0055A4] mb-2">
                   {course.sessions}
                 </div>
-                <p className="text-sm text-[#546575] font-mono uppercase tracking-widest">
+                <p className="text-sm text-[#5C6B82] font-mono uppercase tracking-widest">
                   Sessions
                 </p>
               </div>
             </Reveal>
             <Reveal delay={100}>
               <div className="text-center">
-                <div className="font-display text-3xl font-bold text-[#2440E8] mb-2">
+                <div className="font-display text-3xl font-bold text-[#0055A4] mb-2">
                   {course.classSize}
                 </div>
-                <p className="text-sm text-[#546575] font-mono uppercase tracking-widest">
+                <p className="text-sm text-[#5C6B82] font-mono uppercase tracking-widest">
                   Class size
                 </p>
               </div>
             </Reveal>
             <Reveal delay={150}>
               <div className="text-center">
-                <div className="font-display text-3xl font-bold text-[#C08A2D] mb-2">
+                <div className="font-display text-3xl font-bold text-[#EF4135] mb-2">
                   ₹{course.priceINR}
                 </div>
-                <p className="text-sm text-[#546575] font-mono uppercase tracking-widest">
+                <p className="text-sm text-[#5C6B82] font-mono uppercase tracking-widest">
                   Price
                 </p>
               </div>
@@ -197,16 +197,16 @@ export default async function CourseDetailPage({ params }: PageProps) {
       <Section variant="parchment" className="py-8 md:py-10">
         <div className="max-w-4xl mx-auto px-4 md:px-6">
           <Reveal>
-            <h2 className="font-display text-3xl md:text-4xl font-semibold text-[#0C1826] mb-8">
+            <h2 className="font-display text-3xl md:text-4xl font-semibold text-[#003A72] mb-8">
               What you&apos;ll learn
             </h2>
           </Reveal>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {course.highlights.map((highlight, i) => (
               <Reveal key={i} delay={i * 50} className="flex gap-3">
-                <Check className="w-5 h-5 text-[#C08A2D] flex-shrink-0 mt-1" />
+                <Check className="w-5 h-5 text-[#EF4135] flex-shrink-0 mt-1" />
                 <div>
-                  <p className="text-[#122130] font-semibold">{highlight}</p>
+                  <p className="text-[#16233B] font-semibold">{highlight}</p>
                 </div>
               </Reveal>
             ))}
@@ -220,10 +220,10 @@ export default async function CourseDetailPage({ params }: PageProps) {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Reveal>
               <div className="flex gap-3">
-                <Clock className="w-6 h-6 text-[#C08A2D] flex-shrink-0" />
+                <Clock className="w-6 h-6 text-[#EF4135] flex-shrink-0" />
                 <div>
-                  <h3 className="font-semibold text-[#EDE6D6] mb-1">Schedule</h3>
-                  <p className="text-[#93A6BC] text-sm">
+                  <h3 className="font-semibold text-[#FFFFFF] mb-1">Schedule</h3>
+                  <p className="text-[#C6DAF0] text-sm">
                     {course.schedule}
                   </p>
                 </div>
@@ -231,10 +231,10 @@ export default async function CourseDetailPage({ params }: PageProps) {
             </Reveal>
             <Reveal delay={50}>
               <div className="flex gap-3">
-                <Users className="w-6 h-6 text-[#C08A2D] flex-shrink-0" />
+                <Users className="w-6 h-6 text-[#EF4135] flex-shrink-0" />
                 <div>
-                  <h3 className="font-semibold text-[#EDE6D6] mb-1">Live & Interactive</h3>
-                  <p className="text-[#93A6BC] text-sm">
+                  <h3 className="font-semibold text-[#FFFFFF] mb-1">Live & Interactive</h3>
+                  <p className="text-[#C6DAF0] text-sm">
                     All classes are 90 minutes of live instruction with real instructors.
                   </p>
                 </div>
@@ -242,10 +242,10 @@ export default async function CourseDetailPage({ params }: PageProps) {
             </Reveal>
             <Reveal delay={100}>
               <div className="flex gap-3">
-                <BookOpen className="w-6 h-6 text-[#C08A2D] flex-shrink-0" />
+                <BookOpen className="w-6 h-6 text-[#EF4135] flex-shrink-0" />
                 <div>
-                  <h3 className="font-semibold text-[#EDE6D6] mb-1">Materials Included</h3>
-                  <p className="text-[#93A6BC] text-sm">
+                  <h3 className="font-semibold text-[#FFFFFF] mb-1">Materials Included</h3>
+                  <p className="text-[#C6DAF0] text-sm">
                     Lesson slides, vocabulary lists, and homework assignments.
                   </p>
                 </div>
@@ -259,7 +259,7 @@ export default async function CourseDetailPage({ params }: PageProps) {
       <Section variant="parchment" className="py-8 md:py-10">
         <div className="max-w-4xl mx-auto px-4 md:px-6">
           <Reveal>
-            <h2 className="font-display text-3xl md:text-4xl font-semibold text-[#0C1826] mb-8 text-center">
+            <h2 className="font-display text-3xl md:text-4xl font-semibold text-[#003A72] mb-8 text-center">
               Common questions
             </h2>
           </Reveal>
@@ -283,9 +283,9 @@ export default async function CourseDetailPage({ params }: PageProps) {
               },
             ].map((faq, i) => (
               <Reveal key={i} delay={i * 50}>
-                <div className="p-5 bg-[#EAE0CC] rounded-lg">
-                  <h3 className="font-semibold text-[#0C1826] mb-2">{faq.q}</h3>
-                  <p className="text-[#546575] text-sm">{faq.a}</p>
+                <div className="p-5 bg-[#F1F5FB] rounded-lg">
+                  <h3 className="font-semibold text-[#003A72] mb-2">{faq.q}</h3>
+                  <p className="text-[#5C6B82] text-sm">{faq.a}</p>
                 </div>
               </Reveal>
             ))}
@@ -296,31 +296,31 @@ export default async function CourseDetailPage({ params }: PageProps) {
       {/* CTA */}
       <Section variant="ink" className="py-8 md:py-10">
         <div className="max-w-4xl mx-auto px-4 md:px-6 text-center">
-          <h2 className="font-display text-3xl md:text-4xl font-semibold text-[#EDE6D6] mb-6">
+          <h2 className="font-display text-3xl md:text-4xl font-semibold text-[#FFFFFF] mb-6">
             Ready to chart your course?
           </h2>
           <Button 
             asChild
-            className="bg-[#C08A2D] text-[#0C1826] hover:bg-[#D8AE63] text-base px-6 py-2"
+            className="bg-[#EF4135] text-[#003A72] hover:bg-[#FF7A70] text-base px-6 py-2"
           >
             <Link href={`/contact?course=${encodeURIComponent(course.title)}&slug=${course.slug}`}>
               Reserve your seat now
             </Link>
           </Button>
-          <p className="text-[#93A6BC] mt-6 text-sm">
-            Questions? <Link href="/contact" className="text-[#C08A2D] hover:underline">Send us a message</Link>,{' '}
+          <p className="text-[#C6DAF0] mt-6 text-sm">
+            Questions? <Link href="/contact" className="text-[#EF4135] hover:underline">Send us a message</Link>,{' '}
             <a
               href={whatsappLink(`I'd like to know more about the ${course.title} course.`)}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[#C08A2D] hover:underline"
+              className="text-[#EF4135] hover:underline"
             >
               chat on WhatsApp
             </a>{' '}
             or{' '}
             <a
               href={emailLink(`${course.title} — enquiry`)}
-              className="text-[#C08A2D] hover:underline"
+              className="text-[#EF4135] hover:underline"
             >
               email us
             </a>

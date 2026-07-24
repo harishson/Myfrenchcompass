@@ -74,9 +74,9 @@ export function StreakCounter() {
     <motion.div
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      className="rounded-lg border border-[#C08A2D]/20 bg-[#0C1826]/50 p-6 text-center"
+      className="rounded-lg border border-[#EF4135]/20 bg-[#003A72]/50 p-6 text-center"
     >
-      <h3 className="font-display text-xl font-semibold text-[#EDE6D6] mb-4">Daily Bearing</h3>
+      <h3 className="font-display text-xl font-semibold text-[#FFFFFF] mb-4">Daily Bearing</h3>
 
       <div className="mb-6 flex justify-center">
         <motion.div
@@ -84,12 +84,12 @@ export function StreakCounter() {
           transition={{ duration: 0.6, times: [0, 0.5, 1] }}
           className="flex items-center gap-2"
         >
-          <Flame className={`w-8 h-8 ${hasPlayedToday ? 'text-[#C08A2D]' : 'text-[#C08A2D]/30'}`} />
-          <div className="font-mono text-4xl font-bold text-[#EDE6D6]">{streak}</div>
+          <Flame className={`w-8 h-8 ${hasPlayedToday ? 'text-[#EF4135]' : 'text-[#EF4135]/30'}`} />
+          <div className="font-mono text-4xl font-bold text-[#FFFFFF]">{streak}</div>
         </motion.div>
       </div>
 
-      <p className="text-sm text-[#93A6BC] mb-4">
+      <p className="text-sm text-[#C6DAF0] mb-4">
         {hasPlayedToday ? 'You\'ve played today! Come back tomorrow to extend your streak.' : 'Complete one micro-challenge daily to build your streak.'}
       </p>
 
@@ -98,14 +98,14 @@ export function StreakCounter() {
         disabled={hasPlayedToday}
         className={`w-full rounded-lg px-4 py-3 font-medium transition-all ${
           hasPlayedToday
-            ? 'bg-[#C08A2D]/20 text-[#C08A2D] cursor-default'
-            : 'bg-[#2440E8] hover:bg-[#3E59FF] text-[#EDE6D6]'
+            ? 'bg-[#EF4135]/20 text-[#EF4135] cursor-default'
+            : 'bg-[#0055A4] hover:bg-[#1466BE] text-[#FFFFFF]'
         }`}
       >
         {hasPlayedToday ? 'Done for Today' : 'Start Daily Challenge'}
       </button>
 
-      <p className="mt-3 text-xs text-[#C08A2D]">
+      <p className="mt-3 text-xs text-[#EF4135]">
         <span className="font-mono font-bold">+10 XP</span> for completing today's challenge
       </p>
     </motion.div>

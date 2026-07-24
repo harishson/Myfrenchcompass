@@ -18,19 +18,19 @@ export default function ContactPage() {
         <div className="max-w-4xl mx-auto px-4 md:px-6 text-center mb-12">
           <Reveal>
             <div className="inline-flex items-center gap-2 mb-4">
-              <Compass className="w-5 h-5 text-[#C08A2D]" />
-              <span className="font-mono text-xs uppercase tracking-[0.14em] text-[#C08A2D]">
+              <Compass className="w-5 h-5 text-[#EF4135]" />
+              <span className="font-mono text-xs uppercase tracking-[0.14em] text-[#EF4135]">
                 Let's connect
               </span>
             </div>
           </Reveal>
           <Reveal delay={80}>
-            <h1 className="font-display text-3xl md:text-5xl lg:text-6xl font-semibold text-[#0C1826] mb-6">
+            <h1 className="font-display text-3xl md:text-5xl lg:text-6xl font-semibold text-[#003A72] mb-6">
               Plot Your Course
             </h1>
           </Reveal>
           <Reveal delay={160}>
-            <p className="text-lg text-[#546575] max-w-2xl mx-auto">
+            <p className="text-lg text-[#5C6B82] max-w-2xl mx-auto">
               Fill out the form below or message us directly on WhatsApp. We'll help you find your bearing and chart the perfect path to fluent French.
             </p>
           </Reveal>
