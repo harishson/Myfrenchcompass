@@ -120,9 +120,9 @@ export function Footer() {
         <div className="border-t border-white/25 py-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/80">
             <p>&copy; {new Date().getFullYear()} French Compass. All rights reserved.</p>
-            <p>
-              Crafted with precision. Guided by{' '}
-              <span className="text-white">N 09°55′ · E 78°07′</span>
+            <p className="text-center md:text-right">
+              <span className="text-white">Your compass to confident French.</span>{' '}
+              Guiding your journey from <em className="font-serif-italic">Bonjour</em> to fluency.
             </p>
           </div>
         </div>

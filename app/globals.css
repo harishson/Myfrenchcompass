@@ -293,6 +293,31 @@
   @keyframes marquee { to { transform: translateX(-100%); } }
   .marquee:hover .marquee__track { animation-play-state: paused; }
 
+  /* ---- Hero floating-words backdrop ----
+     The words carry real opacity now, so they need to get out of the way of the
+     headline rather than be dimmed into invisibility. This mask fades them to
+     nothing across the centre column and lets them reach full strength at the
+     edges — high contrast where there is space, zero where the copy sits.
+     Mobile gets a taller, narrower clearing because the copy is full-bleed. */
+  .hero-words {
+    -webkit-mask-image: radial-gradient(78% 42% at 50% 44%, transparent 30%, rgba(0,0,0,.45) 62%, #000 88%);
+    mask-image: radial-gradient(78% 42% at 50% 44%, transparent 30%, rgba(0,0,0,.45) 62%, #000 88%);
+  }
+  @media (min-width: 640px) {
+    .hero-words {
+      -webkit-mask-image: radial-gradient(52% 46% at 50% 42%, transparent 26%, rgba(0,0,0,.5) 58%, #000 84%);
+      mask-image: radial-gradient(52% 46% at 50% 42%, transparent 26%, rgba(0,0,0,.5) 58%, #000 84%);
+    }
+  }
+  /* Hairline-outlined glyph — editorial texture that stays airy at larger sizes.
+     Only the fill is cleared, so `color` still drives the stroke via currentColor.
+     Where -webkit-text-stroke is unsupported the glyph simply renders filled. */
+  .word-outline {
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 1.5px currentColor;
+  }
+  @media (min-width: 640px) { .word-outline { -webkit-text-stroke-width: 2px; } }
+
   /* Soft radial spotlight helper */
   .spotlight-blue { background: radial-gradient(60% 60% at 50% 0%, color-mix(in srgb, var(--color-blue) 12%, transparent), transparent 70%); }
   .spotlight-warm { background: radial-gradient(50% 60% at 80% 20%, color-mix(in srgb, var(--color-ochre) 20%, transparent), transparent 70%); }
