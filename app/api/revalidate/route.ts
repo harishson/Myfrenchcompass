@@ -22,7 +22,10 @@ export async function POST(req: NextRequest) {
       return new NextResponse('Bad Request', { status: 400 })
     }
 
-    revalidateTag('batch')
+    // Next 16 requires a cache-life profile as the second argument. 'max' is a
+    // full purge, which is what a publish webhook wants — calling this with one
+    // argument (the pre-16 signature) silently failed to revalidate anything.
+    revalidateTag('batch', 'max')
     return NextResponse.json({ revalidated: true, tag: 'batch', now: Date.now() })
   } catch (err) {
     console.error('[revalidate] error:', err)
