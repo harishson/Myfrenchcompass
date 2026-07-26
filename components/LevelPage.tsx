@@ -2,7 +2,8 @@ import Link from 'next/link'
 import Script from 'next/script'
 import {
   Compass, Check, ArrowRight, ArrowLeft, CalendarDays, Clock, Users,
-  Wallet, CalendarRange, BookOpen, Layers,
+  Wallet, CalendarRange, BookOpen, Layers, Video, Hourglass, GraduationCap,
+  PencilLine,
 } from 'lucide-react'
 import { Section, Container, Eyebrow, HeaderSpacer } from '@/components/ui-primitives'
 import { Footer } from '@/components/Footer'
@@ -15,12 +16,19 @@ import { type LevelData, PARIS_COORD, inr } from '@/lib/levels'
 export function LevelPage({ level }: { level: LevelData }) {
   const batchHref = `/upcoming-batches?level=${encodeURIComponent(level.code)}`
 
-  const stats = [
+  /* `wide: true` marks a value that is a phrase rather than a figure — those
+     drop onto their own line instead of being squeezed against the label. */
+  const stats: { icon: typeof Clock; label: string; value: string; wide?: boolean }[] = [
     { icon: Clock, label: 'Duration', value: level.duration },
-    { icon: CalendarDays, label: 'Sessions', value: `${level.sessions} live classes` },
+    { icon: CalendarDays, label: 'Instructor-led live sessions', value: String(level.sessions) },
+    { icon: Hourglass, label: 'Session length', value: level.sessionLength },
+    { icon: Video, label: 'Mode', value: level.mode },
+    { icon: GraduationCap, label: 'Level', value: `CEFR ${level.code}` },
     { icon: Users, label: 'Class size', value: level.classSize },
+    { icon: CalendarRange, label: 'Schedule', value: level.schedule, wide: true },
+    { icon: PencilLine, label: 'Practice', value: level.practice, wide: true },
+    { icon: Check, label: 'Assessment', value: level.assessment, wide: true },
     { icon: Wallet, label: 'Fees', value: inr(level.priceINR) },
-    { icon: CalendarRange, label: 'Schedule', value: level.schedule },
   ]
 
   const courseSchema = {
@@ -41,8 +49,34 @@ export function LevelPage({ level }: { level: LevelData }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(courseSchema) }}
       />
 
-      {/* ---------------------------------- HERO --------------------------------- */}
+      {/* --------------------------- BACK TO ALL COURSES ------------------------- *
+       * Level pages are reached straight from the header mega-menu and the footer,
+       * so browser-back lands wherever the visitor came from (often the homepage).
+       * This gives an explicit, always-correct route up to the catalogue. */}
       <HeaderSpacer />
+      <div className="sticky top-[var(--header-h)] z-30 border-b border-ink-text/10 bg-card/95 backdrop-blur">
+        <Container className="py-2.5">
+          <nav aria-label="Breadcrumb">
+            <ol className="flex items-center gap-2 text-xs sm:text-sm">
+              <li>
+                <Link
+                  href="/courses"
+                  className="inline-flex min-h-9 items-center gap-1.5 font-medium text-azimuth transition-colors hover:text-flag-red"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                  All courses
+                </Link>
+              </li>
+              <li aria-hidden className="text-ink-dim/50">/</li>
+              <li className="truncate text-ink-dim">
+                {level.code} — {level.name}
+              </li>
+            </ol>
+          </nav>
+        </Container>
+      </div>
+
+      {/* ---------------------------------- HERO --------------------------------- */}
       <Section tone="parchment" className="relative overflow-hidden pt-[clamp(2rem,5vw,4rem)]">
         {/* compass watermark — the motif as supporting texture, used once */}
         <Compass
@@ -74,13 +108,30 @@ export function LevelPage({ level }: { level: LevelData }) {
           <div className="rounded-2xl border border-ink-text/10 bg-card p-6 shadow-[var(--shadow-card)] sm:p-8">
             <p className="eyebrow text-brass">At a glance</p>
             <dl className="mt-5 divide-y divide-ink-text/[0.08]">
-              {stats.map(({ icon: Icon, label, value }) => (
-                <div key={label} className="flex items-center gap-4 py-3.5">
-                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-azimuth/20 text-azimuth">
+              {stats.map(({ icon: Icon, label, value, wide }) => (
+                <div
+                  key={label}
+                  className={
+                    wide
+                      ? 'grid grid-cols-[2.5rem_1fr] gap-x-4 gap-y-1 py-3.5'
+                      : 'grid grid-cols-[2.5rem_1fr_auto] items-center gap-x-4 py-3.5'
+                  }
+                >
+                  <span
+                    className={`grid h-10 w-10 shrink-0 place-items-center self-start rounded-lg border border-azimuth/20 text-azimuth ${
+                      wide ? 'row-span-2' : ''
+                    }`}
+                  >
                     <Icon className="h-5 w-5" strokeWidth={1.75} />
                   </span>
                   <dt className="text-sm text-ink-dim">{label}</dt>
-                  <dd className="ml-auto text-right font-mono text-sm font-medium text-ink-text">{value}</dd>
+                  <dd
+                    className={`font-mono text-sm font-medium text-ink-text ${
+                      wide ? 'col-start-2 text-balance' : 'text-right'
+                    }`}
+                  >
+                    {value}
+                  </dd>
                 </div>
               ))}
             </dl>
@@ -91,7 +142,7 @@ export function LevelPage({ level }: { level: LevelData }) {
       {/* ------------------------- WHAT YOU'LL BE ABLE TO DO ---------------------- */}
       <Section tone="parchment" className="!pt-0">
         <div className="rounded-[20px] border border-ink-text/10 bg-parchment2 p-8 sm:p-12">
-          <p className="eyebrow text-brass">What you'll be able to do</p>
+          <p className="eyebrow text-brass">By the end of the course</p>
           <div className="rule-blue mt-3" />
           <ul className="mt-8 grid gap-x-10 gap-y-5 sm:grid-cols-2">
             {level.outcomes.map((o) => (

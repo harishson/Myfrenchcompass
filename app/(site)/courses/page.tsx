@@ -47,46 +47,39 @@ export default function CoursesPage() {
 
   return (
     <>
-      {/* Hero */}
-      <Section variant="ink" className="pt-16 md:pt-20 pb-4 md:pb-5">
-        <div className="max-w-4xl mx-auto px-4 md:px-6 text-center">
-          <div className="inline-block mb-2">
-            <span className="font-mono text-xs uppercase tracking-[0.14em] text-[#EF4135]">
-              All Courses
-            </span>
-          </div>
-          <h1 className="font-display text-3xl md:text-5xl lg:text-6xl font-semibold text-[#FFFFFF] mb-2 md:mb-3">
+      {/* Hero — top padding is derived from the real header height, otherwise the
+          eyebrow sits underneath the fixed navbar on small screens. */}
+      <Section
+        variant="ink"
+        className="pt-[calc(var(--header-h)+2rem)] pb-8 md:pt-[calc(var(--header-h)+3.5rem)] md:pb-12"
+      >
+        <div className="mx-auto max-w-3xl text-center">
+          <span className="font-mono text-[0.7rem] uppercase tracking-[0.14em] text-[#EF4135] md:text-xs">
+            All Courses
+          </span>
+          <h1 className="mt-3 font-display text-[clamp(2rem,1.2rem+3.6vw,3.75rem)] font-semibold leading-[1.05] text-[#FFFFFF]">
             Choose Your Route
           </h1>
-          <p className="text-base md:text-lg text-[#C6DAF0] mb-3 md:mb-4">
-            From your first <em>bonjour</em> to fluent French. 15 pathways to match
-            your goal.
+          <p className="mx-auto mt-4 max-w-[46ch] text-balance text-base leading-relaxed text-[#C6DAF0] md:text-lg">
+            From your first <em>bonjour</em> to fluent French. {courses.length} pathways
+            to match your goal.
           </p>
-          {/* <Button
-            asChild
-            className="bg-[#EF4135] text-[#003A72] hover:bg-[#FF7A70]"
-          >
-            <Link href="/learning-resources/placement">Find Your Level →</Link>
-          </Button> */}
         </div>
       </Section>
 
-      {/* Choose Your Route Section */}
-      <Section variant="parchment" className="py-6 md:py-7">
-        <div className="max-w-4xl mx-auto px-4 md:px-6">
-          {/* <h2 className="font-display text-xl md:text-2xl font-semibold text-[#003A72] mb-3 text-center">
-            Choose Your Route
-          </h2> */}
-          <p className="text-base md:text-lg text-[#5C6B82] mb-3 text-center leading-relaxed">
-            Whether you&apos;re chasing a CLB 7 for Express Entry, preparing for DELF, or simply want to hold a real conversation in Paris — every route starts with the right level. French Compass offers 15 structured pathways, each taught live by C1-certified instructors who&apos;ve lived the language, not just studied it.
+      {/* Intro + placement nudge */}
+      <Section variant="parchment" className="pt-8 pb-6 md:pt-12 md:pb-8">
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="text-balance text-base leading-relaxed text-[#5C6B82] md:text-lg">
+            Whether you&apos;re chasing a CLB 7 for Express Entry, preparing for DELF, or simply want to hold a real conversation in Paris — every route starts with the right level. French Compass offers {courses.length} structured pathways, each taught live by C1-certified instructors who&apos;ve lived the language, not just studied it.
           </p>
-          <p className="text-sm md:text-base text-[#5C6B82] italic text-center mb-4">
+          <p className="mt-4 text-balance text-sm italic text-[#5C6B82] md:text-base">
             Not sure where you stand? The placement quiz takes 2 minutes and tells you exactly where to begin.
           </p>
-          <div className="flex justify-center">
+          <div className="mt-6 flex justify-center">
             <Button
               asChild
-              className="bg-[#EF4135] text-[#003A72] hover:bg-[#FF7A70]"
+              className="bg-[#EF4135] text-[#FFFFFF] hover:bg-[#FF7A70]"
             >
               <Link href="/learning-resources/placement">Find Your Level →</Link>
             </Button>
@@ -94,19 +87,20 @@ export default function CoursesPage() {
         </div>
       </Section>
 
-      {/* Filters */}
-      <Section variant="parchment" className="py-3 md:py-4">
-        <div className="mx-auto max-w-6xl">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            {/* Goal filter — horizontal scroll on mobile, wraps on desktop.
+      {/* Filter + sort toolbar. Sticks under the header so the controls stay
+          reachable while scrolling a long grid. */}
+      <div className="sticky top-[var(--header-h)] z-20 border-y border-ink-text/10 bg-parchment/95 backdrop-blur">
+        <div className="mx-auto max-w-6xl px-gutter py-3">
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+            {/* Goal filter — horizontal scroll on mobile, wraps from `lg`.
                 The negative margin lets the scroll area bleed to the screen
                 edge so chips don't look clipped mid-swipe. */}
             <div
-              className="-mx-gutter overflow-x-auto px-gutter md:mx-0 md:px-0"
+              className="-mx-gutter overflow-x-auto px-gutter [scrollbar-width:none] lg:mx-0 lg:overflow-visible lg:px-0 [&::-webkit-scrollbar]:hidden"
               role="group"
               aria-label="Filter courses by goal"
             >
-              <div className="flex min-w-min gap-2 md:min-w-fit md:flex-wrap">
+              <div className="flex w-max gap-2 lg:w-auto lg:flex-wrap">
                 {COURSE_FILTERS.map(({ id, label }) => {
                   const active = activeFilter === id
                   return (
@@ -117,7 +111,7 @@ export default function CoursesPage() {
                       // aria-pressed, not just colour: the active filter has to
                       // be announced, not only shown.
                       aria-pressed={active}
-                      className={`flex min-h-11 flex-shrink-0 items-center whitespace-nowrap rounded-lg px-4 font-mono text-xs font-semibold transition-colors md:min-h-0 md:flex-shrink md:py-2 md:text-sm ${
+                      className={`flex min-h-10 shrink-0 items-center whitespace-nowrap rounded-lg px-3.5 font-mono text-xs font-semibold transition-colors sm:px-4 md:text-sm ${
                         active
                           ? 'bg-azimuth text-foam'
                           : 'bg-parchment2 text-ink-text hover:bg-brass-soft'
@@ -130,20 +124,20 @@ export default function CoursesPage() {
               </div>
             </div>
 
-            {/* Sort — was `hidden md:flex`, which left mobile with no way to
-                sort at all. */}
-            <div className="flex items-center gap-2">
-              <label
-                htmlFor="course-sort"
-                className="flex-shrink-0 text-xs text-ink-dim md:text-sm"
-              >
-                Sort by:
+            {/* Sort + live result count. `flex-none` on the select stops it
+                stretching to the full row width on narrow screens. */}
+            <div className="flex items-center gap-3">
+              <p aria-live="polite" className="hidden text-xs text-ink-dim sm:block">
+                {sortedCourses.length} {sortedCourses.length === 1 ? 'course' : 'courses'}
+              </p>
+              <label htmlFor="course-sort" className="shrink-0 text-xs text-ink-dim md:text-sm">
+                Sort by
               </label>
               <select
                 id="course-sort"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as SortKey)}
-                className="min-h-11 flex-1 rounded-lg border border-ink-dim/20 bg-card px-3 text-xs text-ink-text focus:outline-none focus:ring-2 focus:ring-azimuth md:min-h-0 md:flex-none md:py-2 md:text-sm"
+                className="min-h-10 flex-none rounded-lg border border-ink-dim/20 bg-card px-3 text-xs text-ink-text focus:outline-none focus:ring-2 focus:ring-azimuth md:text-sm"
               >
                 <option value="level">Level</option>
                 <option value="price">Price (low to high)</option>
@@ -152,7 +146,7 @@ export default function CoursesPage() {
             </div>
           </div>
         </div>
-      </Section>
+      </div>
 
       {/* Courses Grid */}
       <Section variant="parchment" className="py-6 md:py-8">

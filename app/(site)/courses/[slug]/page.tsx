@@ -5,6 +5,7 @@ import { generateCourseSchema, generateBreadcrumbSchema } from '@/lib/seo'
 import { whatsappLink, emailLink } from '@/lib/contact'
 import { Footer } from '@/components/Footer'
 import { Section } from '@/components/Section'
+import { HeaderSpacer } from '@/components/ui-primitives'
 import { Reveal } from '@/components/Reveal'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
@@ -66,17 +67,26 @@ export default async function CourseDetailPage({ params }: PageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      {/* Back Button - Visible on all devices */}
-      <div className="bg-[#003A72] border-b border-[#FFFFFF]/10 sticky top-16 md:top-24 z-30">
-        <div className="max-w-6xl mx-auto px-4 md:px-6 py-2 md:py-3">
-          <Link
-            href="/courses"
-            className="inline-flex items-center gap-2 text-xs md:text-sm font-medium text-[#EF4135] hover:text-[#FF7A70] transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span className="hidden sm:inline">Back to Courses</span>
-            <span className="sm:hidden">Back</span>
-          </Link>
+      {/* Back to the catalogue — offset by the real header height so it is never
+          tucked under the fixed navbar. */}
+      <HeaderSpacer />
+      <div className="sticky top-[var(--header-h)] z-30 border-b border-[#FFFFFF]/10 bg-[#003A72]">
+        <div className="mx-auto max-w-6xl px-4 py-2 md:px-6 md:py-3">
+          <nav aria-label="Breadcrumb">
+            <ol className="flex items-center gap-2 text-xs md:text-sm">
+              <li>
+                <Link
+                  href="/courses"
+                  className="inline-flex min-h-9 items-center gap-2 font-medium text-[#EF4135] transition-colors hover:text-[#FF7A70]"
+                >
+                  <ArrowLeft className="h-4 w-4" />
+                  All courses
+                </Link>
+              </li>
+              <li aria-hidden className="text-[#C6DAF0]/40">/</li>
+              <li className="truncate text-[#C6DAF0]">{course.title}</li>
+            </ol>
+          </nav>
         </div>
       </div>
 

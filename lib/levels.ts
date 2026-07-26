@@ -19,9 +19,19 @@ export type LevelData = {
   who: string
   priceINR: number
   duration: string
+  /** instructor-led live sessions */
   sessions: number
+  /** length of a single live session */
+  sessionLength: string
+  /** delivery mode, e.g. "Live Online (Zoom)" */
+  mode: string
   classSize: string
   schedule: string
+  /** what practice looks like week to week */
+  practice: string
+  /** how the level is assessed at the end */
+  assessment: string
+  /** "By the end of the course" — one line per capability */
   outcomes: string[]
   syllabus: string[]
   comboTracks: LevelLink[]
@@ -42,15 +52,21 @@ export const levels: LevelData[] = [
     promise: 'Your first bearing. From zero to your first real French conversations.',
     who: 'For complete beginners who have never studied French — or need to rebuild from the ground up.',
     priceINR: 8500,
-    duration: '8 weeks',
-    sessions: 12,
+    duration: '10 weeks',
+    sessions: 30,
+    sessionLength: '90 minutes',
+    mode: 'Live online (Zoom)',
     classSize: '4–6 students',
     schedule: 'Tue & Thu · 7:00–8:30 PM IST',
+    practice: 'Weekly assignments, quizzes & speaking activities',
+    assessment: 'Final A1 evaluation',
     outcomes: [
-      'Introduce yourself to a French colleague without freezing.',
-      'Read a French menu and order confidently.',
-      'Ask and answer simple questions about home, family and daily routine.',
-      'Handle numbers, dates, prices and the clock in French.',
+      'Introduce yourself and others confidently.',
+      'Handle everyday conversations.',
+      'Read and understand simple texts.',
+      'Write short emails and messages.',
+      'Build a strong foundation in French grammar and pronunciation.',
+      'Prepare for the DELF A1 examination.',
     ],
     syllabus: [
       'The French sound system & pronunciation foundations',
@@ -77,15 +93,21 @@ export const levels: LevelData[] = [
     promise: 'Stop translating in your head. Handle everyday life in French with growing ease.',
     who: 'For learners who finished A1 (or know the basics) and want to move from memorising to communicating.',
     priceINR: 8500,
-    duration: '8 weeks',
-    sessions: 12,
+    duration: '12 weeks',
+    sessions: 36,
+    sessionLength: '90 minutes',
+    mode: 'Live online (Zoom)',
     classSize: '4–6 students',
     schedule: 'Mon & Wed · 7:00–8:30 PM IST',
+    practice: 'Weekly assignments & conversation practice',
+    assessment: 'Final A2 evaluation',
     outcomes: [
-      'Handle a hotel check-in, ask for directions and understand the reply.',
-      'Text a French-speaking friend about your day — in the past tense.',
-      'Describe your background, work and plans in a few connected sentences.',
-      'Get through everyday transactions without switching to English.',
+      'Describe past experiences and future plans.',
+      'Communicate confidently in everyday situations.',
+      'Understand common spoken French.',
+      'Write informal emails and letters.',
+      'Travel independently in French-speaking countries.',
+      'Prepare for the DELF A2 examination.',
     ],
     syllabus: [
       'The passé composé and imparfait — talking about the past',
@@ -117,15 +139,21 @@ export const levels: LevelData[] = [
     promise: 'Become independent. Cope with most real-world situations on your own — the gateway to certification.',
     who: 'For learners past the basics who want true conversational independence and their first DELF/immigration-relevant level.',
     priceINR: 9500,
-    duration: '10 weeks',
-    sessions: 15,
+    duration: '14 weeks',
+    sessions: 42,
+    sessionLength: '90 minutes',
+    mode: 'Live online (Zoom)',
     classSize: '4–6 students',
     schedule: 'Sat & Sun · 6:00–7:30 PM IST',
+    practice: 'Presentations, writing tasks & speaking workshops',
+    assessment: 'Full DELF B1 mock examination',
     outcomes: [
-      'Describe a problem to a doctor; talk about your work experience in an interview.',
-      'Follow the plot of a French film without subtitles for the easier scenes.',
-      'Give opinions and reasons, and hold your side of a conversation.',
-      'Reach the threshold for DELF B1 and the entry point for Canadian immigration scoring.',
+      'Speak confidently in most real-life situations.',
+      'Express and justify opinions clearly.',
+      'Write structured emails and short essays.',
+      'Understand podcasts, interviews and news reports.',
+      'Participate actively in discussions.',
+      'Prepare for the DELF B1 examination.',
     ],
     syllabus: [
       'The subjunctive mood — introduction and common triggers',
@@ -157,15 +185,21 @@ export const levels: LevelData[] = [
     promise: 'The immigration and university standard. Argue, debate and work in French — reach CLB 7+.',
     who: 'For learners targeting Canadian PR, French-medium study or professional work — the single most common goal for Indian professionals.',
     priceINR: 10500,
-    duration: '12 weeks',
-    sessions: 18,
+    duration: '16 weeks',
+    sessions: 48,
+    sessionLength: '90 minutes',
+    mode: 'Live online (Zoom)',
     classSize: '4–6 students',
     schedule: 'Tue & Thu · 6:00–7:30 PM IST',
+    practice: 'Essay corrections, debate sessions & weekly mock tests',
+    assessment: 'Full DELF B2 mock examination',
     outcomes: [
-      'Argue a point in a team meeting; write a formal email to a French institution.',
-      'Understand news broadcasts and fast native speech without rewinding.',
-      'Read and analyse articles, and defend a position with evidence.',
-      'Satisfy CLB 7 for Express Entry — the most common French target for Canadian PR.',
+      'Communicate fluently with native speakers.',
+      'Defend opinions using clear and well-structured arguments.',
+      'Write reports, essays and formal correspondence.',
+      'Understand authentic French media and academic texts.',
+      'Function confidently in academic and professional environments.',
+      'Prepare for the DELF B2, TEF Canada and TCF Canada examinations.',
     ],
     syllabus: [
       'Advanced grammar: full subjunctive, passive, reported speech',
@@ -197,15 +231,21 @@ export const levels: LevelData[] = [
     promise: 'Advanced nuance and sophisticated expression — the level French universities and senior roles ask for.',
     who: 'For strong learners aiming at postgraduate admission, senior French-language roles, or the DALF C1 diploma.',
     priceINR: 14000,
-    duration: '10 weeks',
-    sessions: 15,
+    duration: '24 weeks',
+    sessions: 70,
+    sessionLength: '90 minutes',
+    mode: 'Live online (Zoom)',
     classSize: '4–6 students',
     schedule: 'Flexible cohorts',
+    practice: 'Advanced writing, synthèse, oral presentations & weekly mock exams',
+    assessment: 'Full DALF C1 mock examination',
     outcomes: [
-      'Sustain a complex spoken argument with nuance and appropriate register.',
-      'Write structured, sophisticated texts — synthèse, essay, formal correspondence.',
-      'Understand demanding native material: lectures, debates, literary texts.',
-      'Perform to the DALF C1 standard, component by component.',
+      'Understand complex academic, literary and professional French.',
+      'Express ideas fluently, spontaneously and with precision.',
+      'Produce well-structured synthèses and argumentative essays.',
+      'Deliver persuasive presentations and participate in advanced debates.',
+      'Master sophisticated vocabulary, idiomatic expressions and advanced grammar.',
+      'Prepare confidently for the DALF C1 examination.',
     ],
     syllabus: [
       'Advanced argumentation and the synthèse de documents',
@@ -231,16 +271,24 @@ export const levels: LevelData[] = [
     cefr: 'CEFR C2 · Mastery',
     promise: 'The summit. Near-native sophistication, subtlety and style — the highest certification in the CEFR framework.',
     who: 'For those pursuing academic careers, translation, or roles where French is the primary professional language.',
+    // NOTE: the client supplied refreshed copy for A1–C1 only. C2 is authored to
+    // match that pattern and should be confirmed before the next content pass.
     priceINR: 14000,
-    duration: '10 weeks',
-    sessions: 15,
+    duration: '24 weeks',
+    sessions: 70,
+    sessionLength: '90 minutes',
+    mode: 'Live online (Zoom)',
     classSize: '4–6 students',
     schedule: 'Flexible cohorts',
+    practice: 'Advanced synthesis, literary analysis, oral performance & weekly mock exams',
+    assessment: 'Full DALF C2 mock examination',
     outcomes: [
       'Express yourself with the spontaneity and precision of an educated native speaker.',
       'Produce polished, argued writing across registers and genres.',
       'Grasp virtually everything heard or read, including implicit meaning and irony.',
-      'Perform to the DALF C2 standard — the most demanding exam in the CEFR.',
+      'Analyse literary and rhetorical texts with confidence.',
+      'Command nuance, irony, connotation and idiom in speech and writing.',
+      'Prepare confidently for the DALF C2 examination.',
     ],
     syllabus: [
       'Near-native oral fluency, spontaneity and stylistic range',
