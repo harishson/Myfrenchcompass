@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: `${level.code} — ${level.name} | French Compass`,
   description: level.promise,
   alternates: { canonical: '/courses/b2' },
-  openGraph: { title: `${level.code} — ${level.name} | French Compass`, description: level.promise, type: 'website' },
+  openGraph: { title: `${level.code} — ${level.name} | French Compass`, description: level.promise, type: 'website', siteName: 'French Compass', url: '/courses/b2' },
 }
 
 export default function Page() {

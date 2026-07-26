@@ -6,10 +6,13 @@ import { QuizEngine } from '@/components/playground/QuizEngine'
 export const metadata: Metadata = {
   title: 'Find Your Bearing — Placement Quiz | French Compass',
   description: 'Take our free 2-minute placement quiz to discover your CEFR French level (A1-C1) and get personalized course recommendations.',
+  alternates: { canonical: '/learning-resources/placement' },
   openGraph: {
     title: 'Find Your Bearing — Placement Quiz | French Compass',
     description: 'Free 2-minute placement quiz — discover your CEFR level and get personalized course recommendations.',
     type: 'website',
+    siteName: 'French Compass',
+    url: '/learning-resources/placement',
   },
 }
 

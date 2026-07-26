@@ -19,6 +19,8 @@ export const metadata: Metadata = {
     title: 'Upcoming Batches — French Compass',
     description: 'The next live French cohorts — dates, seats and fees. Reserve your seat.',
     type: 'website',
+    siteName: 'French Compass',
+    url: '/upcoming-batches',
   },
 }
 

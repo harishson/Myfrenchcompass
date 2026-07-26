@@ -7,6 +7,14 @@ import './globals.css'
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://frenchcompass.com'),
+  /* The app is reachable at myfrenchcompass.vercel.app as well as the real
+     domain, and that alias serves 200 rather than redirecting. Resolving the
+     canonical against metadataBase makes every page name the real domain as
+     authoritative whichever host answered, so the two can't compete in search.
+     './' means "this page's own path" — Next fills in the rest. */
+  alternates: {
+    canonical: './',
+  },
   title: 'French Compass — Fluent French, Clear Path',
   description: 'Live 90-minute French classes (A1–C2) with C1-certified instructors. TEF/TCF Canada exam prep, DALF masterclasses, and interactive lessons. Plot your course to fluency.',
   generator: 'v0.app',
@@ -26,6 +34,10 @@ export const metadata: Metadata = {
     title: 'French Compass — Fluent French, Clear Path',
     description: 'Live French classes with C1-certified instructors. Chart your course to fluency.',
     type: 'website',
+    siteName: 'French Compass',
+    // Same resolution as the canonical, so a link shared from the .vercel.app
+    // alias still unfurls as the real domain.
+    url: './',
   },
 }
 
