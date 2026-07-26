@@ -158,47 +158,26 @@ export default async function CourseDetailPage({ params }: PageProps) {
       {/* Course Stats */}
       <Section variant="parchment" className="py-6 md:py-8">
         <div className="max-w-6xl mx-auto px-4 md:px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            <Reveal>
-              <div className="text-center">
-                <div className="font-display text-3xl font-bold text-[#0055A4] mb-2">
-                  {course.duration}
+          {/* Figures mirror the "At a glance" card on the level pages. Fees are
+              not published — enquiries go through the contact form. */}
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+            {[
+              { value: course.duration, label: 'Duration' },
+              { value: String(course.sessions), label: 'Live sessions' },
+              { value: '90 min', label: 'Session length' },
+              { value: course.classSize, label: 'Class size' },
+            ].map((stat, i) => (
+              <Reveal key={stat.label} delay={i * 50}>
+                <div className="text-center">
+                  <div className="mb-2 font-display text-2xl font-bold text-[#0055A4] md:text-3xl">
+                    {stat.value}
+                  </div>
+                  <p className="font-mono text-xs uppercase tracking-widest text-[#5C6B82] md:text-sm">
+                    {stat.label}
+                  </p>
                 </div>
-                <p className="text-sm text-[#5C6B82] font-mono uppercase tracking-widest">
-                  Duration
-                </p>
-              </div>
-            </Reveal>
-            <Reveal delay={50}>
-              <div className="text-center">
-                <div className="font-display text-3xl font-bold text-[#0055A4] mb-2">
-                  {course.sessions}
-                </div>
-                <p className="text-sm text-[#5C6B82] font-mono uppercase tracking-widest">
-                  Sessions
-                </p>
-              </div>
-            </Reveal>
-            <Reveal delay={100}>
-              <div className="text-center">
-                <div className="font-display text-3xl font-bold text-[#0055A4] mb-2">
-                  {course.classSize}
-                </div>
-                <p className="text-sm text-[#5C6B82] font-mono uppercase tracking-widest">
-                  Class size
-                </p>
-              </div>
-            </Reveal>
-            <Reveal delay={150}>
-              <div className="text-center">
-                <div className="font-display text-3xl font-bold text-[#EF4135] mb-2">
-                  ₹{course.priceINR}
-                </div>
-                <p className="text-sm text-[#5C6B82] font-mono uppercase tracking-widest">
-                  Price
-                </p>
-              </div>
-            </Reveal>
+              </Reveal>
+            ))}
           </div>
         </div>
       </Section>

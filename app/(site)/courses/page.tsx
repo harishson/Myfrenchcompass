@@ -12,7 +12,7 @@ import { whatsappLink } from '@/lib/contact'
 import { Compass } from 'lucide-react'
 
 type GoalFilter = 'all' | 'core' | 'certification' | 'conversation'
-type SortKey = 'level' | 'price' | 'title'
+type SortKey = 'level' | 'title'
 
 const COURSE_FILTERS: { id: GoalFilter; label: string }[] = [
   { id: 'all', label: 'All' },
@@ -32,9 +32,6 @@ export default function CoursesPage() {
       : courses.filter((c) => c.goal === activeFilter)
 
   const sortedCourses = [...filteredCourses].sort((a, b) => {
-    if (sortBy === 'price') {
-      return a.priceINR - b.priceINR
-    }
     if (sortBy === 'title') {
       return a.title.localeCompare(b.title)
     }
@@ -140,7 +137,6 @@ export default function CoursesPage() {
                 className="min-h-10 flex-none rounded-lg border border-ink-dim/20 bg-card px-3 text-xs text-ink-text focus:outline-none focus:ring-2 focus:ring-azimuth md:text-sm"
               >
                 <option value="level">Level</option>
-                <option value="price">Price (low to high)</option>
                 <option value="title">Title (A–Z)</option>
               </select>
             </div>

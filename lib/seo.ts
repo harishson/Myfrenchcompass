@@ -36,7 +36,6 @@ export function generateCourseSchema(course: {
   code: string
   title: string
   description: string
-  priceINR: number
   duration: string
 }) {
   return {
@@ -49,10 +48,10 @@ export function generateCourseSchema(course: {
       name: 'French Compass',
       url: siteConfig.url,
     },
+    // No price: fees are not published on the site, so advertising one in
+    // structured data would let search results show a figure we don't show.
     offers: {
       '@type': 'Offer',
-      price: course.priceINR,
-      priceCurrency: 'INR',
       availability: 'https://schema.org/InStock',
     },
     duration: `P${course.duration.split(' ')[0]}W`,

@@ -1,13 +1,12 @@
 import Link from 'next/link'
 import Script from 'next/script'
 import {
-  Compass, Check, ArrowRight, ArrowLeft, CalendarDays, Clock, Users,
-  Wallet, CalendarRange, BookOpen, Layers, Video, Hourglass, GraduationCap,
-  PencilLine,
+  Compass, Check, ArrowRight, ArrowLeft, CalendarDays, Clock,
+  BookOpen, Layers, Video, Hourglass, GraduationCap, PencilLine,
 } from 'lucide-react'
 import { Section, Container, Eyebrow, HeaderSpacer } from '@/components/ui-primitives'
 import { Footer } from '@/components/Footer'
-import { type LevelData, PARIS_COORD, inr } from '@/lib/levels'
+import { type LevelData, PARIS_COORD } from '@/lib/levels'
 
 /* One canonical level page, driven by lib/levels.ts. Light-dominant per brief:
    white surfaces lead, French blue is the accent, a single navy CTA band anchors
@@ -24,11 +23,10 @@ export function LevelPage({ level }: { level: LevelData }) {
     { icon: Hourglass, label: 'Session length', value: level.sessionLength },
     { icon: Video, label: 'Mode', value: level.mode },
     { icon: GraduationCap, label: 'Level', value: `CEFR ${level.code}` },
-    { icon: Users, label: 'Class size', value: level.classSize },
-    { icon: CalendarRange, label: 'Schedule', value: level.schedule, wide: true },
+    // Class size and schedule deliberately omitted here — they are cohort
+    // specifics that belong on the individual course page, not the overview.
     { icon: PencilLine, label: 'Practice', value: level.practice, wide: true },
     { icon: Check, label: 'Assessment', value: level.assessment, wide: true },
-    { icon: Wallet, label: 'Fees', value: inr(level.priceINR) },
   ]
 
   const courseSchema = {
@@ -38,7 +36,9 @@ export function LevelPage({ level }: { level: LevelData }) {
     description: level.promise,
     provider: { '@type': 'Organization', name: 'French Compass', sameAs: process.env.NEXT_PUBLIC_SITE_URL || 'https://frenchcompass.com' },
     educationalLevel: level.cefr,
-    offers: { '@type': 'Offer', price: level.priceINR, priceCurrency: 'INR', category: 'Paid' },
+    // No price in structured data: fees are no longer published on the site, and
+    // an Offer here would let search results advertise a figure we don't show.
+    offers: { '@type': 'Offer', category: 'Paid' },
   }
 
   return (

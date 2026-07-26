@@ -2,7 +2,6 @@
 
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
-import { Seal } from './Seal'
 import { cn } from '@/lib/utils'
 import type { Course } from '@/lib/courses'
 
@@ -12,12 +11,6 @@ interface CourseCardProps {
 }
 
 export function CourseCard({ course, onClick }: CourseCardProps) {
-  const price = new Intl.NumberFormat('en-IN', {
-    style: 'currency',
-    currency: 'INR',
-    maximumFractionDigits: 0,
-  }).format(course.priceINR)
-
   const isEbook = course.goal === 'conversation' && course.slug.includes('ebook')
   const isCefr = ['A1', 'A2', 'B1', 'B2'].includes(course.level)
 
@@ -29,8 +22,6 @@ export function CourseCard({ course, onClick }: CourseCardProps) {
     >
       <article
         className={cn(
-          // No `overflow-hidden` here: the Seal badge deliberately overhangs
-          // the top-right corner and would be clipped away.
           'edge-lit lift relative flex h-full flex-col rounded-2xl',
           'border border-ink-text/10 bg-card p-6 shadow-[var(--elev-2)]',
           'group-hover:border-brass/35 group-focus-visible:border-brass/60',
@@ -45,12 +36,6 @@ export function CourseCard({ course, onClick }: CourseCardProps) {
               'radial-gradient(420px 200px at 50% 115%, rgba(192,138,45,0.14), transparent 70%)',
           }}
         />
-
-        {course.saveINR ? (
-          <Seal variant="save">
-            Save ₹{course.saveINR.toLocaleString('en-IN')}
-          </Seal>
-        ) : null}
 
         <div className="relative flex items-baseline gap-2">
           <span className="font-mono text-2xl font-bold tracking-tight text-brass md:text-3xl">
@@ -86,6 +71,8 @@ export function CourseCard({ course, onClick }: CourseCardProps) {
           ))}
         </div>
 
+        {/* Duration + session count, matching the "At a glance" figures on the
+            level pages. Fees are no longer published anywhere on the site. */}
         <div className="relative mt-4 border-t border-ink-text/10 pt-3">
           <div className="flex items-center justify-between gap-2">
             <div>
@@ -95,9 +82,9 @@ export function CourseCard({ course, onClick }: CourseCardProps) {
               </p>
             </div>
             <div className="text-right">
-              <span className="text-xs text-ink-dim">Starting from</span>
-              <p className="font-mono text-base font-bold tabular-nums text-azimuth md:text-lg">
-                {price}
+              <span className="text-xs text-ink-dim">Live sessions</span>
+              <p className="font-mono text-xs font-semibold tabular-nums text-ink-text md:text-sm">
+                {course.sessions}
               </p>
             </div>
           </div>
