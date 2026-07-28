@@ -58,8 +58,14 @@
   --color-ink-text:  #16233B;    /* cool near-black body text                */
   --color-ink-dim:   #5C6B82;    /* muted body text                          */
 
-  /* ---- Type ---- */
-  --font-display: var(--font-display), "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  /* ---- Type ----
+     Display was Bricolage Grotesque, whose quirky curves read as playful. The
+     client's reference is a calm institutional grotesque, so headings now use
+     the same Inter family as body copy — set tight and bold it matches the
+     reference exactly, and costs no extra font download. To go back, point
+     --font-display at var(--font-display-alt). */
+  --font-display: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-display-alt: var(--font-display), "Bricolage Grotesque", ui-sans-serif, sans-serif;
   --font-serif:   var(--font-serif), "Instrument Serif", ui-serif, Georgia, serif;
   --font-sans:    var(--font-body), ui-sans-serif, system-ui, sans-serif;
   --font-mono:    var(--font-mono-jb), ui-monospace, "SFMono-Regular", monospace;

@@ -16,6 +16,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { MessageCircle, ChevronDown, Menu, X, Mail, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -25,14 +26,32 @@ import { PRIMARY_NAV, COURSES_MEGA } from "@/lib/nav";
 const WA = whatsappLink();
 const MAIL = emailLink("French classes — enquiry");
 
+/* Horizontal lockup: the compass mark as artwork, the wordmark as live text.
+   The supplied logo file stacks mark over wordmark, which is too tall for a
+   fixed bar — setting the words in HTML keeps the reference's side-by-side
+   layout, stays crisp at any density, and remains selectable and translatable. */
 function BrandMark() {
   return (
     <Link href="/" className="group flex items-center gap-2.5" aria-label="French Compass — home">
-      <span className="relative grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-blue to-blue-deep font-serif-italic text-lg text-white shadow-[var(--shadow-blue)] transition-transform duration-300 group-hover:-rotate-6">
-        F
-        <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full border-2 border-cream bg-red" />
+      <Image
+        src="/brand/compass-mark.png"
+        alt=""
+        width={512}
+        height={512}
+        priority
+        className="h-10 w-10 shrink-0 transition-transform duration-300 group-hover:scale-105 sm:h-11 sm:w-11"
+      />
+      <span className="flex flex-col leading-none">
+        <span className="font-display text-[0.95rem] font-bold tracking-[0.14em] sm:text-lg">
+          <span className="text-blue-deep">FRENCH</span>{' '}
+          <span className="text-red-text">COMPASS</span>
+        </span>
+        {/* the twin rules under the wordmark, straight from the brand sheet */}
+        <span aria-hidden className="mt-1 flex gap-1">
+          <span className="h-[2px] w-1/2 rounded-full bg-blue-deep" />
+          <span className="h-[2px] w-1/2 rounded-full bg-red" />
+        </span>
       </span>
-      <span className="font-display text-lg font-bold tracking-tight text-ink-text">French Compass</span>
     </Link>
   );
 }

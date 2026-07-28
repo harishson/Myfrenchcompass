@@ -177,13 +177,14 @@ export function QuizEngine() {
         animate={{ opacity: 1, y: 0 }}
         className="mb-7"
       >
+        {/* Deliberately French-only. Showing an English gloss under the prompt
+            or the options turned this into a reading test of the translation
+            rather than a measure of French comprehension, so the `en` and
+            `label` fields are no longer rendered. */}
         <p className="text-xs font-mono uppercase tracking-wider text-white/60 mb-2">
-          {currentQuestion.en ? 'Bilingual' : 'French only'}
+          En français
         </p>
-        <h3 className="font-display text-2xl font-semibold text-white mb-2">{currentQuestion.fr}</h3>
-        {currentQuestion.en && (
-          <p className="font-serif-italic text-white/70">{currentQuestion.en}</p>
-        )}
+        <h3 className="font-display text-2xl font-semibold text-white">{currentQuestion.fr}</h3>
       </motion.div>
 
       {/* Options */}
@@ -224,9 +225,6 @@ export function QuizEngine() {
                 </div>
                 <div className="flex-1">
                   <p className="text-white font-medium">{option.text}</p>
-                  {option.label && (
-                    <p className="text-sm text-white/60">{option.label}</p>
-                  )}
                 </div>
               </div>
             </motion.button>

@@ -27,9 +27,18 @@ export const metadata: Metadata = {
     'French academy',
   ],
   authors: [{ name: 'French Compass' }],
+  /* Brand mark (compass + Eiffel). Sizes are declared explicitly so browsers
+     pick the right raster instead of downscaling the 512 for a 16px tab. */
   icons: {
-    icon: '/icon.svg',
+    icon: [
+      { url: '/brand/icon-32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/brand/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/brand/icon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: [{ url: '/brand/apple-icon.png', sizes: '180x180', type: 'image/png' }],
+    shortcut: ['/brand/icon-192.png'],
   },
+  manifest: '/site.webmanifest',
   openGraph: {
     title: 'French Compass — Fluent French, Clear Path',
     description: 'Live French classes with C1-certified instructors. Chart your course to fluency.',

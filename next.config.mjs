@@ -4,7 +4,17 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    unoptimized: true,
+    /* Was `unoptimized: true` (a v0 scaffold default), which shipped every
+       image as the raw file at one fixed size — no modern format, no density
+       switching. Enabling the pipeline lets Vercel serve AVIF/WebP at the exact
+       size each viewport asks for, which is the single biggest quality win
+       available on the hero photograph. */
+    formats: ['image/avif', 'image/webp'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1500, 1920, 2048],
+    /* Next 16 only honours `quality` values listed here; anything else silently
+       falls back to 75. The hero photograph is enlarged from a small source, so
+       it needs the higher setting to avoid compounding the softness. */
+    qualities: [75, 90],
   },
   async redirects() {
     return [

@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import {
   ArrowUpRight, ArrowRight, Radio, Target, GraduationCap, Sparkles, Quote,
 } from 'lucide-react'
@@ -6,7 +7,6 @@ import { Footer } from '@/components/Footer'
 import { Reveal } from '@/components/Reveal'
 import { Stagger, StaggerItem } from '@/components/motion/Stagger'
 import { TiltCard } from '@/components/motion/TiltCard'
-import { FloatingWords } from '@/components/site/FloatingWords'
 import { LearningLab } from '@/components/home/LearningLab'
 import { levels } from '@/lib/levels'
 import { MaleTutorIcon, FemaleTutorIcon } from '@/components/TutorIcons'
@@ -70,47 +70,120 @@ const featureAccent = {
 export default function Home() {
   return (
     <>
-      {/* ============================== HERO ============================== */}
-      <section className="relative overflow-hidden bg-white pt-[calc(var(--header-h)+3.5rem)] pb-[clamp(3rem,7vw,6rem)]">
-        <div aria-hidden className="spotlight-blue pointer-events-none absolute inset-x-0 top-0 h-[80vh]" />
-        <FloatingWords />
+      {/* ============================== HERO ==============================
+       * The client's reference: a full-bleed Paris scene anchored right, washed
+       * out to white on the left so the copy sits on clean paper and the tower
+       * emerges from it — one continuous surface rather than a photo in a box.
+       * The floating-words backdrop was retired here because the reference is
+       * deliberately uncluttered; the component still exists if wanted back.
+       * ================================================================== */}
+      <section className="relative bg-white">
+        {/* `min-h-svh` on desktop pins the bottom of the hero — and therefore the
+            bottom of the photo — to the fold, so the scene is whole on first
+            paint instead of completing only once you scroll. It is a minimum,
+            not a fixed height, so on short viewports the section still grows
+            with its content rather than clipping it. */}
+        <div className="relative overflow-hidden lg:flex lg:min-h-svh lg:items-center">
+          {/* --- background plate ---
+              Desktop draws ONE flattened image and nothing on top of it. Every
+              seam in earlier attempts came from compositing at render time — a
+              panel with an edge, a mask over it, a white wash over that — and
+              each layer gave the eye somewhere to catch an inflection. The wash
+              from paper-white into the photograph is now baked into
+              hero-paris-wide.jpg itself, whose luma falls monotonically across
+              the band, so there is nothing left that can read as a division.
+              Mobile keeps the original portrait crop and its own vertical wash,
+              untouched. */}
+          <div aria-hidden className="pointer-events-none absolute inset-0">
+            {/* -- mobile -- */}
+            <div className="absolute inset-y-0 right-0 w-full lg:hidden">
+              <Image
+                src="/brand/hero-paris.jpg"
+                alt=""
+                fill
+                priority
+                sizes="100vw"
+                className="object-contain object-bottom"
+              />
+            </div>
+            <div className="absolute inset-0 lg:hidden bg-[linear-gradient(to_bottom,#fff_0%,#fff_36%,rgba(255,255,255,0.88)_58%,rgba(255,255,255,0.58)_100%)]" />
 
-        <Stagger pace="hero" className="relative z-10 mx-auto flex max-w-4xl flex-col items-center px-gutter text-center">
-          <StaggerItem as="p" className="eyebrow eyebrow-center">Live French classes · A1 to C2</StaggerItem>
-          <StaggerItem
-            as="h1"
-            className="mt-6 font-display text-[clamp(2.9rem,1.7rem+5vw,6.2rem)] font-bold leading-[0.95] tracking-[-0.035em]"
-          >
-            Chart your course to{' '}
-            <span className="relative whitespace-nowrap text-blue">
-              fluent French
-              <svg aria-hidden viewBox="0 0 300 12" preserveAspectRatio="none" className="absolute -bottom-1 left-0 h-2.5 w-full text-red">
-                <path d="M2,9 C60,3 120,3 150,6 C190,9 250,4 298,7" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-              </svg>
-            </span>
-            .
-          </StaggerItem>
-          <StaggerItem as="p" className="mt-7 max-w-xl fs-1 text-ink-dim">
-            From your first <span className="font-serif-italic text-ink-text">bonjour</span> to a DELF diploma or a
-            CLB&nbsp;7 for Canada — in small live classes with C1-certified instructors who've walked the path.
-          </StaggerItem>
-          <StaggerItem className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <Link href="/upcoming-batches" className="btn btn-primary">
-              Reserve your seat <ArrowUpRight className="h-4 w-4" />
-            </Link>
-            <Link href="/learning-resources/placement" className="btn btn-ghost">
-              Take the free placement quiz
-            </Link>
-          </StaggerItem>
-          <StaggerItem className="mt-12 flex flex-wrap items-center justify-center gap-x-10 gap-y-5 border-t border-[var(--line)] pt-8">
-            {OUTCOMES.slice(0, 3).map((o) => (
-              <div key={o.label} className="text-center">
-                <p className="font-display text-3xl font-bold text-blue-deep">{o.fig}</p>
-                <p className="mt-1 text-xs text-ink-dim">{o.label}</p>
-              </div>
-            ))}
-          </StaggerItem>
-        </Stagger>
+            {/* -- desktop: single layer, no overlay -- */}
+            <div className="absolute inset-0 hidden lg:block">
+              <Image
+                src="/brand/hero-paris-wide.jpg"
+                alt=""
+                fill
+                priority
+                quality={90}
+                sizes="100vw"
+                className="object-cover object-right-bottom"
+              />
+            </div>
+            {/* Between lg and xl the viewport is narrow enough that `cover` crops
+                into the baked white margin, so the copy can end up over sky. A
+                light wash covers only that range; from xl up — where the seam was
+                visible — the photograph is drawn completely bare. */}
+            <div className="absolute inset-0 hidden lg:block xl:hidden bg-[linear-gradient(to_right,rgba(255,255,255,0.92)_0%,rgba(255,255,255,0.62)_34%,rgba(255,255,255,0)_58%)]" />
+          </div>
+
+          {/* Desktop pads to just clear the fixed header and balances top/bottom,
+              so the vertically-centred block reads as centred rather than
+              pushed down — and stays inside the fold. */}
+          <div className="relative z-10 mx-auto w-full max-w-[var(--container)] px-gutter pt-[calc(var(--header-h)+2.5rem)] pb-[clamp(2.5rem,6vw,5rem)] lg:pt-[calc(var(--header-h)+1rem)] lg:pb-10">
+            <Stagger pace="hero" className="flex max-w-2xl flex-col items-start text-left">
+            {/* Desktop drops the eyebrow: the reference goes straight into the
+                headline, and the ~50px it frees is what lets the whole hero —
+                stats included — sit inside the fold. Mobile keeps it, where
+                there is room to spare. */}
+            <StaggerItem as="p" className="eyebrow lg:hidden">Live French classes · A1 to C2</StaggerItem>
+
+            <StaggerItem
+              as="h1"
+              className="mt-5 lg:mt-0 font-display text-[clamp(2.6rem,1.5rem+4.6vw,5.2rem)] font-bold leading-[1.02] tracking-[-0.035em]"
+            >
+              <span className="block text-blue-deep">Your Journey.</span>
+              <span className="block text-red-text">Our Guidance.</span>
+            </StaggerItem>
+
+            <StaggerItem as="p" className="mt-5 fs-1 font-medium text-ink-text">
+              Learn French. Achieve global opportunities.
+            </StaggerItem>
+
+            {/* the twin navy/red rules from the brand sheet */}
+            <StaggerItem className="mt-6 flex gap-2" aria-hidden>
+              <span className="h-1 w-16 rounded-full bg-blue-deep" />
+              <span className="h-1 w-16 rounded-full bg-red" />
+            </StaggerItem>
+
+            {/* NB: the {' '} is load-bearing — JSX collapses the space that
+                would otherwise follow </span>, giving "bonjourto". */}
+            <StaggerItem as="p" className="mt-7 max-w-[46ch] leading-relaxed text-ink-dim">
+              From your first <span className="font-serif-italic text-ink-text">bonjour</span>{' '}
+              to a DELF diploma or a CLB&nbsp;7 for Canada — in small live classes with
+              C1-certified instructors who've walked the path.
+            </StaggerItem>
+
+            <StaggerItem className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Link href="/upcoming-batches" className="btn btn-primary">
+                Reserve your seat <ArrowUpRight className="h-4 w-4" />
+              </Link>
+              <Link href="/learning-resources/placement" className="btn btn-ghost">
+                Take the free placement quiz
+              </Link>
+            </StaggerItem>
+
+            <StaggerItem className="mt-10 flex w-full flex-wrap items-center gap-x-10 gap-y-5 border-t border-[var(--line)] pt-7">
+              {OUTCOMES.slice(0, 3).map((o) => (
+                <div key={o.label}>
+                  <p className="font-display text-3xl font-bold text-blue-deep">{o.fig}</p>
+                  <p className="mt-1 text-xs text-ink-dim">{o.label}</p>
+                </div>
+              ))}
+            </StaggerItem>
+            </Stagger>
+          </div>
+        </div>
 
         {/* marquee ribbon */}
         <div className="relative z-10 mt-[clamp(3rem,6vw,5rem)] border-y border-[var(--line)] bg-cream-deep py-4">
