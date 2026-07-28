@@ -158,10 +158,13 @@ export default function Home() {
 
             {/* NB: the {' '} is load-bearing — JSX collapses the space that
                 would otherwise follow </span>, giving "bonjourto". */}
-            <StaggerItem as="p" className="mt-7 max-w-[46ch] leading-relaxed text-ink-dim">
+            {/* Measure widened from 46ch: the longer copy ran to five tight
+                lines and unbalanced the column against the headline. */}
+            <StaggerItem as="p" className="mt-7 max-w-[54ch] leading-relaxed text-ink-dim">
               From your first <span className="font-serif-italic text-ink-text">bonjour</span>{' '}
-              to a DELF diploma or a CLB&nbsp;7 for Canada — in small live classes with
-              C1-certified instructors who've walked the path.
+              to confident conversations—whether you&apos;re learning for study, work, travel,
+              or life in a French-speaking country, we&apos;ll help you achieve lasting French
+              fluency through expert guidance and practical learning.
             </StaggerItem>
 
             <StaggerItem className="mt-8 flex flex-col gap-3 sm:flex-row">
